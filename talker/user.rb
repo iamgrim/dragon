@@ -25,7 +25,7 @@ class User
   attr_accessor :location
   attr_accessor :homepage
   attr_accessor :occupation
-  attr_accessor :status
+  attr_accessor :maritalstatus
   attr_accessor :realname
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps
@@ -268,33 +268,12 @@ class User
     end
     buffer += "     Connections : #{total_connections}\n"
     buffer += "            Rank : #{rank_name_with_colour}\n"
-    
-    if self.realname.blank?
-    else
-      buffer += "       Real name : #{realname}^n\n"
-    end
-
+    buffer += "       Real name : #{realname}^n\n" unless realname.blank?
     buffer += "          Gender : #{gender_text.capitalize}\n"
-
-    if self.status.blank?
-    else
-      buffer += "  Marital Status : #{status.capitalize}^n\n"
-    end
-
-    if self.location.blank?
-    else 
-      buffer += "        Location : #{location}^n\n"
-    end
-    
-    if self.occupation.blank?
-    else
-      buffer += "      Occupation : #{occupation}^n\n"
-    end
-    if self.homepage.blank?
-    else
-      buffer += "        Homepage : ^U^B#{homepage}^n\n"
-    end
-  
+    buffer += "  Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
+    buffer += "        Location : #{location}^n\n" unless location.blank?
+    buffer += "      Occupation : #{occupation}^n\n" unless occupation.blank?
+    buffer += "        Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
     buffer += "          Drogna : #{money}\n"
     buffer
   end
