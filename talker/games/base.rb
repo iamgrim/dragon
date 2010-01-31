@@ -80,4 +80,56 @@ module Commands
     end
   end
 
+  define_command 'give' do |message|
+    (recipient_name, amount) = get_arguments(message, 2)
+    amount = amount.to_i
+    if recipient_name.blank? || amount < 1
+      output "Format: give <user> <amount>"
+    else
+      recipient = find_connected_user(recipient_name)
+      if recipient
+        if amount > money
+          output "You don't have that much to give."
+        elsif recipient == self
+          output "You already own that."
+        else
+          self.money -= amount
+          recipient.money += amount
+          output_to_all "^g->^n #{cname} has just given #{recipient.cname} #{amount} drogna!"
+          save
+          recipient.save
+        end
+      end
+    end
+  end
+
+  define_command 'steal' do |message|
+    (recipient_name, amount) = get_arguments(message, 2)
+    amount = amount.to_i
+    if recipient_name.blank? || amount < 1
+      output "Format: steal <user> <amount>"
+    else
+      recipient = find_connected_user(recipient_name)
+      if recipient
+        if amount > recipient.money
+          output "They don't have that much to steal."
+        elsif recipient == self
+          output_to_all "^g\u{25ba}^n #{cname} attempts to commit insurance fraud, and is imprisoned!"
+          disconnect
+        else
+	        r = rand(1 + amount)
+          if r < 1
+            self.money += amount
+            recipient.money -= amount
+            output_to_all "^g\u{25ba}^n #{cname} steals #{amount}\u{20ab} from #{recipient.cname}!"
+            save
+            recipient.save
+          else 
+            output_to_all "^g\u{25ba}^n #{cname} attempts to steal from #{recipient.cname}, and is imprisoned!"
+            disconnect            	
+          end
+        end
+      end
+    end
+  end
 end
