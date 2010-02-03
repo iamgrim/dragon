@@ -290,7 +290,7 @@ module Commands
   define_command 'fishing worldrecords' do
     output title_line("Fishing World Records") + "\n" + Fishing.world_records.sort{|a,b|a[0] <=> b[0]}.map { |name, value|
       (user_name, weight) = value
-      "^L#{sprintf("%14.14s", name)}^n #{Fishing::pounds_oz(weight)} #{user_name}"
+      " #{sprintf("%-15.15s", user_name)} #{sprintf("%-15.15s", name)}^n #{Fishing::pounds_oz(weight)}^n"
       }.join("\n") + "\n" + blank_line
   end
   
