@@ -34,7 +34,7 @@ class User
 
   attr_accessor :idle_message, :muffled
 
-  RANK = ['Peasant', 'Farmer', 'Knight', 'Baron', 'Earl', 'Princess', 'King']
+  RANK = ['Peasant', 'Beadle', 'Knight', 'Baron', 'Earl', 'Princess', 'King']
   RANK_COLOUR = ['', '^y', '^Y', '^G', '^C', '^P', '^R']
 
   # this is only called for new users, not existing users
