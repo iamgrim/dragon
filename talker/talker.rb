@@ -6,6 +6,7 @@ require 'talker/util'
 require 'talker/helpers'
 
 require 'talker/connection'
+require 'talker/items'
 require 'talker/user'
 require 'talker/textfile'
 require 'talker/history'
@@ -22,6 +23,7 @@ require 'talker/commands/cmd_dev'
 require 'talker/games/game'
 require 'talker/games/base'
 require 'talker/games/bsheep'
+require 'talker/games/fishing'
 
 class Talker
   NAME    = 'Dragon World'
@@ -51,6 +53,7 @@ class Talker
     @all_users = User.load_all
     Social.import_all
     Game.load
+    Fishing.load
     
     load_connections
     load_history
@@ -161,6 +164,7 @@ class Talker
     save_connected_users
     save_history
     Game.save
+    Fishing.save
   end
 
   def load_connections
@@ -215,6 +219,13 @@ class Talker
       end
       save
     end
+    
+    @connected_users.each do |name, u|
+      if u.active? && u.fishing
+        u.fishing.tick(u)
+      end
+    end
+        
     schedule_tick
   end
   

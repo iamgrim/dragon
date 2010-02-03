@@ -3,7 +3,5 @@ data/users/
 logs/
 import/
 
-data/connections.yml
-data/history.yml
-data/games.yml
+data/*.yml
 socket
