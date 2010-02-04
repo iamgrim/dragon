@@ -12,7 +12,9 @@ class Fish
   end
   
   def get_size
-    (@average_size * (rand ** 1.5)).round(3)
+    size = (@average_size * (rand ** 1.5)).round(3)
+    size = 0.001 if size == 0.0
+    return size
   end
   
   def fish_class(size)
@@ -262,10 +264,11 @@ module Commands
           winnings = 10000
           output_to_all "^C\u{25ba}^n #{cname} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
         else
+          winnings = (fishing.catch_size * 4).round
           best_string = ""
+          best_string = " Laugh at the state of them!" if winnings == 0
           best_string = " ^L(personal best)^n" if fishing.set_record?
           best_string = " ^G(world record)^n" if Fishing.set_world_record?(self)
-          winnings = (fishing.catch_size * 4).round
           output_to_all "^C\u{25ba}^n #{cname} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}"
         end
         self.money += winnings
