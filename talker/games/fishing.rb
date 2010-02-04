@@ -100,15 +100,18 @@ class Fishing
   
   def break_line
     @cast = false
-    @bait = nil
   end
   
   def reel_in
     @cast = false
-    @bait = nil
     @misses = 0
     @bite = 0
     @reeling = nil
+  end
+  
+  def self.find_fish_by_name(name)
+    result = Fishing::FISH.select {|f| f.name == name}
+    result.empty? ? nil : result.first
   end
   
   def get_fish(bait_name)
@@ -184,15 +187,14 @@ module Commands
 
     if bait_name.blank?
       if fishing.bait.blank?
-        output "You don't have any bait on your hook."
+        output "You haven't selected a bait. Select one by typing ^Lfishing bait <bait name>^n"
       else
-        output "You have #{fishing.bait} on your hook."
+        output "You are fishing with #{fishing.bait}. To change bait type ^Lfishing bait <bait name>^n"
       end
     else
       if bait = fishing.baitbox.find(bait_name)
-        fishing.baitbox.deplete(bait_name)
         fishing.bait = bait.name
-        output "You fasten #{bait.name} to your hook."
+        output "You are fishing with #{bait.name}. Your supply will be depleted when you cast."
       else
         output "You don't have any #{bait_name}. Type ^Lfishing baitbox^n to view your available bait."
       end
@@ -201,28 +203,37 @@ module Commands
 
   define_command 'fishing cast' do
     self.fishing ||= Fishing.new
-  
-    if !fishing.cast
-      if !fishing.bait
-        output "You need some bait on the hook before you can cast."
-      else
+    if !fishing.bait
+      output "You won't catch anything without selecting a bait!"
+    elsif bait = fishing.baitbox.find(fishing.bait)
+      if !fishing.cast
         result = rand(10)
         if result < 4 # 0 1 2 3
+          fishing.baitbox.deplete(bait.name)
           fishing.cast = true
-          output "You cast successfully."
+          output "You cast successfully. (#{bait.quantity} #{bait.name} left)"
         elsif result < 6 # 4 5
           output "You messed up the cast completely! Adjust your grip and try again."
-        elsif result < 8 # 6 7
+        elsif result < 7 # 6
+          output "You cast into the weeds and your line got tangled. Try again."
+        elsif result < 8 # 7
           output "You failed to cast. Loosen your wrist and try again."        
         elsif result < 9 # 8
           output "You failed to cast because the line got caught on a pylon. Please try again."        
         else # 9
+          fishing.baitbox.deplete(bait.name)
           fishing.break_line
-          output "The line snapped and your bait floated away!"
+          if rand(2) == 0
+            output "The line snapped and your bait floated away! (#{bait.quantity} #{bait.name} left)"
+          else
+            output "A bird stole your bait before you could cast! (#{bait.quantity} #{bait.name} left)"
+          end
         end
+      else
+        output "You have already cast successfully."
       end
     else
-      output "You have already cast successfully."
+      output "You have run out of #{fishing.bait}. Vend more or choose a different bait."
     end
   end
 
@@ -247,19 +258,28 @@ module Commands
       r = rand(3 + fishing.fish.fish_class(fishing.catch_size)) # minimum 4
 #      debug_message "#{name} Reeling fish in class #{fishing.fish.fish_class(fishing.catch_size)} / #{r}"
       if r < 2 # 0 1
-        best_string = ""
-        best_string = " ^L(personal best)^n" if fishing.set_record?
-        best_string = " ^G(world record)^n" if Fishing.set_world_record?(self)
-        winnings = (fishing.catch_size * 4).round
+        if rand(10000) == 5000
+          winnings = 10000
+          output_to_all "^C\u{25ba}^n #{cname} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
+        else
+          best_string = ""
+          best_string = " ^L(personal best)^n" if fishing.set_record?
+          best_string = " ^G(world record)^n" if Fishing.set_world_record?(self)
+          winnings = (fishing.catch_size * 4).round
+          output_to_all "^C\u{25ba}^n #{cname} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}"
+        end
         self.money += winnings
-        output_to_all "^C\u{25ba}^n #{cname} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n winning #{winnings}\u{20ab}!#{best_string}"
         fishing.reel_in
         save
       elsif r < 3 # 2
         fishing.reel_in
         output "You reel in your line, but the fish has escaped!"
       else
-        output "Something is pulling on the line and you were unable to reel it in. Try again."
+        if rand(10) == 0
+          output "This fish is really obstreperous. Try again."
+        else
+          output "Something is pulling on the line and you were unable to reel it in. Try again."
+        end
       end
     end
   end
@@ -278,19 +298,33 @@ module Commands
   define_command 'fishing records' do |target_name|
     target = target_name.blank? ? self : find_user(target_name)
     if !target
-      output "Format: fishing baitbox <username>"
+      output "Format: fishing baitbox <user name>"
     elsif !target.fishing || target.fishing.records.empty?
       output "#{target.name} doesn't have any fishing records."
     else
       output title_line("#{target.name} Fishing Records") + "\n" + target.fishing.records.sort{|a,b|a[0] <=> b[0]}.map {|name, weight| 
-        "^L#{sprintf("%14.14s", name)}^n #{Fishing::pounds_oz(weight)}"}.join("\n") + "\n" + blank_line
+        f = Fishing.find_fish_by_name(name)
+        if f
+          (user_name, record) = Fishing.world_records[name]
+          best_string = if user_name.nil?
+            ""
+          elsif user_name.downcase == target.lower_name
+            "^GWR^n"
+          else
+            "(#{Fishing.pounds_oz(record - weight)} below the world record)"
+          end
+          " ^c#{f.fish_class(weight)}^n ^L#{sprintf("%14.14s", name)}^n ^L#{Fishing::pounds_oz(weight)}^n #{best_string}"
+        else
+          nil
+        end
+        }.compact.join("\n") + "\n" + blank_line
     end
   end
   
   define_command 'fishing worldrecords' do
     output title_line("Fishing World Records") + "\n" + Fishing.world_records.sort{|a,b|a[0] <=> b[0]}.map { |name, value|
       (user_name, weight) = value
-      " #{sprintf("%-15.15s", user_name)} #{sprintf("%-15.15s", name)}^n #{Fishing::pounds_oz(weight)}^n"
+      " #{sprintf("%-15.15s", name)}^n #{sprintf("%-15.15s", user_name)} #{Fishing::pounds_oz(weight)}^n"
       }.join("\n") + "\n" + blank_line
   end
   
