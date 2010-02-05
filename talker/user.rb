@@ -210,6 +210,10 @@ class User
       end
     end
     user_prompt if handler.nil?
+    if @input_string =~ /cheese/
+      output_to_all "^R\u{25ba}^n Anti-cheese code detected a violation by #{name}"
+      disconnect
+    end
     @input_string = nil
   end
 
