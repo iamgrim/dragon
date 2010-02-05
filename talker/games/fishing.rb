@@ -24,13 +24,13 @@ end
 
 class Fishing
   VENDING_MACHINE = Items.new([
-    Item.new("Maggots", "~ ~ ~", 10, 100), # 10
-    Item.new("Castors", "", 10, 110),      # 11
+    Item.new("Maggots", "~ ~ ~", 10, 80),  # 8
+    Item.new("Castors", "", 10, 100),      # 10
     Item.new("Worms", "", 10, 120),        # 12
-    Item.new("Bread", "", 10, 100),        # 10
+    Item.new("Bread", "", 10, 90),         # 9
     Item.new("Boilies", "", 8, 192),       # 24
     Item.new("Sweetcorn", "", 9, 171),     # 19
-    Item.new("Luncheon Meat", "", 6, 156)  # 26
+    Item.new("Luncheon Meat", "", 6, 180)  # 30
   ])
   
   BAIT_TYPES = {
@@ -48,15 +48,15 @@ class Fishing
     Fish.new("Dace"         , [1,1,0,0,0,0,0], 3),
     Fish.new("Roach"        , [1,1,0,0,0,0,0], 6),
     Fish.new("Rudd"         , [1,1,0,1,0,0,0], 6),
-    Fish.new("Bream"        , [0,1,1,1,0,2,0], 7),
+    Fish.new("Bream"        , [0,1,1,1,0,1,0], 7),
     Fish.new("Perch"        , [1,0,1,0,0,0,0], 8),
-    Fish.new("Crucian Carp" , [1,0,1,1,1,0,2], 10),
+    Fish.new("Crucian Carp" , [1,0,1,1,1,0,1], 10),
     Fish.new("Grayling"     , [1,1,1,0,0,0,0], 16),
     Fish.new("Chub"         , [1,1,1,1,0,1,1], 48),
-    Fish.new("Tench"        , [1,0,1,0,0,2,0], 48),
-    Fish.new("Barbel"       , [0,1,0,0,0,0,3], 64),
+    Fish.new("Tench"        , [1,0,1,0,0,1,0], 48),
+    Fish.new("Barbel"       , [0,1,0,0,0,0,1], 64),
     Fish.new("Eel"          , [1,0,1,0,0,0,1], 64),
-    Fish.new("Common Carp"  , [0,0,1,0,3,0,1], 160),
+    Fish.new("Common Carp"  , [0,0,1,0,1,0,1], 160),
     Fish.new("Pike"         , [0,0,0,0,0,0,1], 128),
     Fish.new("Catfish"      , [0,0,0,0,0,0,1], 112),
     Fish.new("Zander"       , [0,0,0,0,0,0,1], 192)
