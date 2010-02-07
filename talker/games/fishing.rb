@@ -30,7 +30,7 @@ class Fishing
     Item.new("Bread", "", 10, 90),         # 9
     Item.new("Boilies", "", 14, 336),      # 24
     Item.new("Sweetcorn", "", 9, 171),     # 19
-    Item.new("Luncheon Meat", "", 12, 420) # 35
+    Item.new("Luncheon Meat", "", 12, 840) # 70
   ])
   
   BAIT_TYPES = {
