@@ -24,13 +24,13 @@ end
 
 class Fishing
   VENDING_MACHINE = Items.new([
-    Item.new("Maggots", "~ ~ ~", 10, 80),  # 8
+    Item.new("Maggots", "~ ~ ~", 10, 50),  # 5
     Item.new("Castors", "", 10, 100),      # 10
     Item.new("Worms", "", 10, 120),        # 12
     Item.new("Bread", "", 10, 90),         # 9
-    Item.new("Boilies", "", 8, 192),       # 24
+    Item.new("Boilies", "", 14, 336),      # 24
     Item.new("Sweetcorn", "", 9, 171),     # 19
-    Item.new("Luncheon Meat", "", 6, 180)  # 30
+    Item.new("Luncheon Meat", "", 12, 420) # 35
   ])
   
   BAIT_TYPES = {
@@ -48,18 +48,18 @@ class Fishing
     Fish.new("Dace"         , [1,1,0,0,0,0,0], 3),
     Fish.new("Roach"        , [1,1,0,0,0,0,0], 6),
     Fish.new("Rudd"         , [1,1,0,1,0,0,0], 6),
-    Fish.new("Bream"        , [0,1,1,1,0,1,0], 7),
     Fish.new("Perch"        , [1,0,1,0,0,0,0], 8),
-    Fish.new("Crucian Carp" , [1,0,1,1,1,0,1], 10),
+    Fish.new("Crucian Carp" , [1,0,0,0,1,0,0], 10),
     Fish.new("Grayling"     , [1,1,1,0,0,0,0], 16),
-    Fish.new("Chub"         , [1,1,1,1,0,1,1], 48),
-    Fish.new("Tench"        , [1,0,1,0,0,1,0], 48),
-    Fish.new("Barbel"       , [0,1,0,0,0,0,1], 64),
-    Fish.new("Eel"          , [1,0,1,0,0,0,1], 64),
-    Fish.new("Common Carp"  , [0,0,1,0,1,0,1], 160),
-    Fish.new("Pike"         , [0,0,0,0,0,0,1], 128),
-    Fish.new("Catfish"      , [0,0,0,0,0,0,1], 112),
-    Fish.new("Zander"       , [0,0,0,0,0,0,1], 192)
+    Fish.new("Chub"         , [1,1,1,1,0,1,1], 48),  # 3lb
+    Fish.new("Eel"          , [1,0,1,0,0,0,1], 64),  # 4lb
+    Fish.new("Tench"        , [0,1,1,0,0,1,1], 80),  # 5lb
+    Fish.new("Barbel"       , [0,0,1,0,0,1,1], 80),  # 5lb
+    Fish.new("Bream"        , [0,0,0,1,0,0,0], 88),  # 5.5lb
+    Fish.new("Common Carp"  , [0,0,0,0,1,0,0], 160), # 10lb
+    Fish.new("Zander"       , [0,0,0,0,0,0,1], 192), # 12lb
+    Fish.new("Pike"         , [0,0,0,0,0,0,1], 304), # 19lb
+    Fish.new("Catfish"      , [0,0,0,0,0,0,1], 328)  # 20.5lb
   ]
 
   @world_records = {}
@@ -98,10 +98,6 @@ class Fishing
   
   def self.world_records
     @world_records
-  end
-  
-  def break_line
-    @cast = false
   end
   
   def reel_in
@@ -209,27 +205,29 @@ module Commands
       output "You won't catch anything without selecting a bait!"
     elsif bait = fishing.baitbox.find(fishing.bait)
       if !fishing.cast
-        result = rand(10)
-        if result < 4 # 0 1 2 3
+        result = rand(20)
+        if result < 12 # 0 1 2 3 4 5 6 7 8 9 10 11
           fishing.baitbox.deplete(bait.name)
           fishing.cast = true
           output "You cast successfully. (#{bait.quantity} #{bait.name} left)"
-        elsif result < 6 # 4 5
+        elsif result < 14 # 12 13
           output "You messed up the cast completely! Adjust your grip and try again."
-        elsif result < 7 # 6
+        elsif result < 16 # 14 15
           output "You cast into the weeds and your line got tangled. Try again."
-        elsif result < 8 # 7
+        elsif result < 18 # 16 17
           output "You failed to cast. Loosen your wrist and try again."        
-        elsif result < 9 # 8
+        elsif result < 19 # 18
           output "You failed to cast because the line got caught on a pylon. Please try again."        
-        else # 9
+        else # 19
           fishing.baitbox.deplete(bait.name)
-          fishing.break_line
-          if rand(2) == 0
-            output "The line snapped and your bait floated away! (#{bait.quantity} #{bait.name} left)"
-          else
-            output "A bird stole your bait before you could cast! (#{bait.quantity} #{bait.name} left)"
+          fishing.cast = false
+          buffer = case rand(4)
+          when 0 then "The line snapped and your bait floated away!"
+          when 1 then "You dropped your bait and a rat stole it!"
+          when 2 then "You dropped your bait and a rat stole it!"
+          else        "A bird stole your bait before you could cast!"
           end
+          output "#{buffer} (#{bait.quantity} #{bait.name} left)"
         end
       else
         output "You have already cast successfully."
@@ -257,7 +255,7 @@ module Commands
     end
     
     if fishing.reeling
-      r = rand(3 + fishing.fish.fish_class(fishing.catch_size)) # minimum 4
+      r = rand(3 + (fishing.catch_size / 16))
 #      debug_message "#{name} Reeling fish in class #{fishing.fish.fish_class(fishing.catch_size)} / #{r}"
       if r < 2 # 0 1
         if rand(10000) == 5000
