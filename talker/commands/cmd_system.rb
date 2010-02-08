@@ -70,11 +70,6 @@ module Commands
   end
   define_alias 'examine', 'finger', 'profile', 'x'
 
-#  define_command 'inventory' do |target_name|
-#    target = target_name.blank? ? self : find_user(target_name)
-#    output (title_line("#{target.name} Inventory") + "\n" + target.inventory.to_s + "\n" + blank_line) if target
-#  end
-
   define_command 'settings' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
     if target
