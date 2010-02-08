@@ -84,6 +84,7 @@ module Commands
       buffer += " Disconnect : ^R<^r< ^n#{target.name} #{target.get_disconnect_message} ^r>^R>^n\n"
       buffer += "  Reconnect : ^Y>^y< ^n#{target.name} #{target.get_reconnect_message} ^y>^Y<^n\n"
       buffer += "     Prompt : #{target.get_prompt}^n\n"
+      buffer += " Timestamps : #{target.get_timestamp_format.gsub(/\^/, '^^')}^n\n" if target.show_timestamps
       buffer += blank_line
       output buffer
     end
@@ -98,7 +99,7 @@ module Commands
 
   define_command 'whod' do
     output title_line("Who Debug") + "\n" +
-      active_users.map { |u| sprintf("%15.15s [#{(u.charset || "ascii").to_s}]#{u.debug ? ' [Debug]' : ''}#{u.show_timestamps ? ' [Timestamps]' : ''}#{u.default_timestamp_format? ? '' : ' [Custom Format]'}^n", u.name) }.join("\n") + "\n" + 
+      active_users.map { |u| sprintf("%15.15s ^c#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debug] ' : ''}#{u.show_timestamps ? '[stamp collector]' : ''}^n", u.name) }.join("\n") + "\n" + 
       blank_line
   end
   define_alias 'who', 'w'
@@ -193,12 +194,12 @@ module Commands
   define_alias 'password', 'passwd'
 
   define_command 'history' do
-    output title_line("History") + "\n" + talker_history.to_s(self) + "\n" + blank_line
+    output title_line("History") + "\n" + talker_history.to_s(get_timestamp_format) + "\n" + blank_line
   end
   define_alias 'history', 'recall', 'review'
 
   define_command 'myhistory' do
-    output title_line("Your Private History") + "\n" + history.to_s(self) + "\n" + blank_line
+    output title_line("Your Private History") + "\n" + history.to_s(get_timestamp_format) + "\n" + blank_line
   end
   define_alias 'myhistory', 'rhistory'
   

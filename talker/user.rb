@@ -176,17 +176,9 @@ class User
   end
   
   def get_timestamp_format
-    @timestamp_format.blank? ? "^c%H:%M^n" : @timestamp_format
+    @timestamp_format.blank? ? "^c%H:%M" : @timestamp_format
   end
   
-  def default_timestamp_format?
-    @timestamp_format == "^c%H:%M^n"
-  end
-  
-  def default_timestamp_format
-    @timestamp_format = "^c%H:%M^n"
-  end
-
   def get_connect_message
     @connect_message || "connects"
   end
