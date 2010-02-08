@@ -193,12 +193,12 @@ module Commands
   define_alias 'password', 'passwd'
 
   define_command 'history' do
-    output title_line("History") + "\n" + talker_history.to_s + "\n" + blank_line
+    output title_line("History") + "\n" + talker_history.to_s(self) + "\n" + blank_line
   end
   define_alias 'history', 'recall', 'review'
 
   define_command 'myhistory' do
-    output title_line("Your Private History") + "\n" + history.to_s + "\n" + blank_line
+    output title_line("Your Private History") + "\n" + history.to_s(self) + "\n" + blank_line
   end
   define_alias 'myhistory', 'rhistory'
   
