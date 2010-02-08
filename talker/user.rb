@@ -263,7 +263,7 @@ class User
     "#{RANK_COLOUR[rank]}#{name}^n"
   end
   
-    def examine
+  def examine
     buffer = "      First seen : #{first_seen}\n"
     if logged_in?
       buffer += "      Login time : #{time_in_words(login_time)}\n"
@@ -282,6 +282,10 @@ class User
     buffer += "        Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
     buffer += "          Drogna : #{money}\n"
     buffer
+  end
+
+  def items
+    @items ||= Items.new
   end
   
   def self.load(name)

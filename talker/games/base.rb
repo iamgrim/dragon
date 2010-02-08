@@ -14,38 +14,43 @@ module Commands
   end
   
   define_command 'dice' do
-    num_word = %w{One Two Three Four Five Six}
-    faces = [["     ", "  \u{25cf}  ", "     "],
-             ["\u{25cf}    ", "     ", "    \u{25cf}"],
-             ["\u{25cf}    ", "  \u{25cf}  ", "    \u{25cf}"],
-             ["\u{25cf}   \u{25cf}", "     ", "\u{25cf}   \u{25cf}"],
-             ["\u{25cf}   \u{25cf}", "  \u{25cf}  ", "\u{25cf}   \u{25cf}"],
-             ["\u{25cf}   \u{25cf}", "\u{25cf}   \u{25cf}", "\u{25cf}   \u{25cf}"]]
-    
-    roll1 = rand(6)
-    roll2 = rand(6)
-    score = roll1 + roll2 + 2
-    
-    double_text = [
-      "Snake ears, Double Ones!",
-      "Stirling Moss, Double Twos",
-      "Milton Keynes, Double Threes",
-      "Uncle Monty, Double Fours",
-      "Snake eyes, Double Fives",
-      "Good Role, Double Sixes"
-    ]
-    
-    result_text = if roll1 == roll2
-      double_text[roll1]
+    user_dice = items.find("dice")
+    if user_dice.nil? || user_dice.quantity < 2
+      output "You need two dice to play."
     else
-      "A #{num_word[roll1]} and a #{num_word[roll2]}"
-    end
+      num_word = %w{One Two Three Four Five Six}
+      faces = [["     ", "  \u{25cf}  ", "     "],
+               ["\u{25cf}    ", "     ", "    \u{25cf}"],
+               ["\u{25cf}    ", "  \u{25cf}  ", "    \u{25cf}"],
+               ["\u{25cf}   \u{25cf}", "     ", "\u{25cf}   \u{25cf}"],
+               ["\u{25cf}   \u{25cf}", "  \u{25cf}  ", "\u{25cf}   \u{25cf}"],
+               ["\u{25cf}   \u{25cf}", "\u{25cf}   \u{25cf}", "\u{25cf}   \u{25cf}"]]
     
-    output "  ^B\u{250c}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2510}   \u{250c}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2510}      ^NYou roll two dice and get:
-  ^B\u{2502} ^Y#{faces[roll1][0]}^B \u{2502}   \u{2502} ^Y#{faces[roll2][0]}^B \u{2502}      ^N#{result_text}
-  ^B\u{2502} ^Y#{faces[roll1][1]}^B \u{2502}   \u{2502} ^Y#{faces[roll2][1]}^B \u{2502}^N
-  ^B\u{2502} ^Y#{faces[roll1][2]}^B \u{2502}   \u{2502} ^Y#{faces[roll2][2]}^B \u{2502}      ^NTotal Score: #{score}
-  ^B\u{2514}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2518}   \u{2514}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2518}^N"
+      roll1 = rand(6)
+      roll2 = rand(6)
+      score = roll1 + roll2 + 2
+    
+      double_text = [
+        "Snake ears, Double Ones!",
+        "Stirling Moss, Double Twos",
+        "Milton Keynes, Double Threes",
+        "Uncle Monty, Double Fours",
+        "Snake eyes, Double Fives",
+        "Good Role, Double Sixes"
+      ]
+    
+      result_text = if roll1 == roll2
+        double_text[roll1]
+      else
+        "A #{num_word[roll1]} and a #{num_word[roll2]}"
+      end
+    
+      output "    ^B\u{250c}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2510}   \u{250c}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2510}      ^NYou roll two dice and get:
+    ^B\u{2502} ^Y#{faces[roll1][0]}^B \u{2502}   \u{2502} ^Y#{faces[roll2][0]}^B \u{2502}      ^N#{result_text}
+    ^B\u{2502} ^Y#{faces[roll1][1]}^B \u{2502}   \u{2502} ^Y#{faces[roll2][1]}^B \u{2502}^N
+    ^B\u{2502} ^Y#{faces[roll1][2]}^B \u{2502}   \u{2502} ^Y#{faces[roll2][2]}^B \u{2502}      ^NTotal Score: #{score}
+    ^B\u{2514}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2518}   \u{2514}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2518}^N"
+    end
   end
   define_alias 'dice', 'roll', 'd'
   
