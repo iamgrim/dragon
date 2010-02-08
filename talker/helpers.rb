@@ -107,7 +107,7 @@ module Helpers
   
   def output_with_history(message)
     history.add(message) # add to the users personal history buffer
-    m = show_timestamps ? "#{Time.now.strftime(u.get_timestamp_format)}^n #{message}" : message
+    m = show_timestamps ? "#{Time.now.strftime(get_timestamp_format)}^n #{message}" : message
     output(m)
   end
   
