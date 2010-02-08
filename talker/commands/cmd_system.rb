@@ -98,7 +98,7 @@ module Commands
 
   define_command 'whod' do
     output title_line("Who Debug") + "\n" +
-      active_users.map { |u| sprintf("%15.15s [#{(u.charset || "ascii").to_s}]#{u.debug ? ' [Debug]' : ''}#{u.show_timestamps ? ' [Timestamps]' : ''}^n", u.name) }.join("\n") + "\n" + 
+      active_users.map { |u| sprintf("%15.15s [#{(u.charset || "ascii").to_s}]#{u.debug ? ' [Debug]' : ''}#{u.show_timestamps ? ' [Timestamps]' : ''}#{u.default_timestamp_format? ? '' : ' [Custom Format]'}^n", u.name) }.join("\n") + "\n" + 
       blank_line
   end
   define_alias 'who', 'w'
@@ -193,12 +193,12 @@ module Commands
   define_alias 'password', 'passwd'
 
   define_command 'history' do
-    output title_line("History") + "\n" + talker_history.to_s + "\n" + blank_line
+    output title_line("History") + "\n" + talker_history.to_s(self) + "\n" + blank_line
   end
   define_alias 'history', 'recall', 'review'
 
   define_command 'myhistory' do
-    output title_line("Your Private History") + "\n" + history.to_s + "\n" + blank_line
+    output title_line("Your Private History") + "\n" + history.to_s(self) + "\n" + blank_line
   end
   define_alias 'myhistory', 'rhistory'
   

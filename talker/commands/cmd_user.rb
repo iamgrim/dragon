@@ -204,15 +204,20 @@ module Commands
       output "Your character set is currently ^L#{charset}^n.\nFormat: charset [unicode|ascii]"
     end
   end
-
+  
   define_command 'timestamps' do |message|
     if message == "on"
       self.show_timestamps = true
     elsif message == "off"
       self.show_timestamps = false
+    elsif message == "format"
+      default_timestamp_format
+    elsif message =~ /^format (.*)/
+      self.show_timestamps = true
+      self.timestamp_format = $1
     end
-    buffer = show_timestamps ? "You are viewing timestamps." : "You are not viewing timestamps."
-    buffer += "\nFormat: timestamps [on|off]" if message.blank?
+    buffer = (show_timestamps ? "You are viewing timestamps" + (!default_timestamp_format? ? ", with custom format: #{self.timestamp_format.gsub(/\^/, '^^')}^n" : ".") : "You are not viewing timestamps")
+    buffer += "\nFormat: timestamps [on|off|format <string>]" if message.blank?
     output buffer
   end
       
