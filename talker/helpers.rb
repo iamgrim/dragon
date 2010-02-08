@@ -9,13 +9,13 @@ module Helpers
   def channel_output(message)
     connected_users.values.each do |u| 
       unless u.muffled 
-        m = u.show_timestamps ? "^c#{Time.now.strftime("%H:%M")}^n #{message}" : message
+        m = u.show_timestamps ? "#{Time.now.strftime(u.get_timestamp_format)}^n #{message}" : message
         u.output m
       end
     end
     talker_history.add message
-  end    
-    
+  end
+  
   def find_with_partial_matching(hash, name, options={})
     return nil if name.blank?
     lower_name = name.downcase
@@ -107,7 +107,7 @@ module Helpers
   
   def output_with_history(message)
     history.add(message) # add to the users personal history buffer
-    m = show_timestamps ? "^c#{Time.now.strftime("%H:%M")}^n #{message}" : message
+    m = show_timestamps ? "#{Time.now.strftime(u.get_timestamp_format)}^n #{message}" : message
     output(m)
   end
   

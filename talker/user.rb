@@ -30,7 +30,7 @@ class User
 
   attr_accessor :fishing
 
-  attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps
+  attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
   attr_accessor :idle_message, :muffled
 
@@ -173,6 +173,18 @@ class User
 
   def get_prompt
     @prompt || "(dragon) "
+  end
+  
+  def get_timestamp_format
+    @timestamp_format.blank? ? "^c%H:%M^n" : @timestamp_format
+  end
+  
+  def default_timestamp_format?
+    @timestamp_format == "^c%H:%M^n"
+  end
+  
+  def default_timestamp_format
+    @timestamp_format = "^c%H:%M^n"
   end
 
   def get_connect_message
