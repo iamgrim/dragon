@@ -31,6 +31,8 @@ A B C D E F G
 =end
 
 class ConnectFourPlayer < Player
+  attr_accessor :piece
+  
   def initialize(user, state, piece)
     super(user, state)
     self.piece = piece
@@ -56,11 +58,14 @@ class ConnectFourPlayer < Player
 end
 
 class ConnectFour < Game
+  attr_accessor :data
+  
   def initialize(creator, opponent)
     super()
     piece = rand(2) + 1
     @players << ConnectFourPlayer.new(creator, :accepted, piece)
     @players << ConnectFourPlayer.new(opponent, nil, (piece == 2 ? 1 : 2))
+    @data = {}
     create_board
   end
   
