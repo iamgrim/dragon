@@ -97,7 +97,7 @@ class User
     @muffled = false
     
     if resident?
-      output title_line("Recent Changes") + "\n" + get_text("changes") + "\n" + bottom_line
+      output box_title("Recent Changes") + "\n" + box_textfile("changes") + "\n" + bottom_line
     else
       output get_text("welcome_newuser")
     end
@@ -286,6 +286,16 @@ class User
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
     buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
     buffer += "           Drogna : #{money}\n"
+    buffer
+  end
+  
+  def settings
+    buffer = "     Title : #{name} #{title}\n"
+    buffer += "     Login : ^g>^G> ^n#{name} #{get_connect_message} ^G<^g<\n"
+    buffer += "Disconnect : ^R<^r< ^n#{name} #{get_disconnect_message} ^r>^R>\n"
+    buffer += " Reconnect : ^Y>^y< ^n#{name} #{get_reconnect_message} ^y>^Y<\n"
+    buffer += "    Prompt : #{get_prompt}\n"
+    buffer += "Timestamps : #{get_timestamp_format}\n" if show_timestamps
     buffer
   end
 

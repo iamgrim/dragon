@@ -148,16 +148,22 @@ module TalkerUtilities
     end
   end
   
-  def title_line(text)
+  # for boxed content
+  def box_title(text)
     "^B\u{250C}\u{2500}\u{2524} ^Y#{text} ^B\u{251C}" + ("\u{2500}" * (72 - text.length)) + "\u{2510}^n"
+  end
+
+  def bottom_line
+    "^B\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
+  end
+  
+  # for content that exceeds the 80 character width box
+  def title_line(text)
+    "^B\u{250C}\u{2500}\u{2524} ^Y#{text} ^B\u{251C}" + ("\u{2500}" * (73 - text.length)) + "^n"
   end
   
   def blank_line
-    "^B" + "\u{2500}" * 79 + "^n\n"
-  end
-  
-  def bottom_line
-    "^B\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
+    "^B\u{2514}" + "\u{2500}" * 78 + "^n\n"
   end
   
   def get_arguments(string, num)
@@ -305,5 +311,12 @@ module TalkerUtilities
       
       message.encode("us-ascii", :undef => :replace, :replace => '')
     end
+  end
+end
+
+# oh god how did this get here I am not good with computer
+class String
+  def wrap(column)
+      self.gsub(/(.{1,#{column}})( +|$\n?)|(.{1,#{column}})/, "\\1\\3\n")
   end
 end

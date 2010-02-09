@@ -1,11 +1,11 @@
 # encoding: utf-8
 module Commands
   define_command 'staff' do
-    buffer = title_line('Staff') + "\n"
+    buffer = box_title('Staff') + "\n"
     (0..5).each do |i|
       rank = 6 - i
       staff_at_rank = commas_and(all_users.values.select{|u| u.rank == rank}.map {|u| u.name})
-      buffer += sprintf("#{User::RANK_COLOUR[rank]}%10.10s ^n: #{staff_at_rank}\n", User::RANK[rank])
+      buffer += sprintf("^B\u{2502}^n #{User::RANK_COLOUR[rank]}%8.8s ^n: %-64.64s ^B\u{2502}^n\n", User::RANK[rank], staff_at_rank)
     end
     buffer += bottom_line
     output buffer

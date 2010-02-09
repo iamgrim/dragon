@@ -40,13 +40,13 @@ end
 # encoding: utf-8
 module Commands
   define_command 'games' do
-    buffer = title_line("Games") + "\n"
+    buffer = box_title("Games") + "\n"
     if Game.games.length > 0
       Game.games.each do |game|
-        buffer += "  " + game.description + "\n"
+        buffer += sprintf("^B\u{2502}^n ^W\u{25CF}^n %-73.73s ^B\u{2502}^n", game.description) + "\n"
       end
     else
-      buffer += "  There are no games in progress.\n"
+      buffer += sprintf("^B\u{2502}^n  %-75.75s ^B\u{2502}^n", "There are no games in progress.") + "\n"
     end
     buffer += bottom_line
     output buffer

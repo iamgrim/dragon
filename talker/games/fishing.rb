@@ -298,7 +298,7 @@ module Commands
     elsif !target.fishing || target.fishing.baitbox.empty?
       output "#{target.name} has nothing in their baitbox."
     else
-      output title_line("#{target.name} Baitbox") + "\n" + target.fishing.baitbox.to_s + "\n" + bottom_line
+      output box_title("#{target.name} Baitbox") + "\n" + box_text(target.fishing.baitbox.to_s) + "\n" + bottom_line
     end
   end
 
@@ -309,7 +309,7 @@ module Commands
     elsif !target.fishing || target.fishing.records.empty?
       output "#{target.name} doesn't have any fishing records."
     else
-      output title_line("#{target.name} Fishing Records") + "\n" + target.fishing.records.sort{|a,b|a[0] <=> b[0]}.map {|name, weight| 
+      output box_title("#{target.name} Fishing Records") + "\n" + box_text(target.fishing.records.sort{|a,b|a[0] <=> b[0]}.map {|name, weight| 
         f = Fishing.find_fish_by_name(name)
         if f
           (user_name, record) = Fishing.world_records[name]
@@ -324,15 +324,15 @@ module Commands
         else
           nil
         end
-        }.compact.join("\n") + "\n" + bottom_line
+        }.compact.join("\n")) + "\n" + bottom_line
     end
   end
   
   define_command 'fishing worldrecords' do
-    output title_line("Fishing World Records") + "\n" + Fishing.world_records.sort{|a,b|a[0] <=> b[0]}.map { |name, value|
+    output box_title("Fishing World Records") + "\n" + box_text(Fishing.world_records.sort{|a,b|a[0] <=> b[0]}.map { |name, value|
       (user_name, weight) = value
       " #{sprintf("%-15.15s", name)}^n #{sprintf("%-15.15s", user_name)} #{Fishing::pounds_oz(weight)}^n"
-      }.join("\n") + "\n" + bottom_line
+      }.join("\n")) + "\n" + bottom_line
   end
   
   define_command 'fishing quit' do
@@ -364,7 +364,7 @@ module Commands
 
   define_command 'vend' do |item_name|
     if item_name.blank?
-      output title_line("Welcome to Master Bait Vending Machine") + "\n" + Fishing::VENDING_MACHINE.map {|item| "^L#{sprintf("%4d", item.price)}\u{20ab}^n #{item.name} (#{item.quantity} #{pluralise("piece", item.quantity)})"}.join("\n") + "\n" + bottom_line
+      output box_title("Welcome to Master Bait Vending Machine") + "\n" + box_text(Fishing::VENDING_MACHINE.map {|item| "^L#{sprintf("%4d", item.price)}\u{20ab}^n #{item.name} (#{item.quantity} #{pluralise("piece", item.quantity)})"}.join("\n")) + "\n" + bottom_line
     elsif item_to_buy = Fishing::VENDING_MACHINE.find(item_name)
       if purchased_item = item_to_buy.purchase_by(self)
         self.fishing ||= Fishing.new
