@@ -5,6 +5,10 @@ module Helpers
   def output_to_all(message)
     connected_users.values.each { |u| u.output message unless u.muffled }
   end
+
+  def output_to_some(message, &block)
+    connected_users.values.each { |u| u.output message if !u.muffled && yield(u) }
+  end
   
   def channel_output(message)
     connected_users.values.each do |u| 
