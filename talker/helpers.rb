@@ -145,20 +145,6 @@ module Helpers
     Textfile.get_text(name)
   end
   
-  def box_textfile(name)
-    Textfile.get_text(name).split("\n").map { |s|
-      width = 75 + s.length - colourise(s, false).length
-      sprintf("^B\u{2502}^n %-#{width}.#{width}s ^B\u{2502}^n", s)
-    }.join("\n") || ""
-  end
-  
-  def box_text(text)
-    text.split("\n").map { |s|
-      width = 75 + s.length - colourise(s, false).length
-      sprintf("^B\u{2502}^n %-#{width}.#{width}s ^B\u{2502}^n", s)
-    }.join("\n") || ""
-  end
-  
   def debug_message(message)
     Talker.instance.debug_message(message)
   end

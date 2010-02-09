@@ -7,7 +7,7 @@ module Commands
   end
 
   define_command 'changes' do 
-    output box_title("Recent Changes") + "\n" + box_textfile("changes") + "\n" + bottom_line
+    output box_title("Recent Changes") + "\n" + box_text(get_text "changes") + "\n" + bottom_line
   end
   
   define_command 'testcard' do

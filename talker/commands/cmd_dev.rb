@@ -44,7 +44,7 @@ module Commands
 
   define_command 'show_changes', :invisible => true do
     if developer?
-      buffer = box_title("#{Talker::NAME} Has Been Updated!") + "\n" + box_textfile("changes") + "\n" + bottom_line
+      buffer = box_title("#{Talker::NAME} Has Been Updated!") + "\n" + box_text(get_text "changes") + "\n" + bottom_line
       output_to_all buffer
     else
       output "No permission."

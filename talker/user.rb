@@ -98,7 +98,7 @@ class User
     @muffled = false
     
     if resident?
-      output box_title("Recent Changes") + "\n" + box_textfile("changes") + "\n" + bottom_line
+      output box_title("Recent Changes") + "\n" + box_text(get_text "changes") + "\n" + bottom_line
     else
       output get_text("welcome_newuser")
     end
