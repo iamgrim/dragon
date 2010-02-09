@@ -6,7 +6,6 @@ require 'talker/util'
 require 'talker/helpers'
 
 require 'talker/connection'
-require 'talker/items'
 require 'talker/user'
 require 'talker/textfile'
 require 'talker/history'
@@ -20,6 +19,7 @@ require 'talker/commands/cmd_comms'
 require 'talker/commands/cmd_staff'
 require 'talker/commands/cmd_dev'
 
+require 'talker/items'
 require 'talker/games/game'
 require 'talker/games/base'
 require 'talker/games/bsheep'
@@ -28,7 +28,7 @@ require 'talker/games/connectfour'
 
 class Talker
   NAME    = 'Dragon World'
-  VERSION = '0.7.2'
+  VERSION = '0.7.3'
   
   include Singleton
   
@@ -222,8 +222,9 @@ class Talker
     end
     
     @connected_users.each do |name, u|
-      if u.active? && u.fishing
-        u.fishing.tick(u)
+      if u.active?
+        u.fishing.tick(u) if u.fishing
+        u.community_service.tick(u) if u.community_service
       end
     end
         

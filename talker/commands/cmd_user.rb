@@ -211,12 +211,12 @@ module Commands
     elsif message == "off"
       self.show_timestamps = false
     elsif message == "format"
-      default_timestamp_format
+      self.timestamp_format = nil
     elsif message =~ /^format (.*)/
       self.show_timestamps = true
       self.timestamp_format = $1
     end
-    buffer = (show_timestamps ? "You are viewing timestamps" + (!default_timestamp_format? ? ", with custom format: #{self.timestamp_format.gsub(/\^/, '^^')}^n" : ".") : "You are not viewing timestamps")
+    buffer = (show_timestamps ? "You are viewing timestamps" + (!timestamp_format.nil? ? ", with custom format: #{Time.now.strftime(timestamp_format)}^n (#{timestamp_format.gsub(/\^/, '^^')})^n" : ".") : "You are not viewing timestamps")
     buffer += "\nFormat: timestamps [on|off|format <string>]" if message.blank?
     output buffer
   end

@@ -64,7 +64,7 @@ class Fishing
 
   @world_records = {}
 
-  attr_accessor :cast, :bait, :bite, :reeling, :catch_size
+  attr_accessor :cast, :bait, :bite, :reeling, :catch_size, :subscribed
   attr_reader :fish
   
   def initialize
@@ -260,14 +260,20 @@ module Commands
       if r < 2 # 0 1
         if rand(10000) == 5000
           winnings = 10000
-          output_to_all "^C\u{25ba}^n #{cname} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
+          output_to_all "^C\u{25ba}^n #{name} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
         else
           winnings = (fishing.catch_size * 4).round
           best_string = ""
           best_string = " Laugh at the state of them!" if winnings == 0
-          best_string = " ^L(personal best)^n" if fishing.set_record?
+          best_string = " ^L(personal best)^n" if personal_best = fishing.set_record?
           best_string = " ^G(world record)^n" if Fishing.set_world_record?(self)
-          output_to_all "^C\u{25ba}^n #{cname} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}"
+          
+          buffer = "^C\u{25ba}^n #{name} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}"
+          if personal_best
+            output_to_all buffer
+          else
+            output_to_some(buffer) {|u| (u.fishing && u.fishing.subscribed) || u == self}
+          end
         end
         self.money += winnings
         fishing.reel_in
@@ -334,6 +340,28 @@ module Commands
     output "You have packed away your fishing equipment."
   end
 
+  define_command 'fishing subscribe' do
+    self.fishing ||= Fishing.new
+    if fishing.subscribed
+      output "You are already subscribed to Angling Times."
+    else
+      fishing.subscribed = true
+      save
+      output "You are now subscribed to Angling Times."      
+    end
+  end
+
+  define_command 'fishing unsubscribe' do
+    self.fishing ||= Fishing.new
+    if fishing.subscribed
+      fishing.subscribed = false
+      save
+      output "You have unsubscribed from Angling Times."
+    else
+      output "You are not subscribed to Angling Times."
+    end
+  end
+
   define_command 'vend' do |item_name|
     if item_name.blank?
       output title_line("Welcome to Master Bait Vending Machine") + "\n" + Fishing::VENDING_MACHINE.map {|item| "^L#{sprintf("%4d", item.price)}\u{20ab}^n #{item.name} (#{item.quantity} #{pluralise("piece", item.quantity)})"}.join("\n") + "\n" + blank_line
@@ -341,7 +369,7 @@ module Commands
       if purchased_item = item_to_buy.purchase_by(self)
         self.fishing ||= Fishing.new
         self.fishing.baitbox.add(purchased_item)
-        output_to_all "^Y\u{25ba}^n #{cname} vends #{purchased_item.name}"
+        output_to_all "^Y\u{25ba}^n #{name} vends #{purchased_item.name}"
         save
       else
         output "You can't afford to buy #{item_to_buy.name}. It costs #{item_to_buy.price}\u{20ab} and you only have #{money}\u{20ab}."

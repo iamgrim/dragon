@@ -29,7 +29,7 @@ class User
   attr_accessor :maritalstatus
   attr_accessor :realname
 
-  attr_accessor :fishing
+  attr_accessor :fishing, :community_service
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
@@ -177,17 +177,9 @@ class User
   end
   
   def get_timestamp_format
-    @timestamp_format.blank? ? "^c%H:%M^n" : @timestamp_format
+    @timestamp_format.blank? ? "^c%H:%M" : @timestamp_format
   end
   
-  def default_timestamp_format?
-    @timestamp_format == "^c%H:%M^n"
-  end
-  
-  def default_timestamp_format
-    @timestamp_format = "^c%H:%M^n"
-  end
-
   def get_connect_message
     @connect_message || "connects"
   end
@@ -276,7 +268,7 @@ class User
     "#{RANK_COLOUR[rank]}#{name}^n"
   end
   
-    def examine
+  def examine
     buffer = "      First seen : #{first_seen}\n"
     if logged_in?
       buffer += "      Login time : #{time_in_words(login_time)}\n"
@@ -295,6 +287,10 @@ class User
     buffer += "        Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
     buffer += "          Drogna : #{money}\n"
     buffer
+  end
+
+  def items
+    @items ||= Items.new
   end
   
   def self.load(name)
