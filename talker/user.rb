@@ -290,16 +290,6 @@ class User
     buffer
   end
   
-  def settings
-    buffer = "     Title : #{name} #{title}\n"
-    buffer += "     Login : ^g>^G> ^n#{name} #{get_connect_message} ^G<^g<\n"
-    buffer += "Disconnect : ^R<^r< ^n#{name} #{get_disconnect_message} ^r>^R>\n"
-    buffer += " Reconnect : ^Y>^y< ^n#{name} #{get_reconnect_message} ^y>^Y<\n"
-    buffer += "    Prompt : #{get_prompt}\n"
-    buffer += "Timestamps : #{get_timestamp_format}\n" if show_timestamps
-    buffer
-  end
-
   def items
     @items ||= Items.new
   end

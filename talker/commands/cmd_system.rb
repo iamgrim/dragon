@@ -73,9 +73,15 @@ module Commands
   define_alias 'examine', 'finger', 'profile', 'x'
 
   define_command 'settings' do |target_name|
-    target = target_name.blank? ? self : find_entity(target_name)
+    target = target_name.blank? ? self : find_user(target_name)
     if target
-      output box_title("Settings for #{target.name}") + "\n" + box_text(target.settings) + "\n" + bottom_line
+      buffer = "     Title : #{name} #{title}\n"
+      buffer += "     Login : ^g>^G> ^n#{name} #{get_connect_message} ^G<^g<\n"
+      buffer += "Disconnect : ^R<^r< ^n#{name} #{get_disconnect_message} ^r>^R>\n"
+      buffer += " Reconnect : ^Y>^y< ^n#{name} #{get_reconnect_message} ^y>^Y<\n"
+      buffer += "    Prompt : #{get_prompt}\n"
+      buffer += "Timestamps : #{get_timestamp_format}\n" if show_timestamps
+      output (box_title("Settings for #{target.name}") + "\n" + box_text(buffer) + "\n" + bottom_line)
     end
   end
 
