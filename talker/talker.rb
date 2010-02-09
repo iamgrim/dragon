@@ -27,7 +27,7 @@ require 'talker/games/fishing'
 
 class Talker
   NAME    = 'Dragon World'
-  VERSION = '0.7.2'
+  VERSION = '0.7.3'
   
   include Singleton
   
