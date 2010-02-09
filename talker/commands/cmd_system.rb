@@ -63,7 +63,7 @@ module Commands
   end
 
   define_command 'time' do
-    output Time.now.strftime("Server time is %I:%M %p, %A %d %B %Y") + "\n\nTelnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old"
+    output box_title("Time") + "\n" + box_text(Time.now.strftime("Server time is %I:%M %p, %A %d %B %Y") + "\nTelnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old") + "\n" + bottom_line
   end
 
   define_command 'examine' do |target_name|
