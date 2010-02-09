@@ -25,22 +25,22 @@ module Commands
     output box_title("Multis") + "\n" + box_text(Multi.view) + "\n" + bottom_line
   end
 
-  define_command 'reset_password' do |target_name|
-    if developer?
-      if target_name.blank?
-        output "Format: reset_password <user name>"
-      else
-        u = find_user(target_name)
-        if u
-          u.crypted_password = "elZ0lon/B9mUI" # changeme
-          u.save
-          output "Password reset for #{u.name}."
-        end
-      end
-    else
-      output "No permission."
-    end
-  end
+#  define_command 'reset_password' do |target_name|
+#    if developer?
+#      if target_name.blank?
+#        output "Format: reset_password <user name>"
+#      else
+#        u = find_user(target_name)
+#        if u
+#          u.crypted_password = "elZ0lon/B9mUI" # changeme
+#          u.save
+#          output "Password reset for #{u.name}."
+#        end
+#      end
+#    else
+#      output "No permission."
+#    end
+#  end
 
   define_command 'show_changes', :invisible => true do
     if developer?
