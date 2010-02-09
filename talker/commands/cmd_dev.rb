@@ -22,7 +22,7 @@ module Commands
   end
   
   define_command 'multis', :invisible => true do
-    output box_title("Multis") + "\n" + Multi.view + "\n" + bottom_line
+    output box_title("Multis") + "\n" + box_text(Multi.view) + "\n" + bottom_line
   end
 
   define_command 'reset_password' do |target_name|
