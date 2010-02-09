@@ -10,6 +10,7 @@ class User
   attr_accessor :total_time
   attr_accessor :total_connections
   attr_accessor :colour
+  attr_accessor :timezone
 
   attr_accessor :prompt
   attr_accessor :title
@@ -84,7 +85,7 @@ class User
   end
 
   def developer?
-    ["thebear", "felix"].include?(lower_name)
+    ["thebear", "felix", "kapowaz"].include?(lower_name)
   end
 
   def complete_login(connection)
