@@ -221,8 +221,9 @@ class Talker
     end
     
     @connected_users.each do |name, u|
-      if u.active? && u.fishing
-        u.fishing.tick(u)
+      if u.active?
+        u.fishing.tick(u) if u.fishing
+        u.community_service.tick(u) if u.community_service
       end
     end
         

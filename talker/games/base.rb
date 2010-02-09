@@ -1,3 +1,42 @@
+class CommunityService
+  attr_accessor :completed_work, :required_work
+  attr_reader :colour, :location
+  
+  COLOURS = ['red', 'blue', 'pink', 'orange', 'green', 'gold', 'white', 'black', 'purple']
+  PAINT_LOCATION = ['fence', 'wall', 'ceiling']
+  
+  def initialize(mins)
+    @colour = COLOURS[rand(COLOURS.length)]
+    @location = PAINT_LOCATION[rand(PAINT_LOCATION.length)]
+    @required_work = rand(8) + 6
+    @completed_work = 0
+    @end_time = Time.now + (mins * 60)
+  end
+  
+  def perform_work
+    @completed_work += 1
+  end
+  
+  def completed?
+    @completed_work >= @required_work
+  end
+  
+  def tick(user)
+    if Time.now > @end_time && !completed?
+      user.community_service = nil
+      if user.money >= 100
+        user.money -= 100
+        user.output_to_all "^g\u{25ba}^n #{user.name} failed to complete their community service and has been fined 100\u{20ab}"
+        user.save
+      else
+        user.output_to_all "^g\u{25ba}^n #{user.name} failed to complete their community service and has been sent to prison"
+        user.save
+        user.disconnect
+      end
+    end
+  end
+end
+
 # encoding: utf-8
 module Commands
   define_command 'games' do
@@ -122,18 +161,58 @@ module Commands
           output_to_all "^g\u{25ba}^n #{cname} attempts to commit insurance fraud, and is imprisoned!"
           disconnect
         else
-	        r = rand(1 + amount)
+	        r = rand(2 + (amount / 10).round)
           if r < 1
             self.money += amount
             recipient.money -= amount
-            output_to_all "^g\u{25ba}^n #{cname} steals #{amount}\u{20ab} from #{recipient.cname}!"
+            output "You successfully stole #{amount}\u{20ab} from #{recipient.cname}!"
+            recipient.output "Your pocket feels lighter than before."
+#            output_to_all "^g\u{25ba}^n #{cname} steals #{amount}\u{20ab} from #{recipient.cname}!"
             save
             recipient.save
-          else 
-            output_to_all "^g\u{25ba}^n #{cname} attempts to steal from #{recipient.cname}, and is imprisoned!"
-            disconnect            	
+          else
+            if community_service.nil?
+              output_to_all "^g\u{25ba}^n #{cname} attempts to steal from #{recipient.cname}, and receives community service!"
+              self.community_service = CommunityService.new(1)
+              output "You have one minute to paint a #{community_service.required_work} metre #{community_service.location} #{community_service.colour}. Begin now."
+            else
+              output_to_all "^g\u{25ba}^n #{cname} attempts to steal from #{recipient.cname} while on community service, and is therefore sent to prison"
+              disconnect
+            end
           end
         end
+      end
+    end
+  end
+  
+  define_command 'paint' do |message|
+    (object_name, paint_colour) = get_arguments(message, 2)
+    if object_name.blank? || paint_colour.blank?
+      output "Format: paint <object> <colour>"
+    else
+      if CommunityService::PAINT_LOCATION.include?(object_name)
+        if community_service
+          if object_name == community_service.location
+            if paint_colour == community_service.colour
+              community_service.perform_work
+              if community_service.completed?
+                self.community_service = nil
+                self.save
+                output "You have successfully completed your community service."
+              else
+                output "You have completed #{community_service.completed_work} metres of the #{community_service.location}."
+              end
+            else
+              output "That is the wrong colour you fucking idiot, do you want to be sent to prison?"
+            end
+          else
+            output "You are supposed to be painting the #{community_service.location}, not the #{object_name}!"
+          end
+        else
+          output "You can't paint that right now."
+        end
+      else
+        output "What is that?"
       end
     end
   end
