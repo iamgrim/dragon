@@ -7,7 +7,7 @@ module Commands
       staff_at_rank = commas_and(all_users.values.select{|u| u.rank == rank}.map {|u| u.name})
       buffer += sprintf("#{User::RANK_COLOUR[rank]}%10.10s ^n: #{staff_at_rank}\n", User::RANK[rank])
     end
-    buffer += blank_line
+    buffer += bottom_line
     output buffer
   end
 

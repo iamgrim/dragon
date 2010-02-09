@@ -149,11 +149,15 @@ module TalkerUtilities
   end
   
   def title_line(text)
-    "^B\u{2500}\u{2500}|^Y#{text}^B|" + ("\u{2500}" * (75 - text.length)) + "^n"
+    "^B\u{250C}\u{2500}\u{2524} ^Y#{text} ^B\u{251C}" + ("\u{2500}" * (72 - text.length)) + "\u{2510}^n"
   end
   
   def blank_line
     "^B" + "\u{2500}" * 79 + "^n\n"
+  end
+  
+  def bottom_line
+    "^B\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
   end
   
   def get_arguments(string, num)

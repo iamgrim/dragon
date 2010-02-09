@@ -48,7 +48,7 @@ module Commands
     else
       buffer += "  There are no games in progress.\n"
     end
-    buffer += blank_line
+    buffer += bottom_line
     output buffer
   end
   

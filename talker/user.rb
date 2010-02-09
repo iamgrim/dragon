@@ -97,7 +97,7 @@ class User
     @muffled = false
     
     if resident?
-      output title_line("Recent Changes") + "\n" + get_text("changes") + "\n" + blank_line
+      output title_line("Recent Changes") + "\n" + get_text("changes") + "\n" + bottom_line
     else
       output get_text("welcome_newuser")
     end
@@ -271,21 +271,21 @@ class User
   def examine
     buffer = "      First seen : #{first_seen}\n"
     if logged_in?
-      buffer += "      Login time : #{time_in_words(login_time)}\n"
-      buffer += "       Idle time : #{time_in_words(idle_time)}\n"
-      buffer += "Total login time : #{time_in_words(total_time + login_time)}\n"
+      buffer += "       Login time : #{time_in_words(login_time)}\n"
+      buffer += "        Idle time : #{time_in_words(idle_time)}\n"
+      buffer += " Total login time : #{time_in_words(total_time + login_time)}\n"
     else
-      buffer += "Total login time : #{time_in_words(total_time)}\n"
+      buffer += " Total login time : #{time_in_words(total_time)}\n"
     end
-    buffer += "     Connections : #{total_connections}\n"
-    buffer += "            Rank : #{rank_name_with_colour}\n"
-    buffer += "       Real name : #{realname}^n\n" unless realname.blank?
-    buffer += "          Gender : #{gender_text.capitalize}\n"
-    buffer += "  Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
-    buffer += "        Location : #{location}^n\n" unless location.blank?
-    buffer += "      Occupation : #{occupation}^n\n" unless occupation.blank?
-    buffer += "        Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
-    buffer += "          Drogna : #{money}\n"
+    buffer += "      Connections : #{total_connections}\n"
+    buffer += "             Rank : #{rank_name_with_colour}\n"
+    buffer += "        Real name : #{realname}^n\n" unless realname.blank?
+    buffer += "           Gender : #{gender_text.capitalize}\n"
+    buffer += "   Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
+    buffer += "         Location : #{location}^n\n" unless location.blank?
+    buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
+    buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
+    buffer += "           Drogna : #{money}\n"
     buffer
   end
 

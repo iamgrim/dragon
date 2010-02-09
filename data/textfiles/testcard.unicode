@@ -1,0 +1,18 @@
+^B┌─┤ ^YTestcard ^B├─────┬───────────────────┬──────────────────┬───────────────────┐^n
+^B│^n Colour           ^B│^n       Dark        ^B│^n       Light      ^B│^n    Background     ^B│^n
+^B├──────────────────┼───────────────────┼──────────────────┼───────────────────┤^n
+^B│^n Yellow           ^B│^n        ^y^^y         ^B│^n        ^Y^^Y        ^B│^n^t^B        ^^t         ^n^B│^n
+^B│^n Red              ^B│^n        ^r^^r         ^B│^n        ^R^^R        ^B│^n^e^B        ^^e         ^n^B│^n
+^B│^n Cyan             ^B│^n        ^c^^c         ^B│^n        ^C^^C        ^B│^n^x^B        ^^x         ^n^B│^n
+^B│^n Purple           ^B│^n        ^p^^p         ^B│^n        ^P^^P        ^B│^n^o^B        ^^o         ^n^B│^n
+^B│^n Green            ^B│^n        ^g^^g         ^B│^n        ^G^^G        ^B│^n^f^B        ^^f         ^n^B│^n
+^B│^n Blue             ^B│^n        ^b^^b         ^B│^n        ^B^^B        ^B│^n^v^B        ^^v         ^n^B│^n
+^B│^n White/Grey       ^B│^n        ^w^^w         ^B│^n        ^W^^W        ^B│^n^q^B        ^^q         ^n^B│^n
+^B│^n Black            ^B│^n        ^d^^d         ^B│^n        ^D^^D        ^B│^n^s^B        ^^s         ^n^B│^n
+^B├──────────────────┼───────────────────┼──────────────────┼───────────────────┤^n
+^B│^n Random           ^B│^n        ^a^^a         ^B│^n        ^A^^A        ^B│^n                   ^B│^n
+^B├──────────────────┼───────────────────┼──────────────────┘^n                   ^B│^n
+^B│^n Underline        ^B│^n^u        ^^u         ^n^B│^n                                      ^B│^n
+^B│^n Bold             ^B│^n        ^L^^L         ^B│^n                                      ^B│^n
+^B│^n No colour        ^B│^n        ^n^^n         ^B│^n                                      ^B│^n
+^B└──────────────────┴───────────────────┴──────────────────────────────────────┘^n
