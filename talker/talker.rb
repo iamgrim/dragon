@@ -29,6 +29,8 @@ require 'talker/games/connectfour'
 class Talker
   NAME    = 'Dragon World'
   VERSION = '0.7.3'
+
+  LIVE = File.exist?('LIVE')
   
   include Singleton
   

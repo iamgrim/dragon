@@ -5,4 +5,5 @@ import/
 
 data/*.yml
 socket
+LIVE
 .DS_Store

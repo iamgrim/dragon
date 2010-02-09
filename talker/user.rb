@@ -85,7 +85,8 @@ class User
   end
 
   def developer?
-    ["thebear", "felix", "kapowaz"].include?(lower_name)
+    developers = Talker::LIVE ? ["thebear", "felix"] : ["thebear", "felix", "kapowaz", "zubbles", "sockeye"]
+    developers.include?(lower_name)
   end
 
   def complete_login(connection)
