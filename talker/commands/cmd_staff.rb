@@ -19,7 +19,7 @@ module Commands
     else
       promote!
       output "Thank you for the donation!"
-      output_to_all "^G-> ^n#{name} has been promoted to a #{rank_name_with_colour}"
+      output_to_all "^G\u{25ba} ^n#{name} has been promoted to a #{rank_name_with_colour}"
       save
     end
   end

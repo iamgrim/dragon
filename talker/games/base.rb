@@ -106,8 +106,8 @@ module Commands
         output "^Y          .-'''''-.\n        .'    |    `.\n       :   {-----}   :	        ^n^LYou flip the coin and you get:\n^Y      :   oo#####oo   :\n      :   o ##### o   :        ^R T A I L S\n ^Y      :  o ##### o  :\n        `.         .'\n          `-.....-'^n\n"
       else
         output "^Y       ___\n     .    .. 			^n^LYou flip the coin and it lands\n^Y    .  ;   ..	      	^P        on its edge.\n ^Y   .   ;  ..\n^r ..__^Y.^r____^Y..^r__..^n\n"
-        output_to_all "^G->^n #{name} has been Joe Palookered! The coin landed on its edge!"
-        output_to_all "^G->^n #{name} won 1,000,000 drogna"
+        output_to_all "^G\u{25ba}^n #{name} has been Joe Palookered! The coin landed on its edge!"
+        output_to_all "^G\u{25ba}^n #{name} won 1,000,000 drogna"
         self.money = money + 1000000
         save
       end
@@ -139,7 +139,7 @@ module Commands
         else
           self.money -= amount
           recipient.money += amount
-          output_to_all "^g->^n #{cname} has just given #{recipient.cname} #{amount} drogna!"
+          output_to_all "^g\u{25ba}^n #{cname} has just given #{recipient.cname} #{amount} drogna!"
           save
           recipient.save
         end

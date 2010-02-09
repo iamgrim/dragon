@@ -139,7 +139,7 @@ module Commands
               output "Sorry, that user is already playing a game of Connect Four."
             else
               game = ConnectFour.new(self, opponent)
-              opponent.output "^G-> ^n#{name} has challenged you to a game of Connect Four\n^LType 'c4 accept' or 'c4 decline'.^n"
+              opponent.output "^G\u{25ba} ^n#{name} has challenged you to a game of Connect Four\n^LType 'c4 accept' or 'c4 decline'.^n"
               output Textfile.get_text("rules_cfour") + "\nYou challenge #{opponent.name} to a game of Connect Four."
             end
           end

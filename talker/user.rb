@@ -139,7 +139,7 @@ class User
       save
       if !was_resident
         output "Thank you for setting a password. Your name is now reserved for future visits."
-        output_to_all "^G-> ^n#{name} becomes a saved user!"
+        output_to_all "^G\u{25ba} ^n#{name} becomes a saved user!"
       else
         output "Password Changed."
       end
