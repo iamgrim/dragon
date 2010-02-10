@@ -70,7 +70,7 @@ module Commands
   
   define_command 'buy' do |item_name|
     if item_name.blank?
-      output title_line("Dragon Worlde Shope") + "\n" + Items::SHOP.map {|item| "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n") + "\n" + blank_line
+      output box_title("Dragon Worlde Shope") + "\n" + box_text(Items::SHOP.map {|item| "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n")) + "\n" + bottom_line
     elsif item_to_buy = Items::SHOP.find(item_name)
       if purchased_item = item_to_buy.purchase_by(self)
         self.items.add(purchased_item)

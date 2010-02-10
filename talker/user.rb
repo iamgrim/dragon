@@ -280,7 +280,14 @@ class User
     buffer += "      Connections : #{total_connections}\n"
     buffer += "             Rank : #{rank_name_with_colour}\n"
     buffer += "        Real name : #{realname}^n\n" unless realname.blank?
-    buffer += "           Gender : #{gender_text.capitalize}\n"
+    
+    gender_symbol = case gender
+      when :male then "\u{2642}"
+      when :female then "\u{2640}"
+      else "None"
+    end
+    
+    buffer += "           Gender : #{gender_symbol}\n"
     buffer += "   Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
     buffer += "         Location : #{location}^n\n" unless location.blank?
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?

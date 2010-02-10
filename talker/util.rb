@@ -211,6 +211,8 @@ module TalkerUtilities
     "\u{2518}" => " ",   # box up and left
     "\u{2524}" => "/",   # box vertical and left
     "\u{251c}" => "\\",  # box vertical and right
+    "\u{2640}" => "(F)", # female gender symbol
+    "\u{2642}" => "(M)", # male gender symbol
     "\u{2550}" => "=",   # box double horizontal line
     "\u{255e}" => "|",   # box vertical single and right double
     "\u{256a}" => "|",   # box vertical singe and horizontal double
