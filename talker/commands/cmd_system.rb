@@ -17,6 +17,10 @@ module Commands
   define_command 'pine' do 
     output Textfile.get_text "pine"
   end
+  
+  define_command 'bofh' do
+    output Textfile.get_text "bofh"
+  end
 
   define_command 'rules' do |name|
     if name.blank?

@@ -1,0 +1,21 @@
+                      ^hBASTARD OPERATION CONTROL CENTRE^n
+
+ ┌───────────────────────────────────────────────────────────────────────────┐
+ │ ┌──Kill─User──┐       ┌─Change-User-Password─┐                            │
+ │ │^h             ^n│       │^h                      ^n│                            │
+ │ └─────────────┘       └──────────────────────┘                            │
+ │ ┌─────────────────Remove─Files─From─────────────────┐                     │
+ │ │ ^W/users/home^n                                       │                     │
+ │ └───────────────────────────────────────────────────┘                     │
+ │                                                                           │
+ │ ^hDaily Search Output^n                                                       │
+ │                                                                           │
+ │ ┌─Interesting─User─Email────────────────────────────User: ^Wsysmgr^n ───────┐ │
+ │ │ fact I don’t care what ^WSimon^n says, I will authorize you ^Waccess^n to     │ │
+ │ │ the ^W^uComputer Room^n myself.                                             │ │
+ │ │ I doubt that ^WSimon^n will even know that it has happened..              │ │
+ │ └───────────────────────────────────────────────────────────────────────┘ │
+ └───────────────────────────────────────────────────────────────────────────┘
+F1 - rm -r /users/home/*                   F2 - Crash Routers & Netware Server
+F3 - Fake Mail from User                   F4 - Connect to Telephone Admin
+F5 - grep user-mail directory              F6 - Revoke User’s Site Access
