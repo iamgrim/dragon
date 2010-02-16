@@ -101,8 +101,8 @@ module Commands
     output box_title("Connections") + "\n" +
       connected_users.values.map { |u| 
         c = u.active? ? "^G+" : "^W@"
-        hostname = Socket.getaddrinfo(u.ip_address,nil)[0][2]
-        sprintf("^B\u{2502}^n #{c}^n %-15.15s %-9.9s ^c%47.47s ^B\u{2502}^n", u.name, short_time(u.login_time), "#{hostname} (#{u.ip_address})") }.join("\n") + "\n" + 
+        #hostname = Socket.getaddrinfo(u.ip_address,nil)[0][2]
+        sprintf("^B\u{2502}^n #{c}^n %-15.15s %-9.9s ^c%47.47s ^B\u{2502}^n", u.name, short_time(u.idle_time), "Connected from #{u.ip_address} for #{short_time(u.login_time)}") }.join("\n") + "\n" + 
       bottom_line
   end
   define_alias 'connections', 'connected', 'lsi'
