@@ -47,6 +47,10 @@ class ConnectFour < Game
     super(user, 'ConnectFour')
   end
   
+  def challenger
+    @players.first
+  end
+  
   def description
     "#{@players[0].name} and #{@players[1].name} are playing Connect Four"
   end
