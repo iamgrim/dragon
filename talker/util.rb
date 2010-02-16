@@ -192,6 +192,7 @@ module TalkerUtilities
   end
 
   UNICODE_FALLBACKS = {
+    
     "\u{00a3}" => "#",   # pound
     "\u{20ac}" => "E",    # euro
     "\u{2013}" => "-",   # en dash
@@ -204,6 +205,7 @@ module TalkerUtilities
     "\u{20ab}" => "d",   # drogna
     "\u{2591}" => "-",   # bsh grass
     "\u{25cf}" => "*",   # black circle
+    "\u{25e6}" => "o",   # empty circle
     "\u{263c}" => "=",   # crater
     "\u{00d7}" => "X",   # multiply
     "\u{25ba}" => "->",  # solid arrow right

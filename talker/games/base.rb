@@ -46,7 +46,7 @@ module Commands
         buffer += sprintf("^B\u{2502}^n ^W\u{25CF}^n %-73.73s ^B\u{2502}^n", game.description) + "\n"
       end
     else
-      buffer += sprintf("^B\u{2502}^n  %-75.75s ^B\u{2502}^n", "There are no games in progress.") + "\n"
+      buffer += sprintf("^B\u{2502}^n  %-74.74s ^B\u{2502}^n", "There are no games in progress.") + "\n"
     end
     buffer += bottom_line
     output buffer
