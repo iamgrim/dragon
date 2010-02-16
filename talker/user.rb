@@ -85,7 +85,8 @@ class User
   end
 
   def developer?
-    ["thebear", "felix", "kapowaz"].include?(lower_name)
+    developers = Talker::LIVE ? ["thebear", "felix"] : ["thebear", "felix", "kapowaz", "zubbles", "sockeye"]
+    developers.include?(lower_name)
   end
 
   def complete_login(connection)
@@ -97,7 +98,7 @@ class User
     @muffled = false
     
     if resident?
-      output box_title("Recent Changes") + "\n" + box_textfile("changes") + "\n" + bottom_line
+      output box_title("Recent Changes") + "\n" + box_text(get_text "changes") + "\n" + bottom_line
     else
       output get_text("welcome_newuser")
     end
@@ -296,16 +297,6 @@ class User
     buffer
   end
   
-  def settings
-    buffer = "     Title : #{name} #{title}\n"
-    buffer += "     Login : ^g>^G> ^n#{name} #{get_connect_message} ^G<^g<\n"
-    buffer += "Disconnect : ^R<^r< ^n#{name} #{get_disconnect_message} ^r>^R>\n"
-    buffer += " Reconnect : ^Y>^y< ^n#{name} #{get_reconnect_message} ^y>^Y<\n"
-    buffer += "    Prompt : #{get_prompt}\n"
-    buffer += "Timestamps : #{get_timestamp_format}\n" if show_timestamps
-    buffer
-  end
-
   def items
     @items ||= Items.new
   end

@@ -24,11 +24,13 @@ require 'talker/games/game'
 require 'talker/games/base'
 require 'talker/games/bsheep'
 require 'talker/games/fishing'
-require 'talker/games/connectfour'
+#require 'talker/games/connectfour'
 
 class Talker
   NAME    = 'Dragon World'
   VERSION = '0.7.3'
+
+  LIVE = File.exist?('LIVE')
   
   include Singleton
   

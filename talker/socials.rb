@@ -160,7 +160,7 @@ class Social
 
     lower_name = name.downcase
     social = @socials[lower_name] = Social.new(lower_name, s['creator'] || "", s['nt-u'] || "", s['ut-u'] || "")
-    Commands.add_command(lower_name, social)
+    Commands.add_command(lower_name, social) unless Commands.lookup(lower_name)
     social
   end
   
@@ -182,5 +182,73 @@ class Social
   
   def self.socials_by(u)
     @socials.values.select{|s|s.creator == u.lower_name}
+  end
+end
+
+module Commands
+  define_command 'social pull' do |social_name|
+    if social_name.blank?
+      output "Format: social pull <social name>"
+    elsif valid_name?(social_name, :allow_bad_words => true)
+      social_name.downcase!
+      buffer = ""
+      creator = ""
+      begin
+      result = open("http://wooooooooooooooy.com/socials/#{social_name}.txt") do |f|
+        f.each_line do |line|
+          buffer += line
+          if line =~ /^creator/
+            (token, value) = line.split(':', 2)
+            creator = value.strip.downcase
+          end
+        end
+      end
+      rescue Exception => e
+        if e.class == OpenURI::HTTPError && e.io.status[0] == "404"
+          output "'#{social_name}' isn't on wooooooooooooooy.com."
+        else
+          debug_message "#{name} failed to pull social '#{social_name}': #{e}"
+          output "Sorry, an error occurred when trying to pull the social. Please try again later."
+        end
+      else
+        if creator != lower_name
+          output "Sorry, only the creator can pull the social."
+        else
+          update = Social.socials.has_key?(social_name)
+
+          File.open("import/socials/#{social_name}", "w") do |file|
+            file.puts buffer
+          end
+          Social.import("import/socials/#{social_name}")
+          if update
+            debug_message "Social '#{social_name}' updated by #{name}"
+            output "The social has been updated."
+          else
+            output_to_all "^Y\u{25ba}^n #{cname} creates the ^L#{social_name}^n social"
+          end
+        end
+      end
+    end
+  end
+
+  define_command 'social liquidate' do |social_name|
+    if social_name.blank?
+      output "Format: social liquidate <social name>"
+    elsif social = find_social(social_name)
+      if !social.created_by?(self)
+        output "You need a full controlling share to liquidate the asset."
+      else
+        output "You have liquidated the social '#{social.name}'"
+        social.delete
+      end
+    end
+  end
+
+  define_command 'socials' do |user_name|
+    if user_name.blank?
+      output box_title("Socials") + "\n" + box_text(Social.names.join(", ").wrap(76)) + "\n" + bottom_line
+    elsif user = find_user(user_name)
+      output box_title("Socials Owned By #{user.name}") + "\n" + box_text(Social.socials_by(user).map{|s| s.name}.join(", ").wrap(76)) + "\n" + bottom_line
+    end
   end
 end
