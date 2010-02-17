@@ -177,11 +177,11 @@ class ConnectFour < Game
     i = 6
     data[:board].reverse.each do |line| 
       if i == 4
-        buffer += sprintf(" #{render_line(line)}  ^G%-2.2s^n %-15.15s #{(@players[0].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[0]) ? "\u{25ba}" : '', @players[0].name)
+        buffer += sprintf("^v #{render_line(line)}^v ^n  ^G%-2.2s^n %-15.15s #{(@players[0].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[0]) ? "\u{25ba}" : '', @players[0].name)
       elsif i == 3
-        buffer += sprintf(" #{render_line(line)}  ^G%-2.2s^n %-15.15s #{(@players[1].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[1]) ? "\u{25ba}" : '', @players[1].name)
+        buffer += sprintf("^v #{render_line(line)}^v ^n  ^G%-2.2s^n %-15.15s #{(@players[1].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[1]) ? "\u{25ba}" : '', @players[1].name)
       else
-        buffer += " #{render_line(line)}\n"
+        buffer += "^v #{render_line(line)}^v ^n\n"
       end
       i -= 1
     end
@@ -285,8 +285,10 @@ module Commands
                 game.destroy
               else
                 game.players.each { |player| player.output game.board }
-                player.output "You place your piece in column #{message.upcase}"
-                opponent.output "#{player.name} places a piece in column #{message.upcase}"
+                u = find_connected_user(player.name)
+                o = find_connected_user(opponent.name)
+                player.output "#{u.get_timestamp}You place your piece in column #{message.upcase}"
+                opponent.output "#{o.get_timestamp + player.name} places a piece in column #{message.upcase}"
               end
             end
           end
