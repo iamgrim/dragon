@@ -254,7 +254,7 @@ module Commands
           output game.board + (game.turn?(player) ? "It is your turn." : "It is #{opponent.name}'s turn.")
         else
           column = game.get_move(message)
-          if column.nil?
+          if column.nil? or message.length > 1
             output "You must specify a column to place your piece in, from A to G."
           else
             if game.columnfull?(column)
