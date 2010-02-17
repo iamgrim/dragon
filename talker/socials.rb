@@ -211,7 +211,7 @@ module Commands
           output "Sorry, an error occurred when trying to pull the social. Please try again later."
         end
       else
-        if creator != lower_name
+        if Talker::LIVE and creator != lower_name
           output "Sorry, only the creator can pull the social."
         else
           update = Social.socials.has_key?(social_name)
