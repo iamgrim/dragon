@@ -251,4 +251,7 @@ module Commands
       output box_title("Socials Owned By #{user.name}") + "\n" + box_text(Social.socials_by(user).map{|s| s.name}.join(", ").wrap(76)) + "\n" + bottom_line
     end
   end
+  
+  define_alias 'sing', ')'
+  define_alias 'think', '~'
 end
