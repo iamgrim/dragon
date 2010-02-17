@@ -72,7 +72,7 @@ module Commands
 
   define_command 'examine' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output (box_title("#{target.class.name} #{target.name}") + "\n" + box_text(target.examine) + "\n" + bottom_line) if target
+    output (box_title("#{target.class.name} #{target.name}") + "\n" + box_text(encode_string(target.examine, charset)) + "\n" + bottom_line) if target
   end
   define_alias 'examine', 'finger', 'profile', 'x'
 
@@ -91,7 +91,7 @@ module Commands
 
   define_command 'who' do
     output box_title("Who") + "\n" +
-      active_users.map { |u| sprintf("^B\u{2502}^n %15.15s %-59.59s ^B\u{2502}^n", u.name, u.title) }.join("\n") + "\n" + 
+      active_users.map { |u| box_text(sprintf("%15.15s %-60.60s", u.name, "#{u.title}^n")) }.join("\n") + "\n" + 
       bottom_line
   end
   define_alias 'who', 'w'
