@@ -72,7 +72,7 @@ module Commands
 
   define_command 'examine' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output (box_title("#{target.class.name} #{target.name}") + "\n" + box_text(target.examine) + "\n" + bottom_line) if target
+    output (box_title("#{target.class.name} #{target.name}") + "\n" + box_text(encode_string(target.examine, charset)) + "\n" + bottom_line) if target
   end
   define_alias 'examine', 'finger', 'profile', 'x'
 
