@@ -22,6 +22,12 @@ module TalkerUtilities
       output "The name can only contain letters of the alphabet and numbers."
       return false
     end
+    
+    if name == "merlin"
+      output "That name is reserved for Chad Tallent. If you are Chad then please send a message to http://twitter.com/dragonworldtalk from your Twitter account to authenticate yourself."
+      return false
+    end
+    
     unless options[:allow_bad_words]
       if %w{admin all announce bank bollocks cunt connect directed everyone everybody foreskin fuck game games item newbie newbies object public private settext shit social socials you wank }.include?(name.downcase)
         output "Sorry, that name can not be used."
