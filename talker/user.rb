@@ -182,7 +182,7 @@ class User
   end
   
   def get_timestamp
-    @show_timestamps ? Time.now.strftime(get_timestamp_format) + '^n ^n' : ''
+    @show_timestamps ? Time.now.strftime(get_timestamp_format) + '^n ' : ''
   end
   
   def get_timezone
