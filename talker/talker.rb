@@ -30,6 +30,8 @@ class Talker
   NAME    = 'Dragon World'
   VERSION = '0.7.3'
   
+  LIVE = File.exist?('LIVE')
+  
   include Singleton
   
   attr_accessor :connected_users, :all_users, :output, :connections,
