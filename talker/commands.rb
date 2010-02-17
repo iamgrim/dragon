@@ -35,13 +35,13 @@ class Command
 end
 
 class Alias
-  def initialize(name, command)
+  def initialize(name, text)
     @name = name
-    @command = command
+    @text = text
   end
   
   def execute(user, body)
-    @command.execute(user, body)
+    user.handle_input("#{@text}#{body.blank? ? '' : ' ' + body}")
   end
 end
 
@@ -69,9 +69,9 @@ module Commands
     end
   end
 
-  def self.define_alias(command_name, *alias_names)
+  def self.define_alias(alias_text, *alias_names)
     alias_names.each do |alias_name|
-      @command_list[alias_name] = Alias.new(alias_name, @command_list[command_name])
+      @command_list[alias_name] = Alias.new(alias_name, alias_text)
     end
   end
     
