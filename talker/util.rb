@@ -23,7 +23,7 @@ module TalkerUtilities
       return false
     end
     
-    if name == "merlin"
+    if name.downcase == "merlin"
       output "That name is reserved for Chad Tallent. If you are Chad then please send a message to http://twitter.com/dragonworldtalk from your Twitter account to authenticate yourself."
       return false
     end
