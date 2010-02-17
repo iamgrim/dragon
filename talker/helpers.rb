@@ -13,7 +13,7 @@ module Helpers
   def channel_output(message)
     connected_users.values.each do |u| 
       unless u.muffled 
-        u.output "#{u.get_timestamp + message}"
+        u.output "#{u.get_timestamp}#{message}"
       end
     end
     talker_history.add message
@@ -110,7 +110,7 @@ module Helpers
   
   def output_with_history(message)
     history.add(message) # add to the users personal history buffer
-    output "#{get_timestamp + message}"
+    output "#{get_timestamp}#{message}"
   end
   
   def output(message)

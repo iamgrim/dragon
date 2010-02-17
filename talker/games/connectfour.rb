@@ -288,7 +288,7 @@ module Commands
                 u = find_connected_user(player.name)
                 o = find_connected_user(opponent.name)
                 player.output "#{u.get_timestamp}You place your piece in column #{message.upcase}"
-                opponent.output "#{o.get_timestamp + player.name} places a piece in column #{message.upcase}"
+                opponent.output "#{o.get_timestamp}#{player.name} places a piece in column #{message.upcase}"
               end
             end
           end
