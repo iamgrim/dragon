@@ -88,7 +88,7 @@ module TalkerUtilities
       when :ansi
         colours     = ANSI_COLOURS
       else
-        colours     = {}
+        colours     = {'^' => '^'}
       end
   
       stored_string  = ""
