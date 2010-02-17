@@ -204,6 +204,8 @@ module Commands
       output "Your character set is currently ^L#{charset}^n.\nFormat: charset [unicode|ascii]"
     end
   end
+  define_alias 'charset unicode', 'unicode', 'utf8'
+  define_alias 'charset ascii', 'ascii'
   
   define_command 'timestamps' do |message|
     if message == "on"
