@@ -181,6 +181,14 @@ class User
     @timestamp_format.blank? ? "^c%H:%M" : @timestamp_format
   end
   
+  def get_timestamp
+    @show_timestamps ? Time.now.strftime(@timestamp_format) + '^n ^n' : ''
+  end
+  
+  def get_timezone
+    @timezone || TZInfo::Timezone.get("Europe/London")
+  end
+  
   def get_connect_message
     @connect_message || "connects"
   end
