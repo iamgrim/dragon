@@ -91,7 +91,7 @@ module Commands
 
   define_command 'who' do
     output box_title("Who") + "\n" +
-      active_users.map { |u| box_text(sprintf("%15.15s %-61.61s", u.name, "#{u.title}^n")) }.join("\n") + "\n" + 
+      active_users.map { |u| box_text(sprintf("%15.15s %-60.60s", u.name, "#{u.title}^n")) }.join("\n") + "\n" + 
       bottom_line
   end
   define_alias 'who', 'w'
