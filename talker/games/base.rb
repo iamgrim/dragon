@@ -216,4 +216,33 @@ module Commands
       end
     end
   end
+  
+#  define_command 'arson' do
+#    Talker.instance.start_fire
+#    output "You bad person, look what you did"
+#  end
+  
+  define_command 'hose' do |command_name|
+    if command_name.blank?
+      output "Format: hose <command name>"
+    else
+      if Talker.instance.on_fire.has_key?(command_name)
+        case rand(5)
+        when 0
+          Talker.instance.on_fire.delete(command_name)
+          output_to_all "^C\u{25ba}^n #{name} has put out #{command_name}, receiving a 10\u{20ab} reward"
+        when 1
+          output "You have reduced the heat but the fire is still burning."
+        when 2
+          output "This fire is particularly obstreperous, keep trying."
+        when 3
+          output "The fire appeared to go out but then it came back again."
+        else
+          output "You have not managed to put that out, keep trying."
+        end
+      else
+        output "#{command_name} is not on fire."
+      end
+    end
+  end
 end

@@ -217,7 +217,12 @@ module Commands
         elsif result < 18 # 16 17
           output "You failed to cast. Loosen your wrist and try again."        
         elsif result < 19 # 18
-          output "You failed to cast because the line got caught on a pylon. Please try again."        
+          if rand(250) == 125 # 1 in 5000 chance (1/20 * 1/250)
+            output "You failed to cast because the line got caught on a pylon and started a fire!"
+            Talker.instance.start_fire
+          else
+            output "You failed to cast because the line got caught on a pylon. Please try again."
+          end
         else # 19
           fishing.baitbox.deplete(bait.name)
           fishing.cast = false

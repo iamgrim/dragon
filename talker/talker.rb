@@ -37,7 +37,7 @@ class Talker
   attr_accessor :connected_users, :all_users, :output, :connections,
                 :talk_server_uptime, :connection_server_uptime, :shutdown,
                 :history
-  attr_reader :current_id
+  attr_reader :current_id, :on_fire
   
   def initialize
     @connections = {}
@@ -48,6 +48,7 @@ class Talker
     @talk_server_uptime = Time.now
     @shutdown = false
     @history = History.new
+    @on_fire = {}
   end
   
   def run
@@ -229,8 +230,22 @@ class Talker
         u.community_service.tick(u) if u.community_service
       end
     end
-        
+
+    if !@on_fire.empty?
+      grow_fire
+      @connected_users.each do |name, u|
+        u.output "^R\u{25ba}^n Dragon World is on fire! #{@on_fire.length} commands are ablaze!"
+      end
+    end
     schedule_tick
   end
   
+  def start_fire
+    10.times {grow_fire}
+  end
+  
+  def grow_fire
+    new_fire = Commands.names[rand(Commands.names.length)]
+    @on_fire[new_fire] = true unless new_fire == "hose"
+  end
 end

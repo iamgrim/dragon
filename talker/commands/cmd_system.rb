@@ -3,7 +3,7 @@ module Commands
   require 'socket'
   
   define_command 'commands' do
-    output box_title("Commands") + "\n" + box_text(Commands.names.join(", ").wrap(76)) + "\n" + bottom_line
+    output box_title("Commands") + "\n" + box_text(Commands.names.map{|c|Talker.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76)) + "\n" + bottom_line
   end
 
   define_command 'changes' do 
