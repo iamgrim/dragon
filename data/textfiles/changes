@@ -1,3 +1,4 @@
- • Connect 4
- • Saying cheese no longer boots you from the talker
- • Boxes arrived at the dockyard and were distributed around the realm
+ • User defined aliases.
+   ^Lalias^n   - define an alias
+   ^Lunalias^n - remove an alias
+   ^Laliases^n - list your aliases, or those of another user

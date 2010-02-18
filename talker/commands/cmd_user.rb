@@ -222,5 +222,32 @@ module Commands
     buffer += "\nFormat: timestamps [on|off|format <string>]" if message.blank?
     output buffer
   end
-      
+  
+  define_command 'alias' do |message|
+    (alias_name, alias_text) = get_arguments(message, 2)
+    if alias_name.blank? || alias_text.blank?
+      output "Format: alias <name> <text>"
+    else
+      self.aliases[alias_name] = Alias.new(alias_name, alias_text)
+      output "Alias defined."
+    end
+  end
+
+  define_command 'unalias' do |alias_name|
+    if alias_name.blank?
+      output "Format: unalias <name>"
+    else
+      if aliases.has_key?(alias_name)
+        self.aliases.delete(alias_name)
+        output "Alias removed."
+      else
+        output "You don't have an alias called '#{alias_name}' to remove."
+      end
+    end
+  end
+  
+  define_command 'aliases' do |target_name|
+    target = target_name.blank? ? self : find_entity(target_name)
+    output (title_line("#{target.name} Aliases") + "\n" + target.aliases.values.map {|a|"^L#{a.name}^n #{a.text}^n"}.join("\n") + "\n" + blank_line) if target
+  end
 end

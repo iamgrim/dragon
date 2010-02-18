@@ -35,13 +35,21 @@ class Command
 end
 
 class Alias
+  attr_reader :name, :text
   def initialize(name, text)
     @name = name
     @text = text
   end
   
   def execute(user, body)
-    user.handle_input("#{@text}#{body.blank? ? '' : ' ' + body}")
+    out = @text
+    if out =~ /%[0-9]/
+      subs = [body] + body.split
+      out = out.gsub(/%([0-9])/) {|s|subs[$1.to_i] || ""}
+    else
+      out = "#{out}#{body.blank? ? '' : ' ' + body}"
+    end
+    user.handle_input(out)
   end
 end
 

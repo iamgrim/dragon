@@ -58,6 +58,10 @@ class User
     @history ||= History.new
   end
 
+  def aliases
+    @aliases ||= Hash.new
+  end
+
   def password=(password)
     @password = password.crypt("el")
   end
@@ -214,8 +218,9 @@ class User
         @idle_message = nil
 
         (command_name, body) = split_input(input_string)
-    
-        command = find_command(command_name.downcase)
+
+        command = find_with_partial_matching(aliases, command_name, :silent => true)
+        command = find_command(command_name.downcase) if command.nil?
         if command
           command.execute(self, (body || "").gsub(/(\^+)$/, '').strip)
         end
