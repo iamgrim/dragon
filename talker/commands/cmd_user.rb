@@ -14,7 +14,7 @@ module Commands
       self.title = ""
       output "You now have no title"
     else
-      self.title = message.slice(0, 60)
+      self.title = message
       output "Your title is now:\n#{name} #{title}^n"
     end
     save

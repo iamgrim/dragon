@@ -90,8 +90,9 @@ module Commands
   end
 
   define_command 'who' do
+    len = active_users.map {|u|u.name.length}.max
     output box_title("Who") + "\n" +
-      active_users.map { |u| box_text(sprintf("%15.15s %-60.60s", u.name, "#{u.title}^n")) }.join("\n") + "\n" + 
+      active_users.map { |u| box_text(sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{u.title}^n")) }.join("\n") + "\n" + 
       bottom_line
   end
   define_alias 'who', 'w'
