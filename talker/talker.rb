@@ -35,9 +35,8 @@ class Talker
   include Singleton
   
   attr_accessor :connected_users, :all_users, :output, :connections,
-                :talk_server_uptime, :connection_server_uptime, :shutdown,
-                :history
-  attr_reader :current_id, :on_fire
+                :talk_server_uptime, :connection_server_uptime, :shutdown
+  attr_reader :current_id
   
   def initialize
     @connections = {}
@@ -47,8 +46,7 @@ class Talker
     @connection_server_uptime = nil
     @talk_server_uptime = Time.now
     @shutdown = false
-    @history = History.new
-    @on_fire = {}
+    @attributes = {}
   end
   
   def run
@@ -60,7 +58,7 @@ class Talker
     Fishing.load
     
     load_connections
-    load_history
+    load_attributes
     @connections.values.each do |c|
       if c.logged_in?
         u = find_or_add_user(c.user_name)
@@ -156,9 +154,9 @@ class Talker
     end
   end
 
-  def save_history
-    f = File.new("data/history.yml", "w")
-    f.puts YAML.dump(@history)
+  def save_attributes
+    f = File.new("data/talker.yml", "w")
+    f.puts YAML.dump(@attributes)
     f.close
   end
 
@@ -166,7 +164,7 @@ class Talker
     $stderr.puts "#{Time.now} [saving]"
     save_connections
     save_connected_users
-    save_history
+    save_attributes
     Game.save
     Fishing.save
   end
@@ -182,18 +180,28 @@ class Talker
     $stderr.puts "#{Time.now} [loaded #{@connections.keys.length} connections]"
   end
 
-  def load_history
-    if FileTest.exist?("data/history.yml") 
-      f = File.new("data/history.yml", "r")
-      @history = YAML.load(f.read)
+  def load_attributes
+    if FileTest.exist?("data/talker.yml") 
+      f = File.new("data/talker.yml", "r")
+      @attributes = YAML.load(f.read)
       f.close
     end
+    @attributes[:history] ||= History.new
+    @attributes[:on_fire] ||= Hash.new
   end
 
   def debug_message(message)
     @connected_users.values.select {|u|u.debug}.each { |u| u.output "^g[debug] #{message}^n" }
   end  
   
+  def method_missing(method_sym, *arguments, &block)
+    if @attributes.has_key?(method_sym)
+      @attributes[method_sym]
+    else
+      super
+    end
+  end
+
   def start_heartbeat
     # make sure that the tick is executed on a time rounded to 10 seconds
     @next_tick = Time.at((Time.now.to_i / 10) * 10)
@@ -231,10 +239,10 @@ class Talker
       end
     end
 
-    if !@on_fire.empty?
+    if !@attributes[:on_fire].empty?
       grow_fire
       @connected_users.each do |name, u|
-        u.output "^R\u{25ba}^n Dragon World is on fire! #{@on_fire.length} commands are ablaze!"
+        u.output "^R\u{25ba}^n Dragon World is on fire! #{@attributes[:on_fire].length} commands are ablaze!"
       end
     end
     schedule_tick
@@ -246,6 +254,6 @@ class Talker
   
   def grow_fire
     new_fire = Commands.names[rand(Commands.names.length)]
-    @on_fire[new_fire] = true unless new_fire == "hose"
+    @attributes[:on_fire][new_fire] = true unless new_fire == "hose"
   end
 end
