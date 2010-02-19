@@ -248,7 +248,8 @@ module Commands
   
   define_command 'aliases' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output (box_title("#{target.name} Aliases") + "\n" + box_text(target.aliases.values.map {|a|"^L#{a.name}^n #{a.text}^n"}.join("\n")) + "\n" + bottom_line) if target
+    output (box_title("Aliases for #{target.name}") + "\n" + box_text(target.aliases.values.map {|a|"^L#{a.name}^n #{a.text}^n"}.join("\n")) + "\n" + bottom_line) if target
   end
   
+
 end
