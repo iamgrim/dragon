@@ -222,7 +222,7 @@ module Commands
     buffer += "\nFormat: timestamps [on|off|format <string>]" if message.blank?
     output buffer
   end
-  
+
   define_command 'alias' do |message|
     (alias_name, alias_text) = get_arguments(message, 2)
     if alias_name.blank? || alias_text.blank?
@@ -248,6 +248,7 @@ module Commands
   
   define_command 'aliases' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output (title_line("#{target.name} Aliases") + "\n" + target.aliases.values.map {|a|"^L#{a.name}^n #{a.text}^n"}.join("\n") + "\n" + blank_line) if target
+    output (box_title("#{target.name} Aliases") + "\n" + box_text(target.aliases.values.map {|a|"^L#{a.name}^n #{a.text}^n"}.join("\n")) + "\n" + bottom_line) if target
   end
+  
 end
