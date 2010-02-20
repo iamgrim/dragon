@@ -193,7 +193,7 @@ module Commands
               output "Sorry, that user is already playing a game of Battlesheep."
             else
               game = Battlesheep.new(self, opponent)
-              opponent.output "^G\u{25ba} ^n#{name} has challenged you to a game of Battlesheep\n^LType 'bsh accept' or 'bsh decline'.^n"
+              opponent.output "^G\u{2192} ^n#{name} has challenged you to a game of Battlesheep\n^LType 'bsh accept' or 'bsh decline'.^n"
               output Textfile.get_text("rules_bships") + "\nYou challenge #{opponent.name} to a game of Battlesheep."
             end
           end
@@ -239,7 +239,7 @@ module Commands
                 output p.board(opp)
                 opp.output opp.postboard(p)
                 pay_out = opp.pay_out
-                output_to_all "^g\u{25ba}^n #{p.name} beats #{opp.name} at Battlesheep, winning #{pay_out}\u{20ab}!"
+                output_to_all "^g\u{2192}^n #{p.name} beats #{opp.name} at Battlesheep, winning #{pay_out}\u{20ab}!"
                 self.money += pay_out
                 save
                 game.destroy
@@ -346,7 +346,7 @@ module Commands
         output "You can't cheat before you've started playing!"
       else
         opp = game.find_opponent(p)
-        output_to_all "^g\u{25ba}^n #{p.name} just tried to cheat at Battle Sheep! #{opp.name} wins!"
+        output_to_all "^g\u{2192}^n #{p.name} just tried to cheat at Battle Sheep! #{opp.name} wins!"
         game.destroy
       end
     end

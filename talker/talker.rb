@@ -27,8 +27,9 @@ require 'talker/games/fishing'
 require 'talker/games/connectfour'
 
 class Talker
-  NAME    = 'Dragon World'
-  VERSION = '0.7.3'
+  NAME     = 'Dragon World'
+  VERSION  = '0.7.4'
+  TIMEZONE = 'Europe/London'
   
   LIVE = File.exist?('LIVE')
   
@@ -234,7 +235,7 @@ class Talker
     if !@on_fire.empty?
       grow_fire
       @connected_users.each do |name, u|
-        u.output "^R\u{25ba}^n Dragon World is on fire! #{@on_fire.length} commands are ablaze!"
+        u.output "^R\u{2192}^n Dragon World is on fire! #{@on_fire.length} commands are ablaze!"
       end
     end
     schedule_tick

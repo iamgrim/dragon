@@ -265,7 +265,7 @@ module Commands
       if r < 2 # 0 1
         if rand(10000) == 5000
           winnings = 10000
-          output_to_all "^C\u{25ba}^n #{name} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
+          output_to_all "^C\u{2192}^n #{name} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
         else
           winnings = (fishing.catch_size * 4).round
           best_string = ""
@@ -273,7 +273,7 @@ module Commands
           best_string = " ^L(personal best)^n" if personal_best = fishing.set_record?
           best_string = " ^G(world record)^n" if Fishing.set_world_record?(self)
           
-          buffer = "^C\u{25ba}^n #{name} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}"
+          buffer = "^C\u{2192}^n #{name} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}"
           if personal_best
             output_to_all buffer
           else
@@ -303,7 +303,7 @@ module Commands
     elsif !target.fishing || target.fishing.baitbox.empty?
       output "#{target.name} has nothing in their baitbox."
     else
-      output box_title("#{target.name} Baitbox") + "\n" + box_text(target.fishing.baitbox.to_s) + "\n" + bottom_line
+      output box("#{target.name} Baitbox", target.fishing.baitbox.to_s)
     end
   end
 
@@ -314,7 +314,7 @@ module Commands
     elsif !target.fishing || target.fishing.records.empty?
       output "#{target.name} doesn't have any fishing records."
     else
-      output box_title("#{target.name} Fishing Records") + "\n" + box_text(target.fishing.records.sort{|a,b|a[0] <=> b[0]}.map {|name, weight| 
+      output box("#{target.name} Fishing Records", target.fishing.records.sort{|a,b|a[0] <=> b[0]}.map {|name, weight| 
         f = Fishing.find_fish_by_name(name)
         if f
           (user_name, record) = Fishing.world_records[name]
@@ -329,15 +329,15 @@ module Commands
         else
           nil
         end
-        }.compact.join("\n")) + "\n" + bottom_line
+        }.compact.join("\n"))
     end
   end
   
   define_command 'fishing worldrecords' do
-    output box_title("Fishing World Records") + "\n" + box_text(Fishing.world_records.sort{|a,b|a[0] <=> b[0]}.map { |name, value|
+    output box("Fishing World Records", Fishing.world_records.sort{|a,b|a[0] <=> b[0]}.map { |name, value|
       (user_name, weight) = value
       " #{sprintf("%-15.15s", name)}^n #{sprintf("%-15.15s", user_name)} #{Fishing::pounds_oz(weight)}^n"
-      }.join("\n")) + "\n" + bottom_line
+      }.join("\n"))
   end
   
   define_command 'fishing quit' do
@@ -369,12 +369,12 @@ module Commands
 
   define_command 'vend' do |item_name|
     if item_name.blank?
-      output box_title("Welcome to Master Bait Vending Machine") + "\n" + box_text(Fishing::VENDING_MACHINE.map {|item| "^L#{sprintf("%4d", item.price)}\u{20ab}^n #{item.name} (#{item.quantity} #{pluralise("piece", item.quantity)})"}.join("\n")) + "\n" + bottom_line
+      output box("Welcome to Master Bait Vending Machine", Fishing::VENDING_MACHINE.map {|item| "^L#{sprintf("%4d", item.price)}\u{20ab}^n #{item.name} (#{item.quantity} #{pluralise("piece", item.quantity)})"}.join("\n"))
     elsif item_to_buy = Fishing::VENDING_MACHINE.find(item_name)
       if purchased_item = item_to_buy.purchase_by(self)
         self.fishing ||= Fishing.new
         self.fishing.baitbox.add(purchased_item)
-        output_to_all "^Y\u{25ba}^n #{name} vends #{purchased_item.name}"
+        output_to_all "^Y\u{2192}^n #{name} vends #{purchased_item.name}"
         save
       else
         output "You can't afford to buy #{item_to_buy.name}. It costs #{item_to_buy.price}\u{20ab} and you only have #{money}\u{20ab}."

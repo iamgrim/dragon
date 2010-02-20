@@ -3,11 +3,11 @@ module Commands
   require 'socket'
   
   define_command 'commands' do
-    output box_title("Commands") + "\n" + box_text(Commands.names.map{|c|Talker.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76)) + "\n" + bottom_line
+    output box("Commands", Commands.names.map{|c|Talker.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
   end
 
   define_command 'changes' do 
-    output box_title("Recent Changes") + "\n" + box_text(get_text "changes") + "\n" + bottom_line
+    output box("Recent Changes", get_text("changes"))
   end
   
   define_command 'testcard' do
@@ -67,50 +67,47 @@ module Commands
   end
 
   define_command 'time' do
-    output box_title("Time") + "\n" + box_text(Time.now.strftime("Server time is %I:%M %p, %A %d %B %Y") + "\nTelnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old") + "\n" + bottom_line
+    buffer = Time.now.strftime("Server time is %I:%M %p, %A %d %B %Y") + "\n"
+    buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %I:%M %p, %A %d %B %Y") + "\n" if get_timezone_identifier != Talker::TIMEZONE
+    buffer += "Telnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old\n"
+    output box("Time", buffer)
   end
 
   define_command 'examine' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output (box_title("#{target.class.name} #{target.name}") + "\n" + box_text(encode_string(target.examine, charset).wrap(77)) + "\n" + bottom_line) if target
+    output box("#{target.class.name} #{target.name}", encode_string(target.examine, charset).wrap(77)) if target
   end
   define_alias 'examine', 'finger', 'profile', 'x'
 
   define_command 'settings' do |target_name|
     target = target_name.blank? ? self : find_user(target_name)
-    if target
+    if target    
       buffer = "     Title : #{name} #{title}\n"
-      buffer += "     Login : ^g>^G> ^n#{name} #{get_connect_message} ^G<^g<\n"
-      buffer += "Disconnect : ^R<^r< ^n#{name} #{get_disconnect_message} ^r>^R>\n"
-      buffer += " Reconnect : ^Y>^y< ^n#{name} #{get_reconnect_message} ^y>^Y<\n"
+      buffer += "     Login : ^g\u{25ba}^G\u{25ba} ^n#{name} #{get_connect_message} ^G\u{25c4}^g\u{25c4}\n"
+      buffer += "Disconnect : ^R\u{25c4}^r\u{25c4} ^n#{name} #{get_disconnect_message} ^r\u{25ba}^R\u{25ba}\n"
+      buffer += " Reconnect : ^Y\u{25ba}^y\u{25c4} ^n#{name} #{get_reconnect_message} ^y\u{25ba}^Y\u{25c4}\n"
       buffer += "    Prompt : #{get_prompt}\n"
       buffer += "Timestamps : #{get_timestamp_format}\n" if show_timestamps
-      output (box_title("Settings for #{target.name}") + "\n" + box_text(buffer) + "\n" + bottom_line)
+      output box("Settings for #{target.name}", buffer)
     end
   end
 
   define_command 'who' do
-    len = active_users.map {|u|u.name.length}.max
-    output box_title("Who") + "\n" +
-      active_users.map { |u| box_text(sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{u.title}^n")) }.join("\n") + "\n" + 
-      bottom_line
+    len = active_users.map {|u|u.name.length}.max    
+    output box("Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{u.title}^n") }.join("\n"))
   end
   define_alias 'who', 'w'
 
   define_command 'whod' do
-    output box_title("Who Debug") + "\n" +
-      active_users.map { |u| sprintf("^B\u{2502}^n %15.15s ^c%-59.59s ^B\u{2502}^n", u.name, "#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debug] ' : ''}#{u.show_timestamps ? '[stamp collector]' : ''}") }.join("\n") + "\n" + 
-      bottom_line
+    output box("Who Debug", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debug] ' : ''}#{u.show_timestamps ? '[stamp collector]' : ''}") }.join("\n"))
   end
   define_alias 'who', 'w'
 
   define_command 'connections' do
-    output box_title("Connections") + "\n" +
-      connected_users.values.map { |u| 
-        c = u.active? ? "^G+" : "^W@"
-        #hostname = Socket.getaddrinfo(u.ip_address,nil)[0][2]
-        sprintf("^B\u{2502}^n #{c}^n %-15.15s %-9.9s ^c%47.47s ^B\u{2502}^n", u.name, short_time(u.idle_time), "Connected from #{u.ip_address} for #{short_time(u.login_time)}") }.join("\n") + "\n" + 
-      bottom_line
+    output box("Connections", connected_users.values.map { |u| 
+      c = u.active? ? "^G+" : "^W@"
+      sprintf("#{c}^n %-15.15s %-9.9s ^c%47.47s", u.name, short_time(u.idle_time), "Connected from #{u.ip_address} for #{short_time(u.login_time)}")  
+      }.join("\n"))
   end
   define_alias 'connections', 'connected', 'lsi'
 
@@ -128,33 +125,28 @@ module Commands
         output buffer
       end
     else
-      buffer = box_title("User Activity") + "\n"
+      buffer = ""
       active_users.each do |u|
         bars = sprintf("%-45s", ("\u{25a0}" * (((5400 - u.idle_time) / 120)+1)) + " #{u.idle_message}")
-        buffer += sprintf("^B\u{2502}^n %15.15s %-77.77s ^B\u{2502}^n\n", u.name, "^C|^R#{bars.slice(0,15)}^C|^Y#{bars.slice(15,15)}^C|^G#{bars.slice(30,15)}^C| ^c#{short_time(u.idle_time)}^n")
+        buffer += sprintf("%15.15s %-77.77s\n", u.name, "^C|^R#{bars.slice(0,15)}^C|^Y#{bars.slice(15,15)}^C|^G#{bars.slice(30,15)}^C| ^c#{short_time(u.idle_time)}^n")
       end
-      buffer += bottom_line
-      output buffer
+      output box("User Activity", buffer)
     end
   end
   define_alias 'idle', 'active'
 
   define_command 'help' do
-    buffer = box_title("Help")
-    buffer += "
-^B\u{2502}^n ^c  Basic talker commands:^n                                                    ^B\u{2502}^n
-^B\u{2502}^n ^L  say^n         Speak to everyone                                             ^B\u{2502}^n
-^B\u{2502}^n ^L  emote^n       Perform an action to everyone                                 ^B\u{2502}^n
-^B\u{2502}^n ^L  who^n         Get a list of people who are connected                        ^B\u{2502}^n
-^B\u{2502}^n ^L  tell^n        Speak to someone privately                                    ^B\u{2502}^n
-^B\u{2502}^n ^L  commands^n    List all the available commands                               ^B\u{2502}^n
-^B\u{2502}^n ^L  socials^n     List all the available socials (user defined actions)         ^B\u{2502}^n
-^B\u{2502}^n ^L  examine^n     Get details about a user or social                            ^B\u{2502}^n
-^B\u{2502}^n ^L  idle^n        Show when users were last active                              ^B\u{2502}^n
-^B\u{2502}^n ^L  password^n    Set and password and reserve your user name for future visits ^B\u{2502}^n
-"
-    buffer += bottom_line
-    output buffer
+    buffer = "^c  Basic talker commands:^n
+^L  say^n         Speak to everyone
+^L  emote^n       Perform an action to everyone
+^L  who^n         Get a list of people who are connected
+^L  tell^n        Speak to someone privately
+^L  commands^n    List all the available commands
+^L  socials^n     List all the available socials (user defined actions)
+^L  examine^n     Get details about a user or social
+^L  idle^n        Show when users were last active
+^L  password^n    Set and password and reserve your user name for future visits"
+    output box("Help", buffer)
   end
   define_alias 'help', '?'
   
@@ -195,12 +187,12 @@ module Commands
   define_alias 'password', 'passwd'
 
   define_command 'history' do
-    output title_line("History") + "\n" + talker_history.to_s(get_timestamp_format) + "\n" + blank_line
+    output title_line("History") + "\n" + talker_history.to_s(get_timestamp_format, get_timezone) + "\n" + blank_line
   end
   define_alias 'history', 'recall', 'review'
 
   define_command 'myhistory' do
-    output title_line("Your Private History") + "\n" + history.to_s(get_timestamp_format) + "\n" + blank_line
+    output title_line("Your Private History") + "\n" + history.to_s(get_timestamp_format, get_timezone) + "\n" + blank_line
   end
   define_alias 'myhistory', 'rhistory'
 end

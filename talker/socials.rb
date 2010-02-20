@@ -224,7 +224,7 @@ module Commands
             debug_message "Social '#{social_name}' updated by #{name}"
             output "The social has been updated."
           else
-            output_to_all "^Y\u{25ba}^n #{cname} creates the ^L#{social_name}^n social"
+            output_to_all "^Y\u{2192}^n #{cname} creates the ^L#{social_name}^n social"
           end
         end
       end
@@ -246,9 +246,9 @@ module Commands
 
   define_command 'socials' do |user_name|
     if user_name.blank?
-      output box_title("Socials") + "\n" + box_text(Social.names.join(", ").wrap(76)) + "\n" + bottom_line
+      output box("Socials", Social.names.join(", ").wrap(76))
     elsif user = find_user(user_name)
-      output box_title("Socials Owned By #{user.name}") + "\n" + box_text(Social.socials_by(user).map{|s| s.name}.join(", ").wrap(76)) + "\n" + bottom_line
+      output box("Socials Owned By #{user.name}", Social.socials_by(user).map{|s| s.name}.join(", ").wrap(76))
     end
   end
   

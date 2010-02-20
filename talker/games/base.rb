@@ -26,10 +26,10 @@ class CommunityService
       user.community_service = nil
       if user.money >= 100
         user.money -= 100
-        user.output_to_all "^g\u{25ba}^n #{user.name} failed to complete their community service and has been fined 100\u{20ab}"
+        user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been fined 100\u{20ab}"
         user.save
       else
-        user.output_to_all "^g\u{25ba}^n #{user.name} failed to complete their community service and has been sent to prison"
+        user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been sent to prison"
         user.save
         user.disconnect
       end
@@ -40,16 +40,15 @@ end
 # encoding: utf-8
 module Commands
   define_command 'games' do
-    buffer = box_title("Games") + "\n"
+    buffer = ""
     if Game.games.length > 0
       Game.games.each do |game|
-        buffer += sprintf("^B\u{2502}^n ^W\u{25CF}^n %-73.73s ^B\u{2502}^n", game.description) + "\n"
+        buffer += "^W\u{25CF}^n #{game.description}"
       end
     else
-      buffer += sprintf("^B\u{2502}^n  %-74.74s ^B\u{2502}^n", "There are no games in progress.") + "\n"
+      buffer += "There are no games in progress."
     end
-    buffer += bottom_line
-    output buffer
+    output box("Games", buffer)
   end
   
   define_command 'dice' do
@@ -106,8 +105,8 @@ module Commands
         output "^Y          .-'''''-.\n        .'    |    `.\n       :   {-----}   :	        ^n^LYou flip the coin and you get:\n^Y      :   oo#####oo   :\n      :   o ##### o   :        ^R T A I L S\n ^Y      :  o ##### o  :\n        `.         .'\n          `-.....-'^n\n"
       else
         output "^Y       ___\n     .    .. 			^n^LYou flip the coin and it lands\n^Y    .  ;   ..	      	^P        on its edge.\n ^Y   .   ;  ..\n^r ..__^Y.^r____^Y..^r__..^n\n"
-        output_to_all "^G\u{25ba}^n #{name} has been Joe Palookered! The coin landed on its edge!"
-        output_to_all "^G\u{25ba}^n #{name} won 1,000,000 drogna"
+        output_to_all "^G\u{2192}^n #{name} has been Joe Palookered! The coin landed on its edge!"
+        output_to_all "^G\u{2192}^n #{name} won 1,000,000 drogna"
         self.money = money + 1000000
         save
       end
@@ -139,7 +138,7 @@ module Commands
         else
           self.money -= amount
           recipient.money += amount
-          output_to_all "^g\u{25ba}^n #{cname} has just given #{recipient.cname} #{amount} drogna!"
+          output_to_all "^g\u{2192}^n #{cname} has just given #{recipient.cname} #{amount} drogna!"
           save
           recipient.save
         end
@@ -158,7 +157,7 @@ module Commands
         if amount > recipient.money
           output "They don't have that much to steal."
         elsif recipient == self
-          output_to_all "^g\u{25ba}^n #{cname} attempts to commit insurance fraud, and is imprisoned!"
+          output_to_all "^g\u{2192}^n #{cname} attempts to commit insurance fraud, and is imprisoned!"
           disconnect
         else
 	        r = rand(2 + (amount / 10).round)
@@ -167,16 +166,16 @@ module Commands
             recipient.money -= amount
             output "You successfully stole #{amount}\u{20ab} from #{recipient.cname}!"
             recipient.output "Your pocket feels lighter than before."
-#            output_to_all "^g\u{25ba}^n #{cname} steals #{amount}\u{20ab} from #{recipient.cname}!"
+#            output_to_all "^g\u{2192}^n #{cname} steals #{amount}\u{20ab} from #{recipient.cname}!"
             save
             recipient.save
           else
             if community_service.nil?
-              output_to_all "^g\u{25ba}^n #{cname} attempts to steal from #{recipient.cname}, and receives community service!"
+              output_to_all "^g\u{2192}^n #{cname} attempts to steal from #{recipient.cname}, and receives community service!"
               self.community_service = CommunityService.new(1)
               output "You have one minute to paint a #{community_service.required_work} metre #{community_service.location} #{community_service.colour}. Begin now."
             else
-              output_to_all "^g\u{25ba}^n #{cname} attempts to steal from #{recipient.cname} while on community service, and is therefore sent to prison"
+              output_to_all "^g\u{2192}^n #{cname} attempts to steal from #{recipient.cname} while on community service, and is therefore sent to prison"
               disconnect
             end
           end

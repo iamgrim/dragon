@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'eventmachine'
 require 'yaml'
+require 'tzinfo'
 
 require 'strscan'
 require 'extensions'

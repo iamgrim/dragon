@@ -10,7 +10,7 @@ class User
   attr_accessor :total_time
   attr_accessor :total_connections
   attr_accessor :colour
-  attr_accessor :timezone
+  attr_accessor :timezone_identifier
 
   attr_accessor :prompt
   attr_accessor :title
@@ -29,7 +29,7 @@ class User
   attr_accessor :maritalstatus
   attr_accessor :realname
 
-  attr_accessor :fishing, :community_service
+  attr_accessor :fishing, :community_service, :games
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
@@ -102,7 +102,7 @@ class User
     @muffled = false
     
     if resident?
-      output box_title("Recent Changes") + "\n" + box_text(get_text "changes") + "\n" + bottom_line
+      output box("Recent Changes", get_text("changes"))
     else
       output get_text("welcome_newuser")
     end
@@ -111,11 +111,11 @@ class User
 
     if old_connection.nil?
       connected_users[lower_name] = self
-      output_to_all "^g>^G> ^n#{name} #{get_connect_message} ^G<^g<^n"
+      output_to_all "^g\u{25ba}^G\u{25ba} ^n#{name} #{get_connect_message} ^G\u{25c4}^g\u{25c4}^n"
     else
       old_connection.output "[Reconnection from #{connection.ip_address}]"
       old_connection.disconnect
-      output_to_all "^Y>^y< ^n#{name} #{get_reconnect_message} ^y>^Y<^n"
+      output_to_all "^Y\u{25ba}^y\u{25c4} ^n#{name} #{get_reconnect_message} ^y\u{25ba}^Y\u{25c4}^n"
     end
     
     look
@@ -144,7 +144,7 @@ class User
       save
       if !was_resident
         output "Thank you for setting a password. Your name is now reserved for future visits."
-        output_to_all "^G\u{25ba} ^n#{name} becomes a saved user!"
+        output_to_all "^G\u{2192} ^n#{name} becomes a saved user!"
       else
         output "Password Changed."
       end
@@ -156,7 +156,7 @@ class User
   def logout
     connected_users.delete(lower_name)
     @id = nil
-    output_to_all "^R<^r< ^n#{name} #{get_disconnect_message} ^r>^R>^n"
+    output_to_all "^R\u{25c4}^r\u{25c4} ^n#{name} #{get_disconnect_message} ^r\u{25ba}^R\u{25ba}^n"
     
     if !resident?
       delete
@@ -186,11 +186,15 @@ class User
   end
   
   def get_timestamp
-    @show_timestamps ? Time.now.strftime(get_timestamp_format) + '^n ' : ''
+    @show_timestamps ? get_timezone.strftime(get_timestamp_format) + '^n ' : ''
   end
   
   def get_timezone
-    @timezone || TZInfo::Timezone.get("Europe/London")
+    TZInfo::Timezone.get(get_timezone_identifier)
+  end
+  
+  def get_timezone_identifier
+    @timezone_identifier || Talker::TIMEZONE
   end
   
   def get_connect_message
@@ -230,7 +234,7 @@ class User
     end
     user_prompt if handler.nil?
     if @input_string =~ /cheese/
-      output_to_all "^R\u{25ba}^n Anti-cheese code detected a violation by #{name}"
+      output_to_all "^R\u{2192}^n Anti-cheese code detected a violation by #{name}"
       disconnect
     end
     @input_string = nil
@@ -283,7 +287,7 @@ class User
   end
   
   def examine
-    buffer = "      First seen : #{first_seen}\n"
+    buffer = "       First seen : #{first_seen}\n"
     if logged_in?
       buffer += "       Login time : #{time_in_words(login_time)}\n"
       buffer += "        Idle time : #{time_in_words(idle_time)}\n"
@@ -304,6 +308,7 @@ class User
     buffer += "           Gender : #{gender_symbol}\n"
     buffer += "   Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
     buffer += "         Location : #{location}^n\n" unless location.blank?
+    buffer += "         Timezone : #{get_timezone_identifier}^n\n"
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
     buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
     buffer += "           Drogna : #{money}\n"
