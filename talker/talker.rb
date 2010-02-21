@@ -28,7 +28,7 @@ require 'talker/games/connectfour'
 
 class Talker
   NAME    = 'Dragon World'
-  VERSION = '0.7.3'
+  VERSION = `cat .git/refs/heads/master`.chomp
   
   LIVE = File.exist?('LIVE')
   

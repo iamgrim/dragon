@@ -36,7 +36,7 @@ module Commands
   end
   
   define_command 'version' do
-    output "#{Talker::NAME} - Version #{Talker::VERSION}\n"
+    output "#{Talker::NAME} - Commit #{Talker::VERSION}\nRunning in #{Talker::LIVE ? 'live' : 'development'} mode."
   end
   
   define_command 'idea' do |string|
