@@ -29,6 +29,7 @@ require 'talker/games/connectfour'
 class Talker
   NAME    = 'Dragon World'
   VERSION = `cat .git/refs/heads/master`.chomp
+  TIMEZONE = 'Europe/London'
   
   LIVE = File.exist?('LIVE')
   
@@ -242,7 +243,7 @@ class Talker
     if !@attributes[:on_fire].empty?
       grow_fire
       @connected_users.each do |name, u|
-        u.output "^R\u{25ba}^n Dragon World is on fire! #{@attributes[:on_fire].length} commands are ablaze!"
+        u.output "^R\u{2192}^n Dragon World is on fire! #{@attributes[:on_fire].length} commands are ablaze!"
       end
     end
     schedule_tick

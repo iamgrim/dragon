@@ -177,9 +177,9 @@ class ConnectFour < Game
     i = 6
     data[:board].reverse.each do |line| 
       if i == 4
-        buffer += sprintf("^v #{render_line(line)}^v ^n  ^G%-2.2s^n %-15.15s #{(@players[0].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[0]) ? "\u{25ba}" : '', @players[0].name)
+        buffer += sprintf("^v #{render_line(line)}^v ^n  ^G%-2.2s^n %-15.15s #{(@players[0].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[0]) ? "\u{2192}" : '', @players[0].name)
       elsif i == 3
-        buffer += sprintf("^v #{render_line(line)}^v ^n  ^G%-2.2s^n %-15.15s #{(@players[1].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[1]) ? "\u{25ba}" : '', @players[1].name)
+        buffer += sprintf("^v #{render_line(line)}^v ^n  ^G%-2.2s^n %-15.15s #{(@players[1].piece == 1 ? '^Y' : '^R') + "\u{25cf}"}\n", self.turn?(@players[1]) ? "\u{2192}" : '', @players[1].name)
       else
         buffer += "^v #{render_line(line)}^v ^n\n"
       end
@@ -228,12 +228,12 @@ module Commands
                   output "You don't have enough money for a stake that high."
                 else
                   game = ConnectFour.new(self, opponent, stake.to_i)
-                  opponent.output "^G\u{25ba} ^n#{name} has challenged you to a game of Connect Four for a stake of ^W#{stake}\u{20ab}^n\n^LType 'c4 accept' or 'c4 decline'.^n"
+                  opponent.output "^G\u{2192} ^n#{name} has challenged you to a game of Connect Four for a stake of ^W#{stake}\u{20ab}^n\n^LType 'c4 accept' or 'c4 decline'.^n"
                   output "You challenge #{opponent.name} to a game of Connect Four with a stake of ^W#{stake}\u{20ab}^n."
                 end
               else
                 game = ConnectFour.new(self, opponent, 0)
-                opponent.output "^G\u{25ba} ^n#{name} has challenged you to a game of Connect Four\n^LType 'c4 accept' or 'c4 decline'.^n"
+                opponent.output "^G\u{2192} ^n#{name} has challenged you to a game of Connect Four\n^LType 'c4 accept' or 'c4 decline'.^n"
                 output "You challenge #{opponent.name} to a game of Connect Four."
               end
             end
@@ -267,9 +267,9 @@ module Commands
                 opponent.output game.board
                 if game.stake > 0
                   find_connected_user(player.name).money += game.stake * 2
-                  output_to_all "^g\u{25ba}^n #{player.name} beats #{opponent.name} at Connect Four, winning #{game.stake}\u{20ab}!"
+                  output_to_all "^g\u{2192}^n #{player.name} beats #{opponent.name} at Connect Four, winning #{game.stake}\u{20ab}!"
                 else
-                  output_to_all "^g\u{25ba}^n #{player.name} has beaten #{opponent.name} at Connect Four!"
+                  output_to_all "^g\u{2192}^n #{player.name} has beaten #{opponent.name} at Connect Four!"
                 end
                 save
                 game.destroy
@@ -280,7 +280,7 @@ module Commands
                   find_connected_user(player.name).money += game.stake
                   find_connected_user(opponent.name).money += game.stake
                 end
-                output_to_all "^g\u{25ba}^n #{player.name} and #{opponent.name} have drawn at Connect Four!"
+                output_to_all "^g\u{2192}^n #{player.name} and #{opponent.name} have drawn at Connect Four!"
                 save
                 game.destroy
               else

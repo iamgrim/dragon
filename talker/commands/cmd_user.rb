@@ -248,11 +248,12 @@ module Commands
       self.show_timestamps = true
       self.timestamp_format = $1
     end
-    buffer = (show_timestamps ? "You are viewing timestamps" + (!timestamp_format.nil? ? ", with custom format: #{Time.now.strftime(timestamp_format)}^n (#{timestamp_format.gsub(/\^/, '^^')})^n" : ".") : "You are not viewing timestamps")
+    buffer = (show_timestamps ? "You are viewing timestamps" + (!timestamp_format.nil? ? ", with custom format: #{get_timezone.strftime(timestamp_format, Time.now)}^n (#{timestamp_format.gsub(/\^/, '^^')})^n" : ".") : "You are not viewing timestamps")
     buffer += "\nFormat: timestamps [on|off|format <string>]" if message.blank?
     output buffer
+    save
   end
-  
+
   define_command 'alias' do |message|
     (alias_name, alias_text) = get_arguments(message, 2)
     if alias_name.blank? || alias_text.blank?
@@ -278,6 +279,65 @@ module Commands
   
   define_command 'aliases' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output (title_line("#{target.name} Aliases") + "\n" + target.aliases.values.map {|a|"^L#{a.name}^n #{a.text}^n"}.join("\n") + "\n" + blank_line) if target
+    output box("Aliases for #{target.name}", target.aliases.values.map {|a|"^L#{a.name}^n #{a.text}^n"}.join("\n")) if target
   end
+  
+  define_command 'timezone find' do |message|
+    if message.blank?
+      output "Format: timezone [find <country>|server|<identifier>]"
+    else
+      if !TZInfo::Country.all_codes.index(message.upcase).nil?
+        countrycode = message.upcase
+      else
+        lower_message = message.downcase
+        countrycode = COUNTRIES_ISO3166_1[lower_message]
+        if countrycode.nil?
+          matches = COUNTRIES_ISO3166_1.keys.select {|n| n.downcase =~ /^#{Regexp.escape(lower_message)}/}
+          if matches.length == 0
+            output "Couldn't find any timezones corresponding to that country."
+          elsif matches.length > 1
+            output "Multiple possible countries: #{matches.join(', ')}."
+          else
+            countrycode = COUNTRIES_ISO3166_1[matches.first]
+          end
+        end  
+      end
+      
+      if !countrycode.nil?
+        tzcountry = TZInfo::Country.get(countrycode)
+        output "Timezones within #{tzcountry.name}:"
+        
+        #len = active_users.map {|u|u.name.length}.max
+        #sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{u.title}^n")
+        
+        tzcountry.zone_identifiers.each do |timezone|
+          output "^W#{timezone}^n"
+        end
+      end
+    end
+  end
+  define_alias 'timezone find', 'tz find'
+  
+  define_command 'timezone' do |message|
+    if message == "server"
+      self.timezone_identifier = Talker::TIMEZONE
+      output "Your timezone is now set to that of the server (#{Talker::TIMEZONE})"
+      save
+    elsif !message.blank?
+      message = message.split('/').map {|part| part.split('_').map {|s| s.capitalize}.join('_')}.join('/')
+      if !TZInfo::Timezone.all_identifiers.index(message).nil?
+        self.timezone_identifier = message
+        output "Your timezone is now set to ^W#{get_timezone_identifier}^n"
+        save
+      else
+        output "Couldn't find that timezone."
+      end
+    else
+      buffer = "Format: timezone [find <country>|server|<identifier>]\n"
+      buffer += "Your timezone is ^W#{get_timezone_identifier}^n"
+      output buffer
+    end
+  end
+  define_alias 'timezone', 'tz'
+
 end

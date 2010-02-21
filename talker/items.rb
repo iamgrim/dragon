@@ -70,11 +70,11 @@ module Commands
   
   define_command 'buy' do |item_name|
     if item_name.blank?
-      output box_title("Dragon Worlde Shope") + "\n" + box_text(Items::SHOP.map {|item| "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n")) + "\n" + bottom_line
+      output box("Dragon Worlde Shope", Items::SHOP.map {|item| "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
     elsif item_to_buy = Items::SHOP.find(item_name)
       if purchased_item = item_to_buy.purchase_by(self)
         self.items.add(purchased_item)
-        output_to_all "^Y\u{25ba}^n #{cname} buys a #{purchased_item.name}"
+        output_to_all "^Y\u{2192}^n #{cname} buys a #{purchased_item.name}"
         save
       else
         output "You can't afford to buy #{item_to_buy.name}. It costs #{item_to_buy.price}\u{20ab} and you only have #{money}\u{20ab}."

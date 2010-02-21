@@ -9,6 +9,7 @@ reading beyond this point without a license.
 == Requirements
 ruby 1.9.1 - assumes that the ruby binary is called ruby19
 eventmachine gem
+tzinfo gem
 
 == Booting
 The talker consists of two processes. The connection server accepts connections and acts as a proxy between the user and the main talker process. It will attempt to boot the main talker process if it

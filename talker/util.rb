@@ -154,20 +154,16 @@ module TalkerUtilities
     end
   end
   
-  # for boxed content
-  def box_title(text)
-    "^B\u{250C}\u{2500}\u{2524} ^Y#{text} ^B\u{251C}" + ("\u{2500}" * (72 - text.length)) + "\u{2510}^n"
-  end
-
-  def box_text(text)
-    text.split("\n").map { |s|
+  # for boxed content  
+  def box(title, text)
+    buffer = "^B\u{250C}\u{2500}\u{2524} ^Y#{title} ^B\u{251C}" + ("\u{2500}" * (72 - title.length)) + "\u{2510}^n\n"
+    if text.length > 0
+    buffer += text.split("\n").map { |s|
       width = 75 + s.length - colourise(s, false).length
       sprintf("^B\u{2502}^n %-#{width}.#{width}s ^B\u{2502}^n", s)
-    }.join("\n") || ""
-  end
-
-  def bottom_line
-    "^B\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
+      }.join("\n") + "\n"
+    end
+    buffer += "^B\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
   end
   
   # for content that exceeds the 80 character width box
@@ -199,22 +195,27 @@ module TalkerUtilities
 
   UNICODE_FALLBACKS = {
     
+    "\u{00ab}" => "<<",   # left-pointing double angle quotation mark
+    "\u{00bb}" => ">>",   # right-pointing double angle quotation mark
     "\u{00a3}" => "#",   # pound
-    "\u{20ac}" => "E",    # euro
+    "\u{20ac}" => "E",   # euro
     "\u{2013}" => "-",   # en dash
     "\u{2014}" => "-",   # em dash
     "\u{2015}" => "-",   # horizontal bar
     "\u{2018}" => "'",   # open single quote
     "\u{2019}" => "'",   # close single quote
-    "\u{201c}" => "\"",   # open double quote
-    "\u{201d}" => "\"",   # close double quote
+    "\u{201c}" => "\"",  # open double quote
+    "\u{201d}" => "\"",  # close double quote
     "\u{20ab}" => "d",   # drogna
     "\u{2591}" => "-",   # bsh grass
     "\u{25cf}" => "*",   # black circle
     "\u{25e6}" => "o",   # empty circle
     "\u{263c}" => "=",   # crater
     "\u{00d7}" => "X",   # multiply
-    "\u{25ba}" => "->",  # solid arrow right
+    "\u{25ba}" => ">",   # black right-pointing pointer
+    "\u{25c4}" => ">",   # black left-pointing pointer
+    "\u{2192}" => "->",  # rightwards arrow
+    "\u{2190}" => "<-",  # leftwards arrow
     "\u{266a}" => "o/~", # eighth note
     "\u{266b}" => "o/~", # beamed eighth notes
     "\u{25a0}" => "=",   # black square
@@ -319,6 +320,249 @@ module TalkerUtilities
     "\u{00fe}" => "th",
     "\u{00ff}" => "y"
   }
+  
+  COUNTRIES_ISO3166_1 = {
+    "Austria" => "AT", 
+    "Belgium" => "BE", 
+    "Bulgaria" => "BG", 
+    "Cyprus" => "CY", 
+    "Czech Republic" => "CZ", 
+    "Denmark" => "DK", 
+    "Estonia" => "EE", 
+    "Finland" => "FI", 
+    "France" => "FR", 
+    "Germany" => "DE", 
+    "Greece" => "GR", 
+    "Hungary" => "HU", 
+    "Ireland" => "IE", 
+    "Italy" => "IT", 
+    "Latvia" => "LV", 
+    "Lithuania" => "LT", 
+    "Luxembourg" => "LU", 
+    "Malta" => "MT", 
+    "Netherlands" => "NL", 
+    "Poland" => "PL", 
+    "Portugal" => "PT", 
+    "Romania" => "RO", 
+    "Slovakia" => "SK", 
+    "Slovenia" => "SI", 
+    "Spain" => "ES", 
+    "Sweden" => "SE", 
+    "United Kingdom" => "GB",
+    "Afghanistan" => "AF", 
+    "Albania" => "AL", 
+    "Algeria" => "DZ", 
+    "American Samoa" => "AS", 
+    "Andorra" => "AD", 
+    "Angola" => "AO", 
+    "Anguilla" => "AI", 
+    "Antarctica" => "AQ", 
+    "Antigua And Barbuda" => "AG", 
+    "Argentina" => "AR", 
+    "Armenia" => "AM", 
+    "Aruba" => "AW", 
+    "Australia" => "AU", 
+    "Azerbaijan" => "AZ", 
+    "Bahamas" => "BS", 
+    "Bahrain" => "BH", 
+    "Bangladesh" => "BD", 
+    "Barbados" => "BB", 
+    "Belarus" => "BY", 
+    "Belize" => "BZ", 
+    "Benin" => "BJ", 
+    "Bermuda" => "BM", 
+    "Bhutan" => "BT", 
+    "Bolivia" => "BO", 
+    "Bosnia and Herzegowina" => "BA", 
+    "Botswana" => "BW", 
+    "Bouvet Island" => "BV", 
+    "Brazil" => "BR", 
+    "British Indian Ocean Territory" => "IO", 
+    "Brunei Darussalam" => "BN", 
+    "Burkina Faso" => "BF", 
+    "Burma" => "MM", 
+    "Burundi" => "BI", 
+    "Cambodia" => "KH", 
+    "Cameroon" => "CM", 
+    "Canada" => "CA", 
+    "Cape Verde" => "CV", 
+    "Cayman Islands" => "KY", 
+    "Central African Republic" => "CF", 
+    "Chad" => "TD", 
+    "Chile" => "CL", 
+    "China" => "CN", 
+    "Christmas Island" => "CX", 
+    "Cocos (Keeling) Islands" => "CC", 
+    "Colombia" => "CO", 
+    "Comoros" => "KM", 
+    "Congo" => "CG", 
+    "Congo, the Democratic Republic of the" => "CD", 
+    "Cook Islands" => "CK", 
+    "Costa Rica" => "CR", 
+    "Cote d'Ivoire" => "CI", 
+    "Croatia" => "HR", 
+    "Cuba" => "CU", 
+    "Djibouti" => "DJ", 
+    "Dominica" => "DM", 
+    "Dominican Republic" => "DO", 
+    "East Timor" => "TL", 
+    "Ecuador" => "EC", 
+    "Egypt" => "EG", 
+    "El Salvador" => "SV", 
+    "Equatorial Guinea" => "GQ", 
+    "Eritrea" => "ER", 
+    "Ethiopia" => "", 
+    "Falkland Islands" => "FK", 
+    "Faroe Islands" => "FO", 
+    "Fiji" => "FJ", 
+    "French Guiana" => "GF", 
+    "French Polynesia" => "PF", 
+    "French Southern Territories" => "TF", 
+    "Gabon" => "GA", 
+    "Gambia" => "GM", 
+    "Georgia" => "GE", 
+    "Ghana" => "GH", 
+    "Gibraltar" => "GI", 
+    "Greenland" => "GL", 
+    "Grenada" => "GD", 
+    "Guadeloupe" => "GP", 
+    "Guam" => "GU", 
+    "Guatemala" => "GT", 
+    "Guinea" => "GN", 
+    "Guinea-Bissau" => "GW", 
+    "Guyana" => "GY", 
+    "Haiti" => "HT", 
+    "Heard and Mc Donald Islands" => "HM", 
+    "Honduras" => "HN", 
+    "Hong Kong" => "HK", 
+    "Iceland" => "IS", 
+    "India" => "IN", 
+    "Indonesia" => "ID", 
+    "Israel" => "IL", 
+    "Iran" => "IR", 
+    "Iraq" => "IQ", 
+    "Jamaica" => "JM", 
+    "Japan" => "JP", 
+    "Jordan" => "JO", 
+    "Kazakhstan" => "KZ", 
+    "Kenya" => "KE", 
+    "Kiribati" => "KI", 
+    "Korea, Republic of" => "KP", 
+    "Korea (South)" => "KR", 
+    "Kuwait" => "KW", 
+    "Kyrgyzstan" => "KG", 
+    "Lao People's Democratic Republic" => "LA", 
+    "Lebanon" => "LB", 
+    "Lesotho" => "LS", 
+    "Liberia" => "LR", 
+    "Liechtenstein" => "LI", 
+    "Macau" => "MO", 
+    "Macedonia" => "MK", 
+    "Madagascar" => "MG", 
+    "Malawi" => "MW", 
+    "Malaysia" => "MY", 
+    "Maldives" => "MV", 
+    "Mali" => "ML", 
+    "Marshall Islands" => "MH", 
+    "Martinique" => "MQ", 
+    "Mauritania" => "MR", 
+    "Mauritius" => "MU", 
+    "Mayotte" => "YT", 
+    "Mexico" => "MX", 
+    "Micronesia, Federated States of" => "FM", 
+    "Moldova, Republic of" => "MD", 
+    "Monaco" => "MC", 
+    "Mongolia" => "MN", 
+    "Montenegro" => "ME",
+    "Montserrat" => "MS", 
+    "Morocco" => "MA", 
+    "Mozambique" => "MZ", 
+    "Myanmar" => "MM", 
+    "Namibia" => "NA", 
+    "Nauru" => "NR", 
+    "Nepal" => "NP", 
+    "Netherlands Antilles" => "AN", 
+    "New Caledonia" => "NC", 
+    "New Zealand" => "NZ", 
+    "Nicaragua" => "NI", 
+    "Niger" => "NE", 
+    "Nigeria" => "NG", 
+    "Niue" => "NU", 
+    "Norfolk Island" => "NF", 
+    "Northern Mariana Islands" => "MP", 
+    "Norway" => "NO", 
+    "Oman" => "OM", 
+    "Pakistan" => "PK", 
+    "Palau" => "PW", 
+    "Panama" => "PA", 
+    "Papua New Guinea" => "PG", 
+    "Paraguay" => "PY", 
+    "Peru" => "PE", 
+    "Philippines" => "PH", 
+    "Pitcairn" => "PN", 
+    "Puerto Rico" => "PR", 
+    "Qatar" => "QA", 
+    "Reunion" => "RE", 
+    "Russia" => "RU", 
+    "Rwanda" => "RW", 
+    "Saint Kitts and Nevis" => "KN", 
+    "Saint Lucia" => "LC", 
+    "Saint Vincent and the Grenadines" => "VC", 
+    "Samoa (Independent)" => "WS", 
+    "San Marino" => "SM", 
+    "Sao Tome and Principe" => "ST", 
+    "Saudi Arabia" => "SA", 
+    "Senegal" => "SN", 
+    "Serbia" => "RS", 
+    "Seychelles" => "SC", 
+    "Sierra Leone" => "SL", 
+    "Singapore" => "SG", 
+    "Solomon Islands" => "SB", 
+    "Somalia" => "SO", 
+    "South Africa" => "ZA", 
+    "South Georgia and the South Sandwich Islands" => "GS", 
+    "South Korea" => "KR", 
+    "Sri Lanka" => "LK", 
+    "St. Helena" => "SH", 
+    "St. Pierre and Miquelon" => "PM", 
+    "Suriname" => "SR", 
+    "Svalbard and Jan Mayen Islands" => "SJ", 
+    "Swaziland" => "SZ", 
+    "Switzerland" => "CH", 
+    "Taiwan" => "TW", 
+    "Tajikistan" => "TJ", 
+    "Tanzania" => "TZ", 
+    "Thailand" => "TH", 
+    "Togo" => "TG", 
+    "Tokelau" => "TK", 
+    "Tonga" => "TO", 
+    "Trinidad and Tobago" => "TT", 
+    "Tunisia" => "TN", 
+    "Turkey" => "TR", 
+    "Turkmenistan" => "TM", 
+    "Turks and Caicos Islands" => "TC", 
+    "Tuvalu" => "TV", 
+    "Uganda" => "UG", 
+    "Ukraine" => "UA", 
+    "United Arab Emirates" => "AE", 
+    "United States" => "US", 
+    "United States Minor Outlying Islands" => "UM", 
+    "Uruguay" => "UY", 
+    "Uzbekistan" => "UZ", 
+    "Vanuatu" => "VU", 
+    "Vatican City State (Holy See)" => "VA", 
+    "Venezuela" => "VE", 
+    "Viet Nam" => "VN", 
+    "Virgin Islands (British)" => "VG", 
+    "Virgin Islands (U.S.)" => "VI", 
+    "Wallis and Futuna Islands" => "WF", 
+    "Western Sahara" => "EH", 
+    "Yemen" => "YE", 
+    "Zambia" => "ZM", 
+    "Zimbabwe" => "ZW"
+  }
+
+  ISO_COUNTRIES = COUNTRIES_ISO3166_1.invert  
   
   def encode_string(message, encoding)
     if encoding == :unicode

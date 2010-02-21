@@ -22,7 +22,7 @@ module Commands
   end
   
   define_command 'multis', :invisible => true do
-    output box_title("Multis") + "\n" + box_text(Multi.view) + "\n" + bottom_line
+    output box("Multis", Multi.view)
   end
 
 #  define_command 'reset_password' do |target_name|
@@ -44,8 +44,7 @@ module Commands
 
   define_command 'show_changes', :invisible => true do
     if developer?
-      buffer = box_title("#{Talker::NAME} Has Been Updated!") + "\n" + box_text(get_text "changes") + "\n" + bottom_line
-      output_to_all buffer
+      output_to_all box("#{Talker::NAME} Has Been Updated!", get_text("changes"))
     else
       output "No permission."
     end
