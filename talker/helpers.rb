@@ -2,8 +2,8 @@
 module Helpers
   include TalkerUtilities
     
-  def output_to_all(message)
-    connected_users.values.each { |u| u.output message unless u.muffled }
+  def output_to_all(message, options={:show_timestamps => true})
+    connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" unless u.muffled }
   end
 
   def output_to_some(message, &block)
