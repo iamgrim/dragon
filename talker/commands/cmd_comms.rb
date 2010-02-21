@@ -39,16 +39,20 @@ module Commands
       else
         target = find_connected_user(target_name)
         if target
-          format = if message =~ /\?$/
-            ['ask', 'of ']
-          elsif message =~ /!$/
-            ['exclaim', 'to ']
+          if target.is_ignoring?(self)
+            output "#{target.name} is ignoring you."
           else
-            ['tell', '']
+            format = if message =~ /\?$/
+              ['ask', 'of ']
+            elsif message =~ /!$/
+              ['exclaim', 'to ']
+            else
+              ['tell', '']
+            end
+            target.output_with_history "^L> #{cname}^L #{format[0]}s #{format[1]}you \u{2018}#{message}^L\u{2019}^n"
+            output_with_history "^L> You #{format[0]} #{format[1]}#{target.cname}^L \u{2018}#{message}^L\u{2019}^n"
+            output_inactive_message(target)
           end
-          target.output_with_history "^L> #{cname}^L #{format[0]}s #{format[1]}you \u{2018}#{message}^L\u{2019}^n"
-          output_with_history "^L> You #{format[0]} #{format[1]}#{target.cname}^L \u{2018}#{message}^L\u{2019}^n"
-          output_inactive_message(target)
         end
       end
     end
@@ -67,10 +71,14 @@ module Commands
       else
         target = find_connected_user(target_name)
         if target
-          space = message =~ /^[,']/ ? '' : ' '
-          target.output_with_history "^L> #{cname}^L#{space}#{message}^n (to you)^n"
-          output_with_history "^L> #{cname}^L#{space}#{message}^n (to #{target.cname}^n)^n"
-          output_inactive_message(target)
+          if target.is_ignoring?(self)
+            output "#{target.name} is ignoring you."
+          else
+            space = message =~ /^[,']/ ? '' : ' '
+            target.output_with_history "^L> #{cname}^L#{space}#{message}^n (to you)^n"
+            output_with_history "^L> #{cname}^L#{space}#{message}^n (to #{target.cname}^n)^n"
+            output_inactive_message(target)
+          end
         end
       end
     end

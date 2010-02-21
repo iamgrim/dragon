@@ -3,16 +3,16 @@ module Helpers
   include TalkerUtilities
     
   def output_to_all(message)
-    connected_users.values.each { |u| u.output message unless u.muffled }
+    connected_users.values.each { |u| u.output message unless u.muffled || u.is_ignoring?(self) }
   end
 
   def output_to_some(message, &block)
-    connected_users.values.each { |u| u.output message if !u.muffled && yield(u) }
+    connected_users.values.each { |u| u.output message if !(u.muffled || u.is_ignoring?(self)) && yield(u) }
   end
   
   def channel_output(message)
     connected_users.values.each do |u| 
-      unless u.muffled 
+      unless u.muffled || u.is_ignoring?(self)
         u.output "#{u.get_timestamp}#{message}"
       end
     end
