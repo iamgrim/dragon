@@ -2,8 +2,9 @@
 
 This code is copyright (c) 2010 Dockyard Enterprises. All rights reserved.
 You may not read, copy, modify or run the code without a license. Offenders 
-may be subject to punitive action. You may not continue reading beyond this
-point without a license.
+may be subject to punitive action. License holders may only run the code 
+privately for the purposes of testing and evaluation. You may not continue 
+reading beyond this point without a license.
 
 == Requirements
 ruby 1.9.1 - assumes that the ruby binary is called ruby19
