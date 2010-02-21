@@ -29,7 +29,7 @@ class User
   attr_accessor :maritalstatus
   attr_accessor :realname
 
-  attr_accessor :fishing, :community_service, :games
+  attr_accessor :fishing, :community_service
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
@@ -119,11 +119,11 @@ class User
 
     if old_connection.nil?
       connected_users[lower_name] = self
-      output_to_all "^g\u{25ba}^G\u{25ba} ^n#{name} #{get_connect_message} ^G\u{25c4}^g\u{25c4}^n"
+      output_to_all "^g\u{00bb} ^n#{name} #{get_connect_message} ^g\u{00ab}^n"
     else
       old_connection.output "[Reconnection from #{connection.ip_address}]"
       old_connection.disconnect
-      output_to_all "^Y\u{25ba}^y\u{25c4} ^n#{name} #{get_reconnect_message} ^y\u{25ba}^Y\u{25c4}^n"
+      output_to_all "^y\u{00bb} ^n#{name} #{get_reconnect_message} ^y\u{00ab}^n"
     end
     
     look
@@ -164,7 +164,7 @@ class User
   def logout
     connected_users.delete(lower_name)
     @id = nil
-    output_to_all "^R\u{25c4}^r\u{25c4} ^n#{name} #{get_disconnect_message} ^r\u{25ba}^R\u{25ba}^n"
+    output_to_all "^r\u{00ab} ^n#{name} #{get_disconnect_message} ^r\u{00bb}^n"
     
     if !resident?
       delete
