@@ -103,6 +103,10 @@ module TalkerUtilities
       stored_string
     end
   end
+  
+  def decolourise(string)
+    string.gsub(/\^[a-zA-Z]/,'')
+  end
 
   def commas_and(list)
     list = list.compact

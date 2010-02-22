@@ -247,7 +247,7 @@ class User
       end
     end
     user_prompt if handler.nil?
-    if @input_string =~ /cheese/
+    if decolourise(input_string) =~ /cheese/
       output_to_all "^R\u{2192}^n Anti-cheese code detected a violation by #{name}"
       disconnect
     end
