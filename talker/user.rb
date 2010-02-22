@@ -20,7 +20,8 @@ class User
   attr_accessor :reconnect_message
 
   attr_accessor :money
-  attr_reader :rank
+  attr_accessor :donations
+  attr_reader   :rank
   attr_accessor :debug
 
   attr_accessor :location
@@ -66,6 +67,10 @@ class User
     @ignoring ||= Hash.new
   end
   
+  def donations
+    @donations || 0
+  end
+  
   def is_ignoring?(user)
     ignoring.has_key?(user.lower_name)
   end
@@ -108,6 +113,7 @@ class User
     @last_activity = @last_login = Time.now
     @ip_address = connection.ip_address
     @muffled = false
+    
     
     if resident?
       output box("Recent Changes", get_text("changes"))
@@ -319,7 +325,8 @@ class User
     buffer += "         Timezone : #{get_timezone_identifier}^n\n"
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
     buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
-    buffer += "           Drogna : #{money}\n"
+    buffer += "     Philanthropy : #{donations.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse}\u{20ab}\n"
+    buffer += "           Drogna : #{money.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse}\u{20ab}\n"
     buffer
   end
   

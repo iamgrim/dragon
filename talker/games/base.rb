@@ -195,6 +195,7 @@ module Commands
       end
       output_to_all "^g\u{2192}^n #{cname} generously donates #{amount}\u{20ab} to #{recipient.cname}!"
       self.money -= amount
+      self.donations += amount
       recipient.money += amount
       save
       recipient.save
