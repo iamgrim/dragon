@@ -184,6 +184,23 @@ module Commands
     end
   end
   
+  define_command 'donate' do |message|
+    amount = message.to_i
+    if message.blank? || amount < 1
+      output "Format: donate <amount>"
+    else
+      recipient = self
+      while recipient == self do
+        recipient = connected_users.values[rand(connected_users.length)]
+      end
+      output_to_all "^g\u{2192}^n #{cname} generously donates #{amount}\u{20ab} to #{recipient.cname}!"
+      self.money -= amount
+      recipient.money += amount
+      save
+      recipient.save
+    end
+  end
+  
   define_command 'paint' do |message|
     (object_name, paint_colour) = get_arguments(message, 2)
     if object_name.blank? || paint_colour.blank?
@@ -229,7 +246,7 @@ module Commands
         case rand(5)
         when 0
           Talker.instance.on_fire.delete(command_name)
-          output_to_all "^C\u{25ba}^n #{name} has put out #{command_name}, receiving a 10\u{20ab} reward"
+          output_to_all "^C\u{2192}^n #{name} has put out #{command_name}, receiving a 10\u{20ab} reward"
         when 1
           output "You have reduced the heat but the fire is still burning."
         when 2
