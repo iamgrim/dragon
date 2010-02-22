@@ -49,7 +49,7 @@ class Multi
   end
   
   def output_ex(user, message)
-    users_excluding(user).each { |u| u.output_with_history message }
+    users_excluding(user).each { |u| u.output_with_history message unless u.is_ignoring?(user) }
   end
 
   def names_ex(user)

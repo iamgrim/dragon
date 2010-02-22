@@ -191,6 +191,36 @@ module Commands
     save
   end
   
+  define_command 'ignore' do |target_name|
+    target = find_user(target_name) unless target_name.blank?
+    if target_name.blank?
+      if ignoring.empty?
+        output "Format: ignore <user name>"
+      else
+        output "You are ignoring #{commas_and(ignoring.keys)}."
+      end
+    elsif target == self
+      output "You can't ignore yourself."
+    elsif is_ignoring?(target)
+      output "You are already ignoring #{target.name}. Use unignore to remove this."
+    else
+      self.ignoring[target.lower_name] = true
+      output "You are now ignoring #{target.name}."
+    end
+  end
+  
+  define_command 'unignore' do |target_name|
+    target = target_name.blank? ? self : find_user(target_name)
+    if target == self
+      output "You can't ignore yourself."
+    elsif !is_ignoring?(target)
+      output "You were not ignoring #{target.name}."
+    else
+      self.ignoring.delete(target.lower_name)
+      output "You are no longer ignoring #{target.name}."
+    end    
+  end
+  
   define_command 'charset' do |message|
     if message == "unicode" || message == "utf8"
       self.charset = :unicode

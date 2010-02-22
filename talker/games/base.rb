@@ -234,8 +234,12 @@ module Commands
   end
   
 #  define_command 'arson' do
-#    Talker.instance.start_fire
-#    output "You bad person, look what you did"
+#    if Talker.instance.on_fire.empty?
+#      Talker.instance.start_fire 
+#      output "You bad person, look what you did"
+#    else
+#      output "The talker is already on fire"
+#    end
 #  end
   
   define_command 'hose' do |command_name|

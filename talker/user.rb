@@ -62,6 +62,14 @@ class User
     @aliases ||= Hash.new
   end
 
+  def ignoring
+    @ignoring ||= Hash.new
+  end
+  
+  def is_ignoring?(user)
+    ignoring.has_key?(user.lower_name)
+  end
+
   def password=(password)
     @password = password.crypt("el")
   end
