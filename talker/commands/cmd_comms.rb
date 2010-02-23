@@ -85,15 +85,21 @@ module Commands
   end
   define_alias 'pemote', ',', 'remote', '<'
   
-  define_command 'memo list' do
-    if memos.length > 0
-      i = 0
-      output box("You have #{memos.length} unread memos", 
-        "     ^WFrom                                                              Sent^n\n" +
-        memos.map {|memo| sprintf("%-4.4s ^W%-15.15s ^c%54.54s^n", "(#{i+=1})", memo.from.name, get_timezone.strftime("%l:%M %p, %A %d %B %Y", memo.sent))}.join("\n"))
+  define_command 'memo list' do |message|
+    if message.blank?
+      if memos.length > 0
+        i = 0
+        output box_extra("You have #{memos.length} unread memos", "Sent", memos.map {|memo| sprintf("%-4.4s ^W%-15.15s ^c%54.54s^n", "(#{i+=1})", memo.from.name, get_timezone.strftime("%l:%M %p, %A %d %B %Y", memo.sent))}.join("\n"))
+      else
+        output "You don't have any unread memos."
+      end
     else
-      output "You don't have any unread memos."
+      user = find_user(message)
+      if !user.nil?
+        output "#{user.name} has #{user.memos.length} unread memos."
+      end
     end
+    
   end
   define_alias 'memo list', 'memos'
   
@@ -101,29 +107,33 @@ module Commands
     if message.blank?
       output "Format: memo read <user|number>"
     else
-      if message =~ /[0-9]+/
-        i = message.to_i - 1
-        if i < 0 || i > memos.length - 1
-          output "You don't have a memo corresponding to that number"
-        else
-          memo = memos[i]
-          memos.delete_at(i)
-          output memo.read
-        end
+      if memos.length == 0
+        output "You don't have any unread memos."
       else
-        i = 0
-        while i < memos.length do
-          if memos[i].from.name == find_user(message).name
+        if message =~ /[0-9]+/
+          i = message.to_i - 1
+          if i < 0 || i > memos.length - 1
+            output "You don't have a memo corresponding to that number"
+          else
             memo = memos[i]
-            break
+            memos.delete_at(i)
+            output memo.read
           end
-          i += 1
-        end
-        if !memo.nil?
-          memos.delete_at(i)
-          output memo.read
         else
-          output "You don't have any memos from that person."
+          i = 0
+          while i < memos.length do
+            if memos[i].from.name == find_user(message).name
+              memo = memos[i]
+              break
+            end
+            i += 1
+          end
+          if !memo.nil?
+            memos.delete_at(i)
+            output memo.read
+          else
+            output "You don't have any memos from that person."
+          end
         end
       end
     end
