@@ -246,7 +246,7 @@ module Commands
 
   define_command 'socials' do |user_name|
     if user_name.blank?
-      output box("Socials", Social.names.join(", ").wrap(76))
+      output box("Actions thoust can performe", Social.names.join(", ").wrap(76))
     elsif user = find_user(user_name)
       output box("Socials Owned By #{user.name}", Social.socials_by(user).map{|s| s.name}.join(", ").wrap(76))
     end

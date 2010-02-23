@@ -30,6 +30,7 @@ class User
   attr_accessor :realname
 
   attr_accessor :fishing, :community_service
+  attr_accessor :tripping
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
@@ -152,7 +153,7 @@ class User
       save
       if !was_resident
         output "Thank you for setting a password. Your name is now reserved for future visits."
-        output_to_all "^G\u{2192} ^n#{name} becomes a saved user!"
+        output_to_all "^G\u{2192} ^n#{name} has been granted citizenship of thy realme by immigration officials!"
       else
         output "Password Changed."
       end
@@ -186,7 +187,7 @@ class User
   end
 
   def get_prompt
-    @prompt || "(dragon) "
+    @prompt || "Dragon> "
   end
   
   def get_timestamp_format
@@ -206,15 +207,15 @@ class User
   end
   
   def get_connect_message
-    @connect_message || "connects"
+    @connect_message || "enteres thy realme"
   end
 
   def get_disconnect_message
-    @disconnect_message || "leaves"
+    @disconnect_message || "leaves thy realme"
   end
 
   def get_reconnect_message
-    @reconnect_message || "reconnects"
+    @reconnect_message || "rejoins they realme"
   end
 
   def user_prompt
@@ -314,8 +315,8 @@ class User
     end
     
     buffer += "           Gender : #{gender_symbol}\n"
-    buffer += "   Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
-    buffer += "         Location : #{location}^n\n" unless location.blank?
+    buffer += "   Maritul Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
+    buffer += "        Lowcation : #{location}^n\n" unless location.blank?
     buffer += "         Timezone : #{get_timezone_identifier}^n\n"
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
     buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?

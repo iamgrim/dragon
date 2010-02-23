@@ -3,11 +3,11 @@ module Commands
   require 'socket'
   
   define_command 'commands' do
-    output box("Commands", Commands.names.map{|c|Talker.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
+    output box("Choose thoust command from thy following options", Commands.names.map{|c|Talker.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
   end
 
   define_command 'changes' do 
-    output box("Recent Changes", get_text("changes"))
+    output box("Lateste writings from thy scribes", get_text("changes"))
   end
   
   define_command 'testcard' do
@@ -28,7 +28,7 @@ module Commands
     else
       text = Textfile.get_text "rules_#{name.downcase}"
       if text.blank?
-        output "Sorry, there are no rules for #{name}"
+        output "Thy rules are lacking for #{name}"
       else
         output text
       end
@@ -36,7 +36,7 @@ module Commands
   end
   
   define_command 'version' do
-    output "#{Talker::NAME} - Commit #{Talker::VERSION}\nRunning in #{Talker::LIVE ? 'live' : 'development'} mode."
+    output "#{Talker::NAME} - Committe #{Talker::VERSION}\nThou is inn #{Talker::LIVE ? 'live' : 'development'} mode."
   end
   
   define_command 'idea' do |string|
@@ -47,7 +47,7 @@ module Commands
       if string.downcase =~ /sword/
         output "Sorry, that idea is shit"
       else
-        output "That's an excellent idea, thanks a lot."
+        output "Thank you for thy idea, thoust will surely considere it."
       end
     end
   end
@@ -99,12 +99,12 @@ module Commands
   define_alias 'who', 'w'
 
   define_command 'whod' do
-    output box("Who Debug", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debug] ' : ''}#{u.show_timestamps ? '[stamp collector]' : ''}") }.join("\n"))
+    output box("Ist thy specialyst version of who for scribe", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debuge] ' : ''}#{u.show_timestamps ? '[stamp collector]' : ''}#{u.fishing && u.fishing.subscribed ? '[bisect]' : ''}") }.join("\n"))
   end
   define_alias 'who', 'w'
 
   define_command 'connections' do
-    output box("Connections", connected_users.values.map { |u| 
+    output box("Connections to thy realm", connected_users.values.map { |u| 
       c = u.active? ? "^G+" : "^W@"
       sprintf("#{c}^n %-15.15s %-9.9s ^c%47.47s", u.name, short_time(u.idle_time), "Connected from #{u.ip_address} for #{short_time(u.login_time)}")  
       }.join("\n"))
@@ -130,7 +130,7 @@ module Commands
         bars = sprintf("%-45s", ("\u{25a0}" * (((5400 - u.idle_time) / 120)+1)) + " #{u.idle_message}")
         buffer += sprintf("%15.15s %-77.77s\n", u.name, "^C|^R#{bars.slice(0,15)}^C|^Y#{bars.slice(15,15)}^C|^G#{bars.slice(30,15)}^C| ^c#{short_time(u.idle_time)}^n")
       end
-      output box("User Activity", buffer)
+      output box("Peasant Activity on thy realme", buffer)
     end
   end
   define_alias 'idle', 'active'
@@ -187,7 +187,7 @@ module Commands
   define_alias 'password', 'passwd'
 
   define_command 'history' do
-    output title_line("History") + "\n" + talker_history.to_s(get_timestamp_format, get_timezone) + "\n" + blank_line
+    output title_line("Respect thy Worlde Histore") + "\n" + talker_history.to_s(get_timestamp_format, get_timezone) + "\n" + blank_line
   end
   define_alias 'history', 'recall', 'review'
 
