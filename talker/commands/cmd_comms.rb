@@ -136,14 +136,18 @@ module Commands
       output "Format: memo [<user(s)> <message>|list|read <user|number>]"
     else
       users = find_users(target)
-      if !users.nil?
-        users.each do |user|
-          user.send_memo(self, message)
-          if user.logged_in?
-            user.output "#{self.name} sent you a new memo."
+      if users.include?(self)
+        output "You can't send a memo to yourself, you idiot."
+      else
+        if !users.nil?
+          users.each do |user|
+            user.send_memo(self, message)
+            if user.logged_in?
+              user.output "#{self.name} sent you a new memo."
+            end
           end
+          output "Sent memo to #{commas_and(users.map {|user| user.name})}."
         end
-        output "Sent memo to #{commas_and(users.map {|user| user.name})}."
       end
     end
   end
