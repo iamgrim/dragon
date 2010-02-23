@@ -67,8 +67,8 @@ module Commands
   end
 
   define_command 'time' do
-    buffer = Time.now.strftime("Server time is %l:%M %p, %A %d %B %Y") + "\n"
-    buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %l:%M %p, %A %d %B %Y") + "\n" if get_timezone_identifier != Talker::TIMEZONE
+    buffer = "Server time is #{Time.now.strftime("%l:%M %p, %A %d %B %Y").strip}\n"
+    buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %l:%M %p, %A %d %B %Y").strip + "\n" if get_timezone_identifier != Talker::TIMEZONE
     buffer += "Telnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old\n"
     output box("Time", buffer)
   end

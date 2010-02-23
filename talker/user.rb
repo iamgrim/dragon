@@ -246,7 +246,7 @@ class User
         end
       
         if !active? && memos.length > 0
-          output "You have #{memos.length.to_s} unread memos."
+          output "You have #{memos.length.to_s} unread #{pluralise('memo', memos.length)}."
         end
         @last_activity = Time.now
       end
@@ -306,7 +306,7 @@ class User
   end
   
   def examine
-    buffer = "       First seen : #{first_seen}\n"
+    buffer = "       First seen : #{get_timezone.strftime("%l:%M %p, %A %d %B %Y", first_seen).strip}\n"
     if logged_in?
       buffer += "       Login time : #{time_in_words(login_time)}\n"
       buffer += "        Idle time : #{time_in_words(idle_time)}\n"
@@ -327,7 +327,7 @@ class User
     buffer += "           Gender : #{gender_symbol}\n"
     buffer += "   Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
     buffer += "         Location : #{location}^n\n" unless location.blank?
-    buffer += "         Timezone : #{get_timezone_identifier}^n\n"
+    buffer += "         Timezone : #{get_timezone_identifier.gsub(/_/, ' ')}^n\n"
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
     buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
     buffer += "     Philanthropy : #{donations.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse}\u{20ab}\n"

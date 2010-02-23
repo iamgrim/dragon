@@ -89,14 +89,14 @@ module Commands
     if message.blank?
       if memos.length > 0
         i = 0
-        output box_extra("You have #{memos.length} unread memos", "Sent", memos.map {|memo| sprintf("%-4.4s ^W%-15.15s ^c%54.54s^n", "(#{i+=1})", memo.from.name, get_timezone.strftime("%l:%M %p, %A %d %B %Y", memo.sent))}.join("\n"))
+        output box_extra("You have #{memos.length} unread #{pluralise('memo', memos.length)}", "Sent", memos.map {|memo| sprintf("%-4.4s ^W%-15.15s ^c%54.54s^n", "(#{i+=1})", memo.from.name, get_timezone.strftime("%l:%M %p, %A %d %B %Y", memo.sent))}.join("\n"))
       else
         output "You don't have any unread memos."
       end
     else
       user = find_user(message)
       if !user.nil?
-        output "#{user.name} has #{user.memos.length} unread memos."
+        output "#{user.name} has #{user.memos.length} unread #{pluralise('memo', user.memos.length)}."
       end
     end
     

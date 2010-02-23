@@ -174,7 +174,7 @@ module Helpers
   
   def look
     num = connected_users.keys.length
-    output "There #{is_are(num)} #{num} #{pluralise('user', num)} online: #{commas_and(connected_users.values.map{|u|u.name})}." + (memos.length > 0 ? "\nYou have #{memos.length.to_s} unread memos." : '')
+    output "There #{is_are(num)} #{num} #{pluralise('user', num)} online: #{commas_and(connected_users.values.map{|u|u.name})}." + (memos.length > 0 ? "\nYou have #{memos.length.to_s} unread #{pluralise('memo', memos.length)}." : '')
   end
   
   def talker_history
