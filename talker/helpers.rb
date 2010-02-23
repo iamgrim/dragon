@@ -39,6 +39,11 @@ module Helpers
   def find_user(name, options={})
     find_with_partial_matching(all_users, name, options)
   end
+  
+  def find_users(names)
+    users = names.split(/,/).map {|name| find_user(name)}
+    users.include?(nil) ? nil : users
+  end
     
   def find_connected_user(name, options={})
     find_with_partial_matching(connected_users, name, options)
@@ -169,7 +174,7 @@ module Helpers
   
   def look
     num = connected_users.keys.length
-    output "There #{is_are(num)} #{num} #{pluralise('user', num)} online: #{commas_and(connected_users.values.map{|u|u.name})}"
+    output "There #{is_are(num)} #{num} #{pluralise('user', num)} online: #{commas_and(connected_users.values.map{|u|u.name})}." + (memos.length > 0 ? "\nYou have #{memos.length.to_s} unread memos." : '')
   end
   
   def talker_history

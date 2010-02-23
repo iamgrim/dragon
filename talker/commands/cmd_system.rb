@@ -67,15 +67,15 @@ module Commands
   end
 
   define_command 'time' do
-    buffer = Time.now.strftime("Server time is %I:%M %p, %A %d %B %Y") + "\n"
-    buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %I:%M %p, %A %d %B %Y") + "\n" if get_timezone_identifier != Talker::TIMEZONE
+    buffer = Time.now.strftime("Server time is %l:%M %p, %A %d %B %Y") + "\n"
+    buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %l:%M %p, %A %d %B %Y") + "\n" if get_timezone_identifier != Talker::TIMEZONE
     buffer += "Telnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old\n"
     output box("Time", buffer)
   end
 
   define_command 'examine' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output box("#{target.class.name} #{target.name}", encode_string(target.examine, charset).wrap(77)) if target
+    output box("#{target.class.name} #{target.name}", encode_string(target.examine, charset).wrap(75)) if target
   end
   define_alias 'examine', 'finger', 'profile', 'x'
 

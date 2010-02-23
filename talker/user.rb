@@ -30,6 +30,8 @@ class User
   attr_accessor :maritalstatus
   attr_accessor :realname
 
+  attr_accessor :memos
+
   attr_accessor :fishing, :community_service
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
@@ -243,6 +245,9 @@ class User
           command.execute(self, (body || "").gsub(/(\^+)$/, '').strip)
         end
       
+        if !active? && memos.length > 0
+          output "You have #{memos.length.to_s} unread memos."
+        end
         @last_activity = Time.now
       end
     end
@@ -332,6 +337,15 @@ class User
   
   def items
     @items ||= Items.new
+  end
+  
+  def memos
+    @memos ||= []
+  end
+  
+  def send_memo(from, message)
+    memos.push Memo.new(self, from, message)
+    save
   end
   
   def self.load(name)
