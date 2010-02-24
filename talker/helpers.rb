@@ -7,7 +7,7 @@ module Helpers
   end
 
   def output_to_some(message, &block)
-    connected_users.values.each { |u| u.output message if !(u.muffled || u.is_ignoring?(self)) && yield(u) }
+    connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" if !(u.muffled || u.is_ignoring?(self)) && yield(u) }
   end
   
   def channel_output(message)
