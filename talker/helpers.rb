@@ -119,6 +119,7 @@ module Helpers
   end
   
   def output(message)
+    message.gsub(/([a-z])/) {|s| (rand(2) > 0 ? $1.upcase : $1)} if tripping
     buffer = "\r" + colourise(encode_string(message, charset), self.colour).gsub("\n", "\\n") + "\033[0K\\n"
     buffer += (colourise(encode_string(get_prompt, charset), self.colour) + "\377\371") if Talker.instance.current_id != id
     raw_send buffer
@@ -158,7 +159,7 @@ module Helpers
   
   def reboot
     if developer?
-      debug_message "Rebooting..."
+      debug_message "Rebooting thy realme..."
       Talker.instance.save
       Talker.instance.shutdown = true
     end
@@ -174,7 +175,7 @@ module Helpers
   
   def look
     num = connected_users.keys.length
-    buffer = "There #{is_are(num)} #{num} #{pluralise('user', num)} online: #{commas_and(connected_users.values.map{|u|u.name})}."
+    buffer = "There #{is_are(num)} #{num} #{pluralise('pheasant', num)} on thy realme: #{commas_and(connected_users.values.map{|u|u.name})}."
     if logged_in?
       buffer += memos.length > 0 ? "\nYou have #{memos.length.to_s} unread #{pluralise('memo', memos.length)}." : ''
     end

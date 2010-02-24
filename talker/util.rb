@@ -96,6 +96,7 @@ module TalkerUtilities
       while match = scanner.scan_until(/\^(\S?)/)
         stored_string << match.slice(0, match.length - scanner.matched_size)
         l = scanner[1]
+        l = l =~ /a-z/ ? 'a' : 'A' if tripping
         l = RANDOM_COLOUR[l][rand(RANDOM_COLOUR[l].length)] if RANDOM_COLOUR.keys.include?(l)
         stored_string << colours[l] if !l.blank? && colours.keys.include?(l)
       end
@@ -156,14 +157,14 @@ module TalkerUtilities
   
   # for boxed content  
   def box(title, text)
-    buffer = "^B\u{250C}\u{2500}\u{2524} ^Y#{title} ^B\u{251C}" + ("\u{2500}" * (72 - title.length)) + "\u{2510}^n\n"
+    buffer = "^P\u{250C}\u{2500}\u{2524} ^G#{title} ^P\u{251C}" + ("\u{2500}" * (72 - title.length)) + "\u{2510}^n\n"
     if text.length > 0
     buffer += text.split("\n").map { |s|
       width = 75 + s.length - colourise(s, false).length
-      sprintf("^B\u{2502}^n %-#{width}.#{width}s ^B\u{2502}^n", s)
+      sprintf("^P\u{2502}^n %-#{width}.#{width}s ^P\u{2502}^n", s)
       }.join("\n") + "\n"
     end
-    buffer += "^B\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
+    buffer += "^P\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
   end
   
   # dual-title box!
@@ -180,11 +181,11 @@ module TalkerUtilities
   
   # for content that exceeds the 80 character width box
   def title_line(text)
-    "^B\u{2500}\u{2500}\u{2524} ^Y#{text} ^B\u{251C}" + ("\u{2500}" * (73 - text.length)) + "^n"
+    "^P\u{2500}\u{2500}\u{2524} ^G#{text} ^P\u{251C}" + ("\u{2500}" * (73 - text.length)) + "^n"
   end
   
   def blank_line
-    "^B\u{2500}" * 79 + "^n\n"
+    "^P\u{2500}" * 79 + "^n\n"
   end
   
   def get_arguments(string, num)

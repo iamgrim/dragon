@@ -28,7 +28,7 @@ require 'talker/games/fishing'
 require 'talker/games/connectfour'
 
 class Talker
-  NAME    = 'Dragon World'
+  NAME    = 'Dragon Worlde'
   VERSION = `cat .git/refs/heads/master`.chomp
   TIMEZONE = 'Europe/London'
   
@@ -193,7 +193,7 @@ class Talker
   end
 
   def debug_message(message)
-    @connected_users.values.select {|u|u.debug}.each { |u| u.output "^g[debug] #{message}^n" }
+    @connected_users.values.select {|u|u.debug}.each { |u| u.output "^g[debuge] #{message}^n" }
   end  
   
   def method_missing(method_sym, *arguments, &block)
@@ -244,7 +244,7 @@ class Talker
     if !@attributes[:on_fire].empty?
       grow_fire
       @connected_users.each do |name, u|
-        u.output "^R\u{2192}^n Dragon World is on fire! #{@attributes[:on_fire].length} commands are ablaze!"
+        u.output "^R\u{2192}^n Thy realm ist on fire! #{@attributes[:on_fire].length} commande are ablaze!"
       end
     end
     schedule_tick

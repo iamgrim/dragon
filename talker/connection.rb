@@ -94,6 +94,10 @@ class Connection
     :ascii
   end
   
+  def tripping
+    false
+  end
+  
   def show_timestamps
     false
   end
