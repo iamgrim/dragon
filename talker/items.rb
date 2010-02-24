@@ -21,7 +21,8 @@ end
 
 class Items < Array
   SHOP = Items.new([
-    Item.new("Dice", "A six sided die", 1, 150)#,
+    Item.new("Dice", "A six sided die", 1, 150),
+    Item.new("LSD", "Lysergic acid diethylamide", 1, 50)
 #    Item.new("Carbon Fishing Rod", "Requires 16 class 3 catches or above", 1, 15000, true)
   ])
   def add(item)
@@ -74,13 +75,36 @@ module Commands
     elsif item_to_buy = Items::SHOP.find(item_name)
       if purchased_item = item_to_buy.purchase_by(self)
         self.items.add(purchased_item)
-        output_to_all "^Y\u{2192}^n #{cname} buys a #{purchased_item.name}"
+        output_to_all "^Y\u{2192}^n #{cname} buys #{purchased_item.name}"
         save
       else
         output "You can't afford to buy #{item_to_buy.name}. It costs #{item_to_buy.price}\u{20ab} and you only have #{money}\u{20ab}."
       end
     else
       output "Unknown item '#{item_name}'. Type ^Lbuy^n to view the items available."
+    end
+  end
+  define_alias 'buy', 'shop'
+  
+  define_command 'eat' do |item_name|
+    if item_name.blank?
+      output "Format: eat <item name>"
+    else
+      item = items.find(item_name)
+      if item.nil?
+        output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
+      elsif item.name == "LSD"
+        items.deplete(item.name)
+        self.tripping = Time.now + 3600
+        output_to_all "^Y\u{2192}^n #{cname} eats an LSD tablet."
+        save
+      elsif item.name == "Dice"
+        items.deplete(item.name)
+        output_to_all "^Y\u{2192}^n #{cname} swallowed a die."
+        save
+      else
+        output "You can't eat '#{item.name}."
+      end
     end
   end
   

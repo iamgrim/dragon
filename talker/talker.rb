@@ -238,6 +238,11 @@ class Talker
       if u.active?
         u.fishing.tick(u) if u.fishing
         u.community_service.tick(u) if u.community_service
+        
+        if u.tripping && u.tripping < now
+          u.tripping = nil
+          u.output "^nYou feel better now."
+        end
       end
     end
 

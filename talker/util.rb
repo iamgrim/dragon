@@ -189,7 +189,7 @@ module TalkerUtilities
   end
   
   def blank_line
-    "^P\u{2500}" * 79 + "^n\n"
+    "^P" + ("\u{2500}" * 79) + "^n\n"
   end
   
   def get_arguments(string, num)
