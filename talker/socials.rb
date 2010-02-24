@@ -160,7 +160,8 @@ class Social
 
     lower_name = name.downcase
     social = @socials[lower_name] = Social.new(lower_name, s['creator'] || "", s['nt-u'] || "", s['ut-u'] || "")
-    Commands.add_command(lower_name, social) unless Commands.lookup(lower_name)
+    c = Commands.lookup(lower_name)
+    Commands.add_command(lower_name, social) unless c && c.class == Command
     social
   end
   
