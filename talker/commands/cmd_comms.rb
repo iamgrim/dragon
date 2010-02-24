@@ -145,18 +145,26 @@ module Commands
     if message.blank?
       output "Format: memo [<user(s)> <message>|list|read <user|number>]"
     else
-      users = find_users(target)
-      if users.include?(self)
-        output "You can't send a memo to yourself, you idiot."
-      else
-        if !users.nil?
+      users = find_users(target).uniq
+      if !users.nil?
+        if users.include?(self)
+          output "You can't send a memo to yourself, you idiot."
+        else
+          sent_users = []
           users.each do |user|
-            user.send_memo(self, message)
-            if user.logged_in?
-              user.output "#{self.name} sent you a new memo."
+            if user.is_ignoring?(self)
+              output "#{user.name} is ignoring you."
+            elsif is_ignoring?(user)
+              output "You are supposed to be ignoring #{user.name}. Why would you want to send them a memo?"
+            else
+              user.send_memo(self, message)
+              sent_users.push user
+              if user.logged_in?
+                user.output "#{self.name} sent you a new memo."
+              end  
             end
           end
-          output "Sent memo to #{commas_and(users.map {|user| user.name})}."
+          output "Sent memo to #{commas_and(sent_users.map {|user| user.name})}." unless sent_users.length == 0  
         end
       end
     end

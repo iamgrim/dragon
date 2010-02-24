@@ -169,14 +169,14 @@ module TalkerUtilities
   
   # dual-title box!
   def box_extra(title, subtitle, text)
-    buffer = "^B\u{250C}\u{2500}\u{2524} ^Y#{title} ^B\u{251C}" + ("\u{2500}" * (67 - (title.length + subtitle.length))) + "\u{2524} ^c#{subtitle} ^B\u{251C}\u{2500}\u{2510}^n\n"
+    buffer = "^P\u{250C}\u{2500}\u{2524} ^G#{title} ^P\u{251C}" + ("\u{2500}" * (67 - (title.length + subtitle.length))) + "\u{2524} ^g#{subtitle} ^P\u{251C}\u{2500}\u{2510}^n\n"
     if text.length > 0
     buffer += text.split("\n").map { |s|
       width = 75 + s.length - colourise(s, false).length
-      sprintf("^B\u{2502}^n %-#{width}.#{width}s ^B\u{2502}^n", s)
+      sprintf("^P\u{2502}^n %-#{width}.#{width}s ^P\u{2502}^n", s)
       }.join("\n") + "\n"
     end
-    buffer += "^B\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
+    buffer += "^P\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
   end
   
   # for content that exceeds the 80 character width box

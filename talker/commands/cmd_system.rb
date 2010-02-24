@@ -99,7 +99,7 @@ module Commands
   define_alias 'who', 'w'
 
   define_command 'whod' do
-    output box("Ist thy specialyst version of who for scribe", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debuge] ' : ''}#{u.show_timestamps ? '[stamp collector]' : ''}#{u.fishing && u.fishing.subscribed ? '[bisect]' : ''}") }.join("\n"))
+    output box("Ist thy specialyst version of who for scribe", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debuge] ' : ''}#{u.show_timestamps ? '[stamp collector] ' : ''}#{u.fishing && u.fishing.subscribed ? '[bisect] ' : ''}") }.join("\n"))
   end
   define_alias 'who', 'w'
 
