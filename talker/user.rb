@@ -38,42 +38,37 @@ class User
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
   attr_accessor :idle_message, :muffled
+  attr_reader :history, :aliases, :ignoring
 
   RANK = ['Peasant', 'Beadle', 'Knight', 'Baron', 'Earl', 'Princess', 'King']
   RANK_COLOUR = ['', '^y', '^Y', '^G', '^C', '^P', '^R']
 
-  # this is only called for new users, not existing users
   def initialize(name)
     @name = name
-    @first_seen = @last_activity = Time.now
-    @total_connections = 0
-    @total_time = 0
-    @money = 0
-    @rank = 0
-    @colour = :ansi
-    @muffled = false
+    set_initial_values
+  end
+  
+  # called for new and existing users
+  def set_initial_values
+    now = Time.now
+    @first_seen ||= now
+    @last_activity ||= now
+    @total_connections ||= 0
+    @total_time ||= 0
+    @money ||= 0
+    @donations ||= 0
+    @rank ||= 0
+    @colour ||= :ansi
+    @muffled ||= false
+    @history ||= History.new
+    @aliases ||= {}
+    @ignoring ||= {}
   end
 
   def lower_name
     name.downcase
   end
 
-  def history
-    @history ||= History.new
-  end
-
-  def aliases
-    @aliases ||= Hash.new
-  end
-
-  def ignoring
-    @ignoring ||= Hash.new
-  end
-  
-  def donations
-    @donations || 0
-  end
-  
   def is_ignoring?(user)
     ignoring.has_key?(user.lower_name)
   end
@@ -356,6 +351,7 @@ class User
       user = YAML.load(f.read)
       f.close
     end
+    user.set_initial_values
     user
   end
 
