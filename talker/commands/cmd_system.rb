@@ -28,7 +28,7 @@ module Commands
     else
       text = Textfile.get_text "rules_#{name.downcase}"
       if text.blank?
-        output "Thy rules are lacking for #{name}"
+        output "Sorry, the rules for #{name} are out of stock."
       else
         output text
       end
@@ -57,19 +57,19 @@ module Commands
       output "Format: bug <message>"
     else
       log 'bug', "#{self.name} #{message}"
-      output "Thank you, Merlin will look in to that as soon as possible."
+      output "Thanke you, I assure you this will be investigated with the greateste urgence."
     end
   end
 
   define_command 'quit' do
-    output "Goodbye #{name}"
+    output "Farewell #{name}, thou shalt hope to see you again soone!"
     disconnect
   end
 
   define_command 'time' do
-    buffer = "Server time is #{Time.now.strftime("%l:%M %p, %A %d %B %Y").strip}\n"
+    buffer = "Realm time is #{Time.now.strftime("%l:%M %p, %A %d %B %Y").strip}\n"
     buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %l:%M %p, %A %d %B %Y").strip + "\n" if get_timezone_identifier != Talker::TIMEZONE
-    buffer += "Telnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old\n"
+    buffer += "Tallnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old\n"
     output box("Time", buffer)
   end
 
@@ -94,7 +94,7 @@ module Commands
 
   define_command 'who' do
     len = active_users.map {|u|u.name.length}.max    
-    output box("Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{u.title}^n") }.join("\n"))
+    output box("Dr Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{u.title}^n") }.join("\n"))
   end
   define_alias 'who', 'w'
 
@@ -104,7 +104,7 @@ module Commands
   define_alias 'who', 'w'
 
   define_command 'connections' do
-    output box("Connections to thy realm", connected_users.values.map { |u| 
+    output box("Peasants on thy realm including those attending slumber parties", connected_users.values.map { |u| 
       c = u.active? ? "^G+" : "^W@"
       sprintf("#{c}^n %-15.15s %-9.9s ^c%47.47s", u.name, short_time(u.idle_time), "Connected from #{u.ip_address} for #{short_time(u.login_time)}")  
       }.join("\n"))
@@ -130,7 +130,7 @@ module Commands
         bars = sprintf("%-45s", ("\u{25a0}" * (((5400 - u.idle_time) / 120)+1)) + " #{u.idle_message}")
         buffer += sprintf("%15.15s %-77.77s\n", u.name, "^C|^R#{bars.slice(0,15)}^C|^Y#{bars.slice(15,15)}^C|^G#{bars.slice(30,15)}^C| ^c#{short_time(u.idle_time)}^n")
       end
-      output box("Peasant Activity on thy realme", buffer)
+      output box("Active peasants on thy realme", buffer)
     end
   end
   define_alias 'idle', 'active'

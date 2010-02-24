@@ -123,6 +123,10 @@ module TalkerUtilities
     amount == 1 ? 'is' : 'are'
   end
   
+  def commify(amount)
+    amount.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1,").reverse
+  end
+  
   def time_in_words(secs)
     secs = secs.to_i
     if secs == 0

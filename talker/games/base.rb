@@ -146,6 +146,24 @@ module Commands
     end
   end
 
+  define_command 'donate' do |message|
+    amount = message.to_i
+    if message.blank? || amount < 1
+      output "Format: donate <amount>"
+    else
+      recipient = self
+      while recipient == self do
+        recipient = connected_users.values[rand(connected_users.length)]
+      end
+      output_to_all "^g\u{2192}^n #{cname} generously donates #{amount}\u{20ab} to #{recipient.cname}!"
+      self.money -= amount
+      self.donations += amount
+      recipient.money += amount
+      save
+      recipient.save
+    end
+  end
+  
   define_command 'steal' do |message|
     (recipient_name, amount) = get_arguments(message, 2)
     amount = amount.to_i
@@ -181,24 +199,6 @@ module Commands
           end
         end
       end
-    end
-  end
-  
-  define_command 'donate' do |message|
-    amount = message.to_i
-    if message.blank? || amount < 1
-      output "Format: donate <amount>"
-    else
-      recipient = self
-      while recipient == self do
-        recipient = connected_users.values[rand(connected_users.length)]
-      end
-      output_to_all "^g\u{2192}^n #{cname} generously donates #{amount}\u{20ab} to #{recipient.cname}!"
-      self.money -= amount
-      self.donations += amount
-      recipient.money += amount
-      save
-      recipient.save
     end
   end
   
