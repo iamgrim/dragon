@@ -193,7 +193,7 @@ module Commands
   
   define_command 'ignore' do |target_name|
     target = find_user(target_name) unless target_name.blank?
-    if target_name.blank?
+    if target_name.blank? || target.nil?
       if ignoring.empty?
         output "Format: ignore <user name>"
       else
