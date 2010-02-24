@@ -6,7 +6,7 @@ module Helpers
     connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" unless u.muffled || u.is_ignoring?(self) }
   end
 
-  def output_to_some(message, &block)
+  def output_to_some(message, options={:show_timestamps => true}, &block)
     connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" if !(u.muffled || u.is_ignoring?(self)) && yield(u) }
   end
   
