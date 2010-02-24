@@ -226,6 +226,7 @@ class User
   end
 
   def handle_input(input_string)
+    user_alias_executing = !@input_string.nil?
     @input_string = input_string
     if handler
       send(handler, input_string)
@@ -235,7 +236,7 @@ class User
 
         (command_name, body) = split_input(input_string)
 
-        command = find_with_partial_matching(aliases, command_name, :silent => true)
+        command = find_with_partial_matching(aliases, command_name, :silent => true) unless user_alias_executing
         command = find_command(command_name.downcase) if command.nil?
         if command
           command.execute(self, (body || "").gsub(/(\^+)$/, '').strip)
