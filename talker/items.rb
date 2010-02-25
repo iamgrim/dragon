@@ -113,21 +113,37 @@ module Commands
             end
           end
           save
-          debug_message "#{name} bile = #{bile}"
         else
           output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
         end
       elsif item.name == "LSD"
         items.deplete(item.name)
         self.tripping = Time.now + 3600
-        output_to_all "^Y\u{2192}^n #{cname} eats an LSD tablet."
+        output_to_all "^Y\u{2192}^n #{cname} eats an LSD tablet"
         save
       elsif item.name == "Dice"
         items.deplete(item.name)
-        output_to_all "^Y\u{2192}^n #{cname} swallowed a die."
+        output_to_all "^Y\u{2192}^n #{cname} swallowed a die"
         save
       else
-        output "You can't eat '#{item.name}."
+        output "You can't eat #{item.name}."
+      end
+    end
+  end
+  
+  define_command 'drink' do |item_name|
+    if item_name.blank?
+      output "Format: drink <item name>"
+    else
+      item = items.find(item_name)
+      item = fishing.baitbox.find(item_name) if item.nil? && !fishing.nil?
+      if item.nil?
+        output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
+      elsif item.name == 'Water'
+        items.deplete(item.name)
+        output_to_all "^Y\u{2192}^n #{cname} drinks some water"
+      else
+        output "You can't drink #{item.name}."
       end
     end
   end
