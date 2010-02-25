@@ -11,6 +11,7 @@ module Helpers
   end
   
   def channel_output(message)
+    message = vomit_string(message) if vomited_on
     connected_users.values.each do |u| 
       unless u.muffled || u.is_ignoring?(self)
         u.output "#{u.get_timestamp}#{message}"
@@ -119,7 +120,7 @@ module Helpers
   end
   
   def output(message)
-    message.gsub(/([a-z])/) {|s| (rand(2) > 0 ? $1.upcase : $1)} if tripping
+    #message = message.gsub(/([a-z])/) {|s| (rand(2) > 0 ? $1.upcase : $1)} if tripping
     buffer = "\r" + colourise(encode_string(message, charset), self.colour).gsub("\n", "\\n") + "\033[0K\\n"
     buffer += (colourise(encode_string(get_prompt, charset), self.colour) + "\377\371") if Talker.instance.current_id != id
     raw_send buffer

@@ -209,6 +209,21 @@ module TalkerUtilities
   def multi_target?(string)
     string =~ /,/ || string =~ /^[1-9]/
   end
+  
+  def interleave(string, tokens)
+    out = ""
+    n = 0
+    string.each_char do |c|
+      out += tokens[n] + c
+      n = n + 1
+      n = 0 if n >= tokens.length
+    end
+    out
+  end
+  
+  def vomit_string(string)
+    "#{interleave(colourise(string, false), ['^G', '^Y'])}^n"
+  end
 
   UNICODE_FALLBACKS = {
     

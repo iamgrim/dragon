@@ -266,4 +266,37 @@ module Commands
       end
     end
   end
+  
+  define_command 'vomit' do |target_name|
+    if bile.nil? || bile < 4
+      output "You do not have enough bile in your stomach."
+    else
+      target = target_name.blank? ? self : find_user(target_name)
+      if target
+        if target == self
+          output_to_all vomit_string("\u{2192} #{name} vomits all over #{gender == :male ? 'him' : 'her'}self!")
+        else
+          output_to_all vomit_string("\u{2192} #{name} vomits all over #{target.name}!")
+        end
+        self.bile = 0
+        target.vomited_on = true
+        save
+      end
+    end
+  end
+  
+  define_command 'wash' do
+    soap = items.find('Soap')
+    water = items.find('Water')
+    if soap.nil?
+      output "You don't have any soap to wash with!"
+    elsif water.nil?
+      output "You don't have any water to wash with!"
+    else
+      items.deplete('Soap')
+      items.deplete('Water')
+      self.vomited_on = nil
+      output_to_all "^B\u{2192}^n #{name} washes themselves clean!"
+    end
+  end
 end

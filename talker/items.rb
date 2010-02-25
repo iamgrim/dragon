@@ -22,7 +22,9 @@ end
 class Items < Array
   SHOP = Items.new([
     Item.new("Dice", "A six sided die", 1, 150),
-    Item.new("LSD", "Lysergic acid diethylamide", 1, 50)
+    Item.new("LSD", "Lysergic acid diethylamide", 1, 50),
+    Item.new("Soap", "A surfactant cleaning compound, used for personal cleaning", 1, 200),
+    Item.new("Water", "Bottled water from the springs of the dragon caves", 1, 100)
 #    Item.new("Carbon Fishing Rod", "Requires 16 class 3 catches or above", 1, 15000, true)
   ])
   def add(item)
@@ -92,7 +94,29 @@ module Commands
     else
       item = items.find(item_name)
       if item.nil?
-        output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
+        bait = fishing.baitbox.find(item_name) if item.nil? && !fishing.nil?
+        if bait
+          fishing.baitbox.deplete(bait.name)
+          output_to_all "^Y\u{2192}^n #{cname} eats a #{bait.name.gsub(/s$/, '').downcase}."
+          if ["Maggots", "Castors", "Worms"].include?(bait.name)
+            self.bile ||= 0
+            self.bile = self.bile + 1
+            case self.bile
+            when 1 then output "You feel slightly unwell."
+            when 2 then output "You feel moderately unwell."
+            when 3 then output "You feel very unwell."
+            else        output "You feel like you are doing to be sick."
+            end
+            if self.bile > 5
+              c = Commands.lookup('vomit')
+              c.execute(self, "") if c
+            end
+          end
+          save
+          debug_message "#{name} bile = #{bile}"
+        else
+          output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
+        end
       elsif item.name == "LSD"
         items.deplete(item.name)
         self.tripping = Time.now + 3600

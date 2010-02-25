@@ -33,7 +33,7 @@ class User
   attr_accessor :memos
 
   attr_accessor :fishing, :community_service
-  attr_accessor :tripping
+  attr_accessor :tripping, :bile, :vomited_on
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
