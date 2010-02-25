@@ -265,7 +265,7 @@ module Commands
       if r < 2 # 0 1
         if rand(10000) == 5000
           winnings = 10000
-          output_to_all "^C\u{2192}^n #{name} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
+          output_to_all "^C><>^n #{name} caught a ^LShopping Trolley^n worth #{winnings}\u{20ab}!"
         else
           winnings = (fishing.catch_size * 4).round
           best_string = ""
@@ -273,7 +273,7 @@ module Commands
           best_string = " ^L(personal best)^n" if personal_best = fishing.set_record?
           best_string = " ^G(world record)^n" if Fishing.set_world_record?(self)
           
-          buffer = "^C\u{2192}^n #{name} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}"
+          buffer = "^C><>^n #{name} caught a #{Fishing::pounds_oz(fishing.catch_size)} ^L#{fishing.fish.name}^n worth #{winnings}\u{20ab}!#{best_string}^n"
           if personal_best
             output_to_all buffer
           else
