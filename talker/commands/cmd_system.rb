@@ -82,12 +82,12 @@ module Commands
   define_command 'settings' do |target_name|
     target = target_name.blank? ? self : find_user(target_name)
     if target    
-      buffer = "     Title : #{name} #{title}\n"
-      buffer += "     Login : ^g\u{25ba}^G\u{25ba} ^n#{name} #{get_connect_message} ^G\u{25c4}^g\u{25c4}\n"
-      buffer += "Disconnect : ^R\u{25c4}^r\u{25c4} ^n#{name} #{get_disconnect_message} ^r\u{25ba}^R\u{25ba}\n"
-      buffer += " Reconnect : ^Y\u{25ba}^y\u{25c4} ^n#{name} #{get_reconnect_message} ^y\u{25ba}^Y\u{25c4}\n"
-      buffer += "    Prompt : #{get_prompt}\n"
-      buffer += "Timestamps : #{get_timestamp_format}\n" if show_timestamps
+      buffer = "     Title : #{target.name} #{target.title}\n"
+      buffer += "     Login : ^g\u{25ba}^G\u{25ba} ^n#{target.name} #{target.get_connect_message} ^G\u{25c4}^g\u{25c4}\n"
+      buffer += "Disconnect : ^R\u{25c4}^r\u{25c4} ^n#{target.name} #{target.get_disconnect_message} ^r\u{25ba}^R\u{25ba}\n"
+      buffer += " Reconnect : ^Y\u{25ba}^y\u{25c4} ^n#{target.name} #{target.get_reconnect_message} ^y\u{25ba}^Y\u{25c4}\n"
+      buffer += "    Prompt : #{target.get_prompt}\n"
+      buffer += "Timestamps : #{target.get_timestamp_format}\n" if show_timestamps
       output box("Settings for #{target.name}", buffer)
     end
   end

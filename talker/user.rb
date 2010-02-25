@@ -323,10 +323,9 @@ class User
     
     buffer += "           Gender : #{gender_symbol}\n"
     buffer += "           Drogna : #{commify(money)}\u{20ab}\n"
-    buffer += "     Philanthropy : #{commify(donations)}\u{20ab}\n" if donations > 0
-    buffer += "   Maritul Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
-    buffer += "        Lowcation : #{location}^n\n" unless location.blank?
-    buffer += "     Zone of Tyme : #{get_timezone_identifier.gsub(/_/, ' ')}^n\n" unless get_timezone_identifier == "Europe/London"
+    buffer += "   Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
+    buffer += "         Location : #{location}^n\n" unless location.blank?
+#    buffer += "     Zone of Tyme : #{get_timezone_identifier.gsub(/_/, ' ')}^n\n" unless get_timezone_identifier == "Europe/London"
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
     buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
     buffer
