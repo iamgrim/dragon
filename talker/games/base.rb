@@ -331,13 +331,13 @@ module Commands
   define_command 'pray' do |type|
     self.prayer_status ||= [0, 0]
     (our_father, hail_mary) = self.prayer_status
-    if type =~ /^our/
+    if type =~ /^ou/
       output "^L> You tell God \u{2018}Our Father, who art in heaven, hallowed be thy name. Thy Kingdom come, thy will be done, on earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from evil. For thine is the kingdom, the power and the glory. for ever and ever. Amen\u{2019}^n"
       self.prayer_status = [our_father + 1, hail_mary]
-    elsif type =~ /^hai/
+    elsif type =~ /^ha/
       output "^L> You tell God \u{2018}Hail Mary, full of grace, the Lord is with thee; blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen\u{2019}^n"
       self.prayer_status = [our_father, hail_mary + 1]
-    elsif type =~ /^hos/
+    elsif type =~ /^ho/
       output "^L> You sing to God \u{266a} Give me joy in my heart, keep me praising, Give me joy in my heart, I pray, Give me joy in my heart, keep me praising, Keep me praising 'till the break of day. Sing hosanna, sing hosanna, Sing hosanna to the King of kings! Sing hosanna, sing hosanna, Sing hosanna to the King. \u{266a}^n"
       self.prayer_status = [0, 0]
     else

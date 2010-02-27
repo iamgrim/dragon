@@ -233,6 +233,35 @@ module TalkerUtilities
   def vomit_string(string)
     "#{interleave(colourise(string, false), ['^G', '^Y'])}^n"
   end
+  
+  def alcohol_string(units, string)
+    if units > 4
+      level = (alcohol_units - 3)/2
+      level.times do |i|
+        out = ""
+        in_colour = false
+        string.each_char do |c|
+          if c == "^"
+            in_colour = true
+          elsif in_colour
+            in_colour = false
+          else
+            case rand(100)
+            when 0 then out += "#{c}#{c}"
+            when 1 then false
+            when 2 then false
+            when 3 then out += "#{c}#{[',','.',';',':'][rand(5)]}"
+            when 4 then out += c =~ /[a-yA-Y]/ ? (c.ord + 1).chr : c
+            else
+              out += c
+            end
+          end
+        end
+        string = out
+      end
+    end
+    string
+  end
 
   UNICODE_FALLBACKS = {
     

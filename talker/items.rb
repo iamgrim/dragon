@@ -25,7 +25,11 @@ class Items < Array
     Item.new("LSD", "Lysergic acid diethylamide", 1, 50),
     Item.new("PCP", "Phenylcyclohexylpiperidine", 1, 100),
     Item.new("Soap", "A surfactant cleaning compound, used for personal cleaning", 10, 200),
-    Item.new("Water", "44cl of Dragon Mineral", 1, 100)
+    Item.new("Water", "44cl of Dragon Mineral", 1, 50),
+    Item.new("Half", "Dragon bitter half pint", 1, 50),
+    Item.new("Pint", "Dragon bitter one pint", 1, 100),
+    Item.new("Staylar", "Belgian premium beer 4 cans", 4, 600),
+    Item.new("Vodka", "Dragon brand 70cl (10 servings)", 10, 1500)    
 #    Item.new("Carbon Fishing Rod", "Requires 16 class 3 catches or above", 1, 15000, true)
   ])
   def add(item)
@@ -147,10 +151,10 @@ module Commands
       item = fishing.baitbox.find(item_name) if item.nil? && !fishing.nil?
       if item.nil?
         output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
-      elsif ['Water', 'Wine'].include?(item.name)
+      elsif ['Water', 'Wine', 'Half', 'Pint', 'Staylar', 'Vodka'].include?(item.name)
         drink_time = Time.now - (last_drink || 0)
-        if drink_time < 60
-          output "You need another #{60 - drink_time.round(2)} seconds to finish consuming your current beverage."
+        if drink_time < 15
+          output "You need another #{15 - drink_time.round(2)} seconds to finish consuming your current beverage."
         else
           self.last_drink = Time.now
           if item.name == 'Water'
@@ -160,13 +164,29 @@ module Commands
             items.deplete(item.name)
             output_to_all "^Y\u{2192}^n #{cname} drinks 175ml of wine (2 alcoholic units)"
             self.alcohol_units += 2
+          elsif item.name == 'Half'
+            items.deplete(item.name)
+            output_to_all "^Y\u{2192}^n #{cname} drinks \u{00bd} a pint of Dragon Bitter"
+            self.alcohol_units += 1
+          elsif item.name == 'Pint'
+            items.deplete(item.name)
+            output_to_all "^Y\u{2192}^n #{cname} drinks 1 pint of Dragon Bitter"
+            self.alcohol_units += 2
+          elsif item.name == 'Staylar'
+            items.deplete(item.name)
+            output_to_all "^Y\u{2192}^n #{cname} drinks a can of Staylar"
+            self.alcohol_units += 3
+          elsif item.name == 'Vodka'
+            items.deplete(item.name)
+            output_to_all "^Y\u{2192}^n #{cname} drinks 7cl of Dragon Brand Vodka"
+            self.alcohol_units += 3
           end
           save
         end
       else
         output "You can't drink #{item.name}."
       end
-      debug_message "#{name} #{alcohol_units}"
+      debug_message "#{name} units #{alcohol_units}"
     end
   end
   

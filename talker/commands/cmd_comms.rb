@@ -33,6 +33,7 @@ module Commands
     if message.blank?
       output "Format: tell <user(s)> <message>"
     else
+      message = alcohol_string(alcohol_units, message) if alcohol_units > 0
       if multi_target?(target_name)
         m = find_multi(target_name)
         m.tell(self, message) if m
@@ -65,6 +66,7 @@ module Commands
     if message.blank?
       output "Format: pemote <user(s)> <message>"
     else
+      message = alcohol_string(alcohol_units, message) if alcohol_units > 0
       if multi_target?(target_name)
         m = find_multi(target_name)
         m.pemote(self, message) if m
