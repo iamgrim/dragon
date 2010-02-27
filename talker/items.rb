@@ -147,12 +147,26 @@ module Commands
       item = fishing.baitbox.find(item_name) if item.nil? && !fishing.nil?
       if item.nil?
         output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
-      elsif item.name == 'Water'
-        items.deplete(item.name)
-        output_to_all "^Y\u{2192}^n #{cname} drinks 44cl of water"
+      elsif ['Water', 'Wine'].include?(item.name)
+        drink_time = Time.now - (last_drink || 0)
+        if drink_time < 60
+          output "You need another #{60 - drink_time.round(2)} seconds to finish consuming your current beverage."
+        else
+          self.last_drink = Time.now
+          if item.name == 'Water'
+            items.deplete(item.name)
+            output_to_all "^Y\u{2192}^n #{cname} drinks 44cl of water"
+          elsif item.name == 'Wine'
+            items.deplete(item.name)
+            output_to_all "^Y\u{2192}^n #{cname} drinks 175ml of wine (2 alcoholic units)"
+            self.alcohol_units += 2
+          end
+          save
+        end
       else
         output "You can't drink #{item.name}."
       end
+      debug_message "#{name} #{alcohol_units}"
     end
   end
   

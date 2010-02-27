@@ -222,6 +222,17 @@ class Talker
     if (now.to_i % 120) == 0 # every 2 minutes
       @connected_users.each do |name, u|
         u.raw_send "\377\361" # send IAC NOP
+
+        if u.alcohol_units > 0 && (Time.now - u.last_drink) > 900 # 15 minutes
+          u.alcohol_units -= 2
+          if u.alcohol_units > 0
+            u.output "You are sobering up."
+          else
+            u.alcohol_units = 0
+            u.output "You feel completely sober."
+          end
+        end
+
       end
     end
     

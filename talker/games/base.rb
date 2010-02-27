@@ -327,4 +327,30 @@ module Commands
       output_to_all "^B\u{2192}^n #{name} washes themselves clean!"
     end
   end
+  
+  define_command 'pray' do |type|
+    self.prayer_status ||= [0, 0]
+    (our_father, hail_mary) = self.prayer_status
+    if type =~ /^our/
+      output "^L> You tell God \u{2018}Our Father, who art in heaven, hallowed be thy name. Thy Kingdom come, thy will be done, on earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, as we forgive those who trespass against us. And lead us not into temptation, but deliver us from evil. For thine is the kingdom, the power and the glory. for ever and ever. Amen\u{2019}^n"
+      self.prayer_status = [our_father + 1, hail_mary]
+    elsif type =~ /^hai/
+      output "^L> You tell God \u{2018}Hail Mary, full of grace, the Lord is with thee; blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen\u{2019}^n"
+      self.prayer_status = [our_father, hail_mary + 1]
+    elsif type =~ /^hos/
+      output "^L> You sing to God \u{266a} Give me joy in my heart, keep me praising, Give me joy in my heart, I pray, Give me joy in my heart, keep me praising, Keep me praising 'till the break of day. Sing hosanna, sing hosanna, Sing hosanna to the King of kings! Sing hosanna, sing hosanna, Sing hosanna to the King. \u{266a}^n"
+      self.prayer_status = [0, 0]
+    else
+      output "Format: pray <our father|hail mary|hosanna>"
+    end
+    (our_father, hail_mary) = self.prayer_status
+    if our_father == 4 && hail_mary == 1
+      water = items.find('Water')
+      if water
+        water.name = 'Wine'
+        output_to_all "^B\u{2192}^n #{name} prayers have been answered, #{gender == :male ? 'his' : 'her'} water has mysteriously turned in to wine!"
+        self.prayer_status = [0, 0]
+      end
+    end
+  end
 end
