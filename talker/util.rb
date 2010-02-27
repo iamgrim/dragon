@@ -96,7 +96,7 @@ module TalkerUtilities
       while match = scanner.scan_until(/\^(\S?)/)
         stored_string << match.slice(0, match.length - scanner.matched_size)
         l = scanner[1]
-        l = l =~ /a-z/ ? 'a' : 'A' if tripping
+        l = l =~ /a-z/ ? 'a' : 'A' if tripping && drug_strength == 1
         l = RANDOM_COLOUR[l][rand(RANDOM_COLOUR[l].length)] if RANDOM_COLOUR.keys.include?(l)
         stored_string << colours[l] if !l.blank? && colours.keys.include?(l)
       end
@@ -217,6 +217,15 @@ module TalkerUtilities
       out += tokens[n] + c
       n = n + 1
       n = 0 if n >= tokens.length
+    end
+    out
+  end
+
+  def random_interleave(string, tokens)
+    out = ""
+    len = tokens.length
+    string.each_char do |c|
+      out += tokens[rand(len)] + c
     end
     out
   end

@@ -120,7 +120,19 @@ module Helpers
   end
   
   def output(message)
-    #message = message.gsub(/([a-z])/) {|s| (rand(2) > 0 ? $1.upcase : $1)} if tripping
+#    message = message.gsub(/([aeiou])/) {|s| (rand(4) == 0 ? ["ll", 'y', 'ys'][rand(3)] : $1)} 
+    if tripping && drug_strength > 1
+      message = message.gsub(/([a-z])/) {|s| (rand(2) > 0 ? $1.upcase : $1)}
+      message = case drug_strength
+      when 2 then random_interleave(colourise(message, false), ["^a", "^A", "", "", ""])
+      when 3 then random_interleave(colourise(message, false), ["^a", "^A", "^a", "^A", ""])
+      when 4 then random_interleave(colourise(message, false), ["^a", "^A"])
+      when 5 then random_interleave(colourise(message, false), ["^a", "^A", "^a", "^A", "^d"])
+      when 6 then random_interleave(colourise(message, false), ["^a", "^A", "^a", "^d", "^d"])
+      when 7 then random_interleave(colourise(message, false), ["^a", "^A", "^d", "^d", "^d"])
+      else        random_interleave(colourise(message, false), ["^a", "^d", "^d", "^d", "^d"])
+      end
+    end
     buffer = "\r" + colourise(encode_string(message, charset), self.colour).gsub("\n", "\\n") + "\033[0K\\n"
     buffer += (colourise(encode_string(get_prompt, charset), self.colour) + "\377\371") if Talker.instance.current_id != id
     raw_send buffer

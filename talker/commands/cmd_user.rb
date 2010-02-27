@@ -154,19 +154,23 @@ module Commands
   end
   
   define_command 'colour' do |message|
-    if message == "on"
-      self.colour = :ansi
-      output "^YColour output is on!^n"
-    elsif message == "off"
-      self.colour = :off
-      output "Colour output is off"
-    elsif message == "wands"
-      self.colour = :wands
-      output "You are now viewing colour wands."
+    if tripping
+      output get_text("butterfly")
     else
-      output "Format: colour [on|off|wands]"
+      if message == "on"
+        self.colour = :ansi
+        output "^YColour output is on!^n"
+      elsif message == "off"
+        self.colour = :off
+        output "Colour output is off"
+      elsif message == "wands"
+        self.colour = :wands
+        output "You are now viewing colour wands."
+      else
+        output "Format: colour [on|off|wands]"
+      end
+      save
     end
-    save
   end
   define_alias 'colour', 'color'
   

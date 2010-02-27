@@ -267,16 +267,20 @@ module Commands
         else
           target = find_connected_user(target_name, :silent => true)
           if target
-            if target.vomited_on
-              target.vomited_on = nil
-              output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water, cleaning the puke off them!"
+            if target == self
+              output "The hose is too powerful to turn on yourself."
             else
-              if rand(3) == 0
-                self.money -= 50
-                save
-                output_to_all "^R\u{2192}^n #{name} has been fined 50\u{20ab} for misuse of fire safety equipment!"
+              if target.vomited_on
+                target.vomited_on = nil
+                output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water, cleaning the vomit off #{target.gender == :male ? 'him' : 'her'}!"
               else
-                output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water from the hose!"
+                if rand(3) == 0
+                  self.money -= 50
+                  save
+                  output_to_all "^R\u{2192}^n #{name} has been fined 50\u{20ab} for misuse of fire safety equipment!"
+                else
+                  output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water from the hose!"
+                end
               end
             end
           else
@@ -300,6 +304,10 @@ module Commands
         end
         self.bile = 0
         target.vomited_on = true
+        if drug_strength > 2
+          self.drug_strength -= 1
+          output "You feel slightly better."
+        end
         save
       end
     end

@@ -23,6 +23,7 @@ class Items < Array
   SHOP = Items.new([
     Item.new("Dice", "A six sided die", 1, 150),
     Item.new("LSD", "Lysergic acid diethylamide", 1, 50),
+    Item.new("PCP", "Phenylcyclohexylpiperidine", 1, 100),
     Item.new("Soap", "A surfactant cleaning compound, used for personal cleaning", 10, 200),
     Item.new("Water", "44cl of Dragon Mineral", 1, 100)
 #    Item.new("Carbon Fishing Rod", "Requires 16 class 3 catches or above", 1, 15000, true)
@@ -105,7 +106,7 @@ module Commands
             when 1 then output "You feel slightly unwell."
             when 2 then output "You feel moderately unwell."
             when 3 then output "You feel very unwell."
-            else        output "You feel like you are doing to be sick."
+            else        output "You feel like you are going to be sick."
             end
             if self.bile > 5
               c = Commands.lookup('vomit')
@@ -119,7 +120,14 @@ module Commands
       elsif item.name == "LSD"
         items.deplete(item.name)
         self.tripping = Time.now + 3600
-        output_to_all "^Y\u{2192}^n #{cname} eats an LSD tablet"
+        self.drug_strength += 1
+        output_to_all "^Y\u{2192}^n #{cname} eats an Lysergic acid diethylamide tablet"
+        save
+      elsif item.name == "PCP"
+        items.deplete(item.name)
+        self.tripping = Time.now + 3600
+        self.drug_strength += 2
+        output_to_all "^Y\u{2192}^n #{cname} chomps on some Phenylcyclohexylpiperidine"
         save
       elsif item.name == "Dice"
         items.deplete(item.name)
@@ -141,7 +149,7 @@ module Commands
         output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
       elsif item.name == 'Water'
         items.deplete(item.name)
-        output_to_all "^Y\u{2192}^n #{cname} drinks some water"
+        output_to_all "^Y\u{2192}^n #{cname} drinks 44cl of water"
       else
         output "You can't drink #{item.name}."
       end

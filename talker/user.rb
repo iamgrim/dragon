@@ -33,7 +33,7 @@ class User
   attr_accessor :memos
 
   attr_accessor :fishing, :community_service
-  attr_accessor :tripping, :bile, :vomited_on
+  attr_accessor :tripping, :bile, :vomited_on, :drug_strength
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
@@ -63,6 +63,7 @@ class User
     @history ||= History.new
     @aliases ||= {}
     @ignoring ||= {}
+    @drug_strength ||= 0
   end
 
   def lower_name

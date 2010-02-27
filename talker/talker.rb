@@ -241,6 +241,7 @@ class Talker
         
         if u.tripping && u.tripping < now
           u.tripping = nil
+          u.drug_strength = 0
           u.output "^nYou feel better now."
         end
       end
@@ -249,7 +250,7 @@ class Talker
     if !@attributes[:on_fire].empty?
       grow_fire
       @connected_users.each do |name, u|
-        u.output "^R\u{2192}^n Thy realm ist on fire! #{@attributes[:on_fire].length} commande are ablaze!"
+        u.output "^R\u{2192}^n Thy realm is on fire! #{@attributes[:on_fire].length} commands are burning!"
       end
     end
     schedule_tick
