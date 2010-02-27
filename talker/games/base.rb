@@ -243,26 +243,46 @@ module Commands
 #    end
 #  end
   
-  define_command 'hose' do |command_name|
-    if command_name.blank?
-      output "Format: hose <command name>"
+  define_command 'hose' do |target_name|
+    if target_name.blank?
+      output "Format: hose <command or user name>"
     else
-      if Talker.instance.on_fire.has_key?(command_name)
-        case rand(5)
-        when 0
-          Talker.instance.on_fire.delete(command_name)
-          output_to_all "^C\u{2192}^n #{name} has put out #{command_name}, receiving a 10\u{20ab} reward"
-        when 1
-          output "You have reduced the heat but the fire is still burning."
-        when 2
-          output "This fire is particularly obstreperous, keep trying."
-        when 3
-          output "The fire appeared to go out but then it came back again."
-        else
-          output "You have not managed to put that out, keep trying."
-        end
+      if !resident?
+        output "Only qualified personnel can use the fire safety equipment."
       else
-        output "#{command_name} is not on fire."
+        if Talker.instance.on_fire.has_key?(target_name)
+          case rand(5)
+          when 0
+            Talker.instance.on_fire.delete(target_name)
+            output_to_all "^C\u{2192}^n #{name} has put out #{target_name}, receiving a 10\u{20ab} reward"
+          when 1
+            output "You have reduced the heat but the fire is still burning."
+          when 2
+            output "This fire is particularly obstreperous, keep trying."
+          when 3
+            output "The fire appeared to go out but then it came back again."
+          else
+            output "You have not managed to put that out, keep trying."
+          end
+        else
+          target = find_connected_user(target_name, :silent => true)
+          if target
+            if target.vomited_on
+              target.vomited_on = nil
+              output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water, cleaning the puke off them!"
+            else
+              if rand(3) == 0
+                self.money -= 50
+                save
+                output_to_all "^R\u{2192}^n #{name} has been fined 50\u{20ab} for misuse of fire safety equipment!"
+              else
+                output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water from the hose!"
+              end
+            end
+          else
+            output "#{target_name} is not on fire."
+          end
+        end
       end
     end
   end
