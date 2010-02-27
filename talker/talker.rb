@@ -26,6 +26,7 @@ require 'talker/games/base'
 require 'talker/games/bsheep'
 require 'talker/games/fishing'
 require 'talker/games/connectfour'
+require 'talker/games/othello'
 
 class Talker
   NAME    = 'Dragon Worlde'

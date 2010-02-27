@@ -227,8 +227,9 @@ module TalkerUtilities
 
   UNICODE_FALLBACKS = {
     
-    "\u{00ab}" => "<<",   # left-pointing double angle quotation mark
-    "\u{00bb}" => ">>",   # right-pointing double angle quotation mark
+    "\u{00ab}" => "<<",  # left-pointing double angle quotation mark
+    "\u{00b7}" => ".",   # middle dot
+    "\u{00bb}" => ">>",  # right-pointing double angle quotation mark
     "\u{00a3}" => "#",   # pound
     "\u{20ac}" => "E",   # euro
     "\u{2013}" => "-",   # en dash
