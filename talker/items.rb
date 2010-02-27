@@ -23,8 +23,8 @@ class Items < Array
   SHOP = Items.new([
     Item.new("Dice", "A six sided die", 1, 150),
     Item.new("LSD", "Lysergic acid diethylamide", 1, 50),
-    Item.new("Soap", "A surfactant cleaning compound, used for personal cleaning", 1, 200),
-    Item.new("Water", "Bottled water from the springs of the dragon caves", 1, 100)
+    Item.new("Soap", "A surfactant cleaning compound, used for personal cleaning", 10, 200),
+    Item.new("Water", "44cl of Dragon Mineral", 1, 100)
 #    Item.new("Carbon Fishing Rod", "Requires 16 class 3 catches or above", 1, 15000, true)
   ])
   def add(item)
