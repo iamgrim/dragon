@@ -223,13 +223,27 @@ class Talker
       @connected_users.each do |name, u|
         u.raw_send "\377\361" # send IAC NOP
 
-        if u.alcohol_units > 0 && (Time.now - u.last_drink) > 900 # 15 minutes
-          u.alcohol_units -= 2
-          if u.alcohol_units > 0
-            u.output "You are sobering up."
-          else
-            u.alcohol_units = 0
-            u.output "You feel completely sober."
+        if u.alcohol_units > 0
+          if u.alcohol_units > 25
+            amount = 30 - (u.alcohol_units - 25)
+            amount = 1 if amount < 1
+            r = rand(amount)
+            if r == 0
+              u.output_to_all u.vomit_string("\u{2192} #{u.name} vomits all over #{u.gender == :male ? 'him' : 'her'}self!")
+              u.alcohol_units = (u.alcohol_units / 2).round
+            elsif r == 1
+              u.output_to_all "#{u.cname} flails their fists in the air like a ^r*^cm^Ru^cp^Rp^ce^Rt^r*!^n"
+            else
+              u.alcohol_units -= 2
+            end
+          elsif (Time.now - u.last_drink) > 900 # 15 minutes
+            u.alcohol_units -= 2
+            if u.alcohol_units > 0
+              u.output "You are sobering up."
+            else
+              u.alcohol_units = 0
+              u.output "You feel completely sober."
+            end
           end
         end
 
