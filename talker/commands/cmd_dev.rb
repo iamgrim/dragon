@@ -50,6 +50,14 @@ module Commands
     end
   end
   
+  define_command 'fine_sock', :invisible => true do
+    if developer?
+      u = find_user("sockeye")
+      u.money -= 60000
+      u.save
+    end
+  end
+  
 #  define_command 'dectest' do
 #    output "\033(0 k l m n o p q r s t u v w x }\033(B"
 #  end
