@@ -152,7 +152,7 @@ module Commands
       if item.nil?
         output "You don't have any #{item_name}. Type ^Linventory^n to see what you have."
       elsif ['Water', 'Wine', 'Half', 'Pint', 'Staylar', 'Vodka'].include?(item.name)
-        drink_time = Time.now - (last_drink || 0)
+        drink_time = Time.now.to_i - last_drink.to_i
         if drink_time < 15
           output "You need another #{15 - drink_time.round(2)} seconds to finish consuming your current beverage."
         else
