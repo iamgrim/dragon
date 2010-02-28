@@ -43,7 +43,7 @@ module Commands
     buffer = ""
     if Game.games.length > 0
       Game.games.each do |game|
-        buffer += "^W\u{25CF}^n #{game.description}"
+        buffer += "^W\u{25CF}^n #{game.description}\n"
       end
     else
       buffer += "There are no games in progress."
