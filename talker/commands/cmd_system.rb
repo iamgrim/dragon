@@ -195,4 +195,17 @@ module Commands
     output title_line("Your Private History") + "\n" + history.to_s(get_timestamp_format, get_timezone) + "\n" + blank_line
   end
   define_alias 'myhistory', 'rhistory'
+  
+  define_command 'su' do |message|
+    if rank > 0
+      if message.blank?
+        output "Format: su <message>"
+      else
+        c = Commands.lookup('tell')
+        c.execute(self, "#{name} #{message}") if c
+      end
+    else
+      output "You are not prestigious enough to use that."
+    end
+  end
 end
