@@ -206,5 +206,5 @@ module Helpers
   def raw_send(message)
     Talker.instance.output << "#{id} send #{message}"
   end
-    
+
 end
