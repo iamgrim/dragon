@@ -234,6 +234,8 @@ class Talker
               u.alcohol_units = (u.alcohol_units / 2).round
             elsif r == 1
               u.output_to_all "#{u.cname} flails their fists in the air like a ^r*^cm^Ru^cp^Rp^ce^Rt^r*!^n"
+            elsif r == 2
+              u.output_to_all "#{u.cname} ^Yhas wet  #{u.gender == :male ? 'his' : 'her'} pants^n"
             else
               u.alcohol_units -= 2
             end
