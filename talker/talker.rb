@@ -227,7 +227,7 @@ class Talker
         if u.alcohol_units > 0
           if u.alcohol_units > 25
             amount = 30 - (u.alcohol_units - 25)
-            amount = 1 if amount < 1
+            amount = 3 if amount < 3
             r = rand(amount)
             if r == 0
               u.output_to_all u.vomit_string("\u{2192} #{u.name} vomits all over #{u.gender == :male ? 'him' : 'her'}self!")
