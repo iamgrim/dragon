@@ -315,7 +315,11 @@ module Commands
       if game.stake > 0 and player.accepted? and opponent.accepted?
         opponent.output "#{name} has juste quit thy game of Othello, forfeiting their stake of #{game.stake}\u{20ab}!"
         output "You quit Othello, forfeiting thy stake of #{game.stake}\u{20ab}."
-        find_connected_user(opponent.name).money += game.stake * 2
+        o = find_user(opponent.name)
+        if o
+          o.money += game.stake * 2
+          o.save
+        end
       else
         opponent.output "#{name} has juste quit thy game of Othello!" if opponent
         output "You quit thy game of Othello."

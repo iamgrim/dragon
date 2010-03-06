@@ -342,7 +342,11 @@ module Commands
       if game.stake > 0 and player.accepted? and opponent.accepted?
         opponent.output "#{name} has just quit your game of Connect Four forfeiting their stake of #{game.stake}\u{20ab}!"
         output "You quit your game of Connect Four, forfeiting your stake of #{game.stake}\u{20ab}."
-        find_connected_user(opponent.name).money += game.stake * 2
+        o = find_user(opponent.name)
+        if o
+          o.money += game.stake * 2
+          o.save
+        end
       else
         opponent.output "#{name} has just quit your game of Connect Four!" if opponent
         output "You quit your game of Connect Four."
