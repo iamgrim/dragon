@@ -18,7 +18,7 @@ class Multi
       nil
     else
       result = @@multis.select {|m|m.members_match?(users)}
-      result.empty? ? Multi.new(users) : result.first
+      result.empty? ? Multi.new(users.uniq) : result.first
     end
   end
   
