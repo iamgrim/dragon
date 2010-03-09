@@ -260,7 +260,7 @@ module Commands
     end
     
     if fishing.reeling
-      r = rand(3 + (fishing.catch_size / 16))
+      r = rand(3 + (fishing.catch_size / 32))
 #      debug_message "#{name} Reeling fish in class #{fishing.fish.fish_class(fishing.catch_size)} / #{r}"
       if r < 2 # 0 1
         if rand(10000) == 5000
