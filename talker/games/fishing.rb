@@ -193,6 +193,7 @@ module Commands
       if bait = fishing.baitbox.find(bait_name)
         fishing.bait = bait.name
         output "You are fishing with #{bait.name}. Your supply will be depleted when you cast."
+        save
       else
         output "You don't have any #{bait_name}. Type ^Lfishing baitbox^n to view your available bait."
       end
@@ -203,8 +204,8 @@ module Commands
     self.fishing ||= Fishing.new
     if !fishing.bait
       output "You won't catch anything without selecting a bait!"
-    elsif bait = fishing.baitbox.find(fishing.bait)
-      if !fishing.cast
+    elsif !fishing.cast
+      if bait = fishing.baitbox.find(fishing.bait)
         result = rand(20)
         if result < 12 # 0 1 2 3 4 5 6 7 8 9 10 11
           fishing.baitbox.deplete(bait.name)
@@ -234,11 +235,12 @@ module Commands
           end
           output "#{buffer} (#{bait.quantity} #{bait.name} left)"
         end
+        save
       else
-        output "You have already cast successfully."
+        output "You have run out of #{fishing.bait}. Vend more or choose a different bait."
       end
     else
-      output "You have run out of #{fishing.bait}. Vend more or choose a different bait."
+      output "You have already cast successfully."
     end
   end
 
@@ -282,7 +284,6 @@ module Commands
         end
         self.money += winnings
         fishing.reel_in
-        save
       elsif r < 3 # 2
         fishing.reel_in
         output "You reel in your line, but the fish has escaped!"
@@ -294,6 +295,7 @@ module Commands
         end
       end
     end
+    save
   end
 
   define_command 'fishing baitbox' do |target_name|
