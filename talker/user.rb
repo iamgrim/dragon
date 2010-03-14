@@ -125,11 +125,11 @@ class User
 
     if old_connection.nil?
       connected_users[lower_name] = self
-      output_to_all "^g\u{00bb} ^n#{name} #{get_connect_message} ^g\u{00ab}^n"
+      output_to_all get_connect_message
     else
       old_connection.output "[Reconnection from #{connection.ip_address}]"
       old_connection.disconnect
-      output_to_all "^y\u{00bb} ^n#{name} #{get_reconnect_message} ^y\u{00ab}^n"
+      output_to_all get_reconnect_message
     end
     
     look
@@ -170,7 +170,7 @@ class User
   def logout
     connected_users.delete(lower_name)
     @id = nil
-    output_to_all "^r\u{00ab} ^n#{name} #{get_disconnect_message} ^r\u{00bb}^n"
+    output_to_all get_disconnect_message
     
     if !resident?
       delete
@@ -212,15 +212,15 @@ class User
   end
   
   def get_connect_message
-    @connect_message || "enteres thy realme"
+    "^g>^G> ^n#{name} #{@connect_message || 'enteres thy realme'} ^G<^g<^n"
   end
 
   def get_disconnect_message
-    @disconnect_message || "leaves thy realme"
+    "^R<^r< ^n #{name} #{@disconnect_message || 'leaves thy realme'} ^r>^R>^n"
   end
 
   def get_reconnect_message
-    @reconnect_message || "rejoins they realme"
+    "^Y>^y< ^N#{name} #{@reconnect_message || 'rejoins they realme'} ^y>^Y<^n"
   end
 
   def user_prompt
@@ -322,8 +322,8 @@ class User
     buffer += "        Real name : #{realname}^n\n" unless realname.blank?
     
     gender_symbol = case gender
-      when :male then "\u{2642}"
-      when :female then "\u{2640}"
+      when :male then "Male \u{2642}"
+      when :female then "Female \u{2640}"
       else "None"
     end
     

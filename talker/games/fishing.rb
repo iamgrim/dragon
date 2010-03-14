@@ -218,7 +218,7 @@ module Commands
           output "You failed to cast. Loosen your wrist and try again."        
         elsif result < 19 # 18
           if rand(250) == 125 # 1 in 5000 chance (1/20 * 1/250)
-            output "You failed to cast because the line got caught on a pylon and started a fire!"
+            output "You failed to cast because the line got caught on a pylon and ^Rstarted a fire!^n"
             Talker.instance.start_fire
           else
             output "You failed to cast because the line got caught on a pylon. Please try again."
@@ -229,7 +229,7 @@ module Commands
           buffer = case rand(4)
           when 0 then "The line snapped and your bait floated away!"
           when 1 then "You dropped your bait and a rat stole it!"
-          when 2 then "You dropped your bait and a rat stole it!"
+          when 2 then "You dropped your bait and a cat stole it!"
           else        "A bird stole your bait before you could cast!"
           end
           output "#{buffer} (#{bait.quantity} #{bait.name} left)"

@@ -96,7 +96,7 @@ module Commands
     else
       self.connect_message = message.slice(0, 60)
     end
-    output "Your connect message is now ^g>^G> ^n#{name} #{get_connect_message} ^G<^g<^n"
+    output "Your connect message is now #{get_connect_message}"
     save
   end
 
@@ -106,7 +106,7 @@ module Commands
     else
       self.disconnect_message = message.slice(0, 60)
     end
-    output "Your disconnect message is now ^R<^r< ^n#{name} #{get_disconnect_message} ^r>^R>^n"
+    output "Your disconnect message is now #{get_disconnect_message}"
     save
   end
 
@@ -116,7 +116,7 @@ module Commands
     else
       self.reconnect_message = message.slice(0, 60)
     end
-    output "Your reconnect message is now ^Y>^y< ^n#{name} #{get_reconnect_message} ^y>^Y<^n"
+    output "Your reconnect message is now #{get_reconnect_message}"
     save
   end
   
