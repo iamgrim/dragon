@@ -175,6 +175,7 @@ class User
     if !resident?
       delete
     else
+      self.total_time += login_time
       save
     end
   end
