@@ -136,7 +136,7 @@ class Quiz < Game
   end
 
   def winners ()
-    if contestants.nil?
+    if contestants.nil? or round == 0
       return nil
     else
       winners = Array.new
@@ -339,8 +339,10 @@ module Commands
 	end
       else
         p.answer = message
-	if message.downcase == game.answer.downcase
-          p.mark = :tick
+	if !game.answer.nil?
+	  if message.downcase == game.answer.downcase
+            p.mark = :tick
+	  end
 	end
         output "You answer \'#{message}\'"
 	if p.mark != :tick
