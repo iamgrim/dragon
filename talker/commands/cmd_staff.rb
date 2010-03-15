@@ -33,4 +33,17 @@ module Commands
     end
   end
 
+  define_command 'su' do |message|
+    if rank > 0
+      if message.blank?
+        output "Format: su <message>"
+      else
+        c = Commands.lookup('tell')
+        c.execute(self, "#{all_users.values.select{|u| u.rank > 0}.map{|u|u.name}.join(',')} ^Y<SU> #{message}^n") if c
+      end
+    else
+      output "You are not prestigious enough to use that."
+    end
+  end
+
 end
