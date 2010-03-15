@@ -102,7 +102,7 @@ class User
   end
 
   def developer?
-    developers = Talker::LIVE ? ["thebear", "felix"] : ["thebear", "felix", "kapowaz", "zubbles", "sockeye"]
+    developers = Talker::LIVE ? ["thebear", "sockeye", "felix"] : true
     developers.include?(lower_name)
   end
 
@@ -286,11 +286,7 @@ class User
   end
   
   def next_rank_cost
-    if rank == 0
-      100000
-    else
-      1000000 * (2 ** rank)
-    end
+    1000000 * (2 ** rank)
   end
   
   def can_afford_promotion?
