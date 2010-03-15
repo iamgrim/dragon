@@ -46,4 +46,17 @@ module Commands
     end
   end
 
+  define_command 'au' do |message|
+    if rank > 0
+      if message.blank?
+        output "Format: au <message>"
+      else
+        c = Commands.lookup('tell')
+        c.execute(self, "#{all_users.values.select{|u| u.rank > 3}.map{|u|u.name}.join(',')} ^R<Admin> #{message}^n") if c
+      end
+    else
+      output "You are not prestigious enough to use that."
+    end
+  end
+
 end
