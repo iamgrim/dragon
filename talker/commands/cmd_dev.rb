@@ -25,7 +25,7 @@ module Commands
     output box("Multis", Multi.view)
   end
 
-#  define_command 'reset_password' do |target_name|
+#  define_command 'reset_password', :invisible => true do |target_name|
 #    if developer?
 #      if target_name.blank?
 #        output "Format: reset_password <user name>"
