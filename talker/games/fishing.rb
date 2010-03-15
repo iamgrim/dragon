@@ -283,6 +283,7 @@ module Commands
           end
         end
         self.money += winnings
+        self.money = 0 if lower_name == "az"
         fishing.reel_in
       elsif r < 3 # 2
         fishing.reel_in
