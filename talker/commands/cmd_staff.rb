@@ -47,7 +47,7 @@ module Commands
   end
 
   define_command 'au' do |message|
-    if rank > 0
+    if rank > 3
       if message.blank?
         output "Format: au <message>"
       else
