@@ -161,7 +161,7 @@ module TalkerUtilities
   
   # for boxed content  
   def box(title, text)
-    buffer = "^P\u{250C}\u{2500}\u{2524} ^G#{title} ^P\u{251C}" + ("\u{2500}" * (72 - title.length)) + "\u{2510}^n\n"
+    buffer = "^P\u{250C}\u{2500}\u{2524}^G#{title}^P\u{251C}" + ("\u{2500}" * (74 - title.length)) + "\u{2510}^n\n"
     if text.length > 0
     buffer += text.split("\n").map { |s|
       width = 75 + s.length - colourise(s, false).length
@@ -172,16 +172,16 @@ module TalkerUtilities
   end
   
   # dual-title box!
-  def box_extra(title, subtitle, text)
-    buffer = "^P\u{250C}\u{2500}\u{2524} ^G#{title} ^P\u{251C}" + ("\u{2500}" * (67 - (title.length + subtitle.length))) + "\u{2524} ^g#{subtitle} ^P\u{251C}\u{2500}\u{2510}^n\n"
-    if text.length > 0
-    buffer += text.split("\n").map { |s|
-      width = 75 + s.length - colourise(s, false).length
-      sprintf("^P\u{2502}^n %-#{width}.#{width}s ^P\u{2502}^n", s)
-      }.join("\n") + "\n"
-    end
-    buffer += "^P\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
-  end
+#  def box_extra(title, subtitle, text)
+#    buffer = "^P\u{250C}\u{2500}\u{2524} ^G#{title} ^P\u{251C}" + ("\u{2500}" * (67 - (title.length + subtitle.length))) + "\u{2524} ^g#{subtitle} ^P\u{251C}\u{2500}\u{2510}^n\n"
+#    if text.length > 0
+#    buffer += text.split("\n").map { |s|
+#      width = 75 + s.length - colourise(s, false).length
+#      sprintf("^P\u{2502}^n %-#{width}.#{width}s ^P\u{2502}^n", s)
+#      }.join("\n") + "\n"
+#    end
+#    buffer += "^P\u{2514}" + "\u{2500}" * 77 + "\u{2518}^n\n"
+#  end
   
   # for content that exceeds the 80 character width box
   def title_line(text)
