@@ -11,6 +11,12 @@ class NilClass
   end
 end
 
+class Integer
+	def ordinal
+		to_s + ([[nil, 'st','nd','rd'],[]][self % 100 / 10 == 1 ? 1 : 0][self % 10] || 'th')
+	end
+end
+
 #class Proc 
 #  def bind(object)
 #    block, time = self, Time.now

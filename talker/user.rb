@@ -330,6 +330,9 @@ class User
 #    buffer += "     Zone of Tyme : #{get_timezone_identifier.gsub(/_/, ' ')}^n\n" unless get_timezone_identifier == "Europe/London"
     buffer += "       Occupation : #{occupation}^n\n" unless occupation.blank?
     buffer += "         Homepage : ^U^B#{homepage}^n\n" unless homepage.blank?
+    if fishing
+      buffer += "          Fishing : #{Fishing::pounds_oz(fishing.combined_catch_total)} combined records total [#{Fishing::ranking(self).ordinal}]^n\n"
+    end
     buffer
   end
   
