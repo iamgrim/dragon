@@ -201,7 +201,7 @@ module Commands
     start = pos - 7
     start = 0 if start < 0
     max = all_users.length - 15
-    start = max if max
+    start = max if start > max
     result = all_users.values.sort{|u,u2|u2.money <=> u.money}.slice(start, 15)
     len    = result.map {|u|u.name.length}.max
     len2   = result.map {|u|currency(u.money).length}.max    
