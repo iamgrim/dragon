@@ -196,4 +196,12 @@ module Commands
   end
   define_alias 'myhistory', 'rhistory'
   
+  define_command 'richlist' do
+    result = all_users.values.sort{|u,u2|u2.money <=> u.money}.slice(0,15)
+    len    = result.map {|u|u.name.length}.max
+    len2   = result.map {|u|currency(u.money).length}.max    
+    count  = 0
+    output box("Forbes Dragon World Rich List", result.map {|u| "#{u == self ? '^L' : ''}#{sprintf("%2.d", count += 1)}. #{sprintf("%-#{len}.#{len}s", u.name)} #{sprintf("%#{len2}s", currency(u.money))}"}.join("^n\n"))
+  end
+  
 end
