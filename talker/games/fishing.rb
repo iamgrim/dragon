@@ -89,7 +89,7 @@ class Fishing
   end
   
   def combined_catch_total
-    @records.values.inject(0) {|a, b| a + b}
+    @records ? @records.values.inject(0) {|a, b| a + b} : 0
   end
   
   def self.set_world_record?(user)
