@@ -88,6 +88,10 @@ class Fishing
     end
   end
   
+  def combined_catch_total
+    @records.values.inject(0) {|a, b| a + b}
+  end
+  
   def self.set_world_record?(user)
     fish = user.fishing.fish.name
     size = user.fishing.catch_size
@@ -155,6 +159,14 @@ class Fishing
         end
       end
     end
+  end
+  
+  def self.rankings
+    Talker.instance.all_users.values.select{|u|u.fishing}.sort{|u,u2|u2.fishing.combined_catch_total <=> u.fishing.combined_catch_total}
+  end
+  
+  def self.ranking(user)
+    rankings.index(user) + 1
   end
   
   def self.pounds_oz(amount)
@@ -368,6 +380,18 @@ module Commands
     else
       output "You are not subscribed to Angling Times."
     end
+  end
+  
+  define_command 'fishing rankings' do |num|
+    pos    = num.to_i
+    start  = pos - 7
+    start  = 0 if start < 0
+    max    = all_users.length - 15
+    start  = max if start > max
+    result = Fishing::rankings.slice(start, 15)
+    len    = result.map {|u|u.name.length}.max
+    count  = start
+    output box("Dragon World Fishing Rankings", result.map {|u| count += 1; "#{(pos == 0 && u == self) || pos == count ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-#{len}.#{len}s", u.name)} #{Fishing::pounds_oz(u.fishing.combined_catch_total)}"}.join("^n\n"))
   end
 
   define_command 'vend' do |item_name|
