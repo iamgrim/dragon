@@ -199,8 +199,8 @@ module Commands
               notice = "You challenge #{opponent.name} to a game of Othello"
 	      challenge = "^G\u{2192} ^n#{name} challenges you to a game of Othello"
 	      if stake.to_i > 0
-  	        notice += " for a stake of ^W#{stake}\u{20ab}^n"
-	        challenge += " for a stake of ^W#{stake}\u{20ab}^n"
+  	        notice += " for a stake of ^W#{currency(stake)}^n"
+	        challenge += " for a stake of ^W#{currency(stake)}^n"
 	      end
               opponent.output "#{challenge}\n^LType 'oth accept' or 'oth decline'.^n"
               output "#{notice}^n."
@@ -313,8 +313,8 @@ module Commands
       opponent = game.find_opponent(player)
       
       if game.stake > 0 and player.accepted? and opponent.accepted?
-        opponent.output "#{name} has juste quit thy game of Othello, forfeiting their stake of #{game.stake}\u{20ab}!"
-        output "You quit Othello, forfeiting thy stake of #{game.stake}\u{20ab}."
+        opponent.output "#{name} has juste quit thy game of Othello, forfeiting their stake of #{currency(game.stake)}!"
+        output "You quit Othello, forfeiting thy stake of #{currency(game.stake)}."
         o = find_user(opponent.name)
         if o
           o.money += game.stake * 2

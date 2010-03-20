@@ -228,8 +228,8 @@ module Commands
                   output "You don't have enough money for a stake that high."
                 else
                   game = ConnectFour.new(self, opponent, stake.to_i)
-                  opponent.output "^G\u{2192} ^n#{name} has challenged you to a game of Connect Four for a stake of ^W#{stake}\u{20ab}^n\n^LType 'c4 accept' or 'c4 decline'.^n"
-                  output "You challenge #{opponent.name} to a game of Connect Four with a stake of ^W#{stake}\u{20ab}^n."
+                  opponent.output "^G\u{2192} ^n#{name} has challenged you to a game of Connect Four for a stake of ^W#{currency(stake)}^n\n^LType 'c4 accept' or 'c4 decline'.^n"
+                  output "You challenge #{opponent.name} to a game of Connect Four with a stake of ^W#{currency(stake)}^n."
                 end
               else
                 game = ConnectFour.new(self, opponent, 0)
@@ -267,7 +267,7 @@ module Commands
                 opponent.output game.board
                 if game.stake > 0
                   find_connected_user(player.name).money += game.stake * 2
-                  output_to_all "^g\u{2192}^n #{player.name} beats #{opponent.name} at Connect Four, winning #{game.stake}\u{20ab}!"
+                  output_to_all "^g\u{2192}^n #{player.name} beats #{opponent.name} at Connect Four, winning #{currency(game.stake)}!"
                 else
                   output_to_all "^g\u{2192}^n #{player.name} has beaten #{opponent.name} at Connect Four!"
                 end
@@ -340,8 +340,8 @@ module Commands
       opponent = game.find_opponent(player)
       
       if game.stake > 0 and player.accepted? and opponent.accepted?
-        opponent.output "#{name} has just quit your game of Connect Four forfeiting their stake of #{game.stake}\u{20ab}!"
-        output "You quit your game of Connect Four, forfeiting your stake of #{game.stake}\u{20ab}."
+        opponent.output "#{name} has just quit your game of Connect Four forfeiting their stake of #{currency(game.stake)}!"
+        output "You quit your game of Connect Four, forfeiting your stake of #{currency(game.stake)}."
         o = find_user(opponent.name)
         if o
           o.money += game.stake * 2

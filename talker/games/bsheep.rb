@@ -239,7 +239,7 @@ module Commands
                 output p.board(opp)
                 opp.output opp.postboard(p)
                 pay_out = opp.pay_out
-                output_to_all "^g\u{2192}^n #{p.name} beats #{opp.name} at Battlesheep, winning #{pay_out}\u{20ab}!"
+                output_to_all "^g\u{2192}^n #{p.name} beats #{opp.name} at Battlesheep, winning #{currency(pay_out)}!"
                 self.money += pay_out
                 save
                 game.destroy

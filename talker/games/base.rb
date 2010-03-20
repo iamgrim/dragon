@@ -26,7 +26,7 @@ class CommunityService
       user.community_service = nil
       if user.money >= 100
         user.money -= 100
-        user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been fined 100\u{20ab}"
+        user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been fined #{currency(100)}"
         user.save
       else
         user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been sent to prison"
@@ -182,9 +182,8 @@ module Commands
           if r < 1
             self.money += amount
             recipient.money -= amount
-            output "You successfully stole #{amount}\u{20ab} from #{recipient.cname}!"
+            output "You successfully stole #{currency(amount)} from #{recipient.cname}!"
             recipient.output "Your pocket feels lighter than before."
-#            output_to_all "^g\u{2192}^n #{cname} steals #{amount}\u{20ab} from #{recipient.cname}!"
             save
             recipient.save
           else
@@ -254,7 +253,9 @@ module Commands
           case rand(5)
           when 0
             Talker.instance.on_fire.delete(target_name)
-            output_to_all "^C\u{2192}^n #{name} has put out #{target_name}, receiving a 10\u{20ab} reward"
+            output_to_all "^C\u{2192}^n #{name} has put out #{target_name}, receiving a #{currency(25)} reward"
+            self.money += 25
+            save
           when 1
             output "You have reduced the heat but the fire is still burning."
           when 2
@@ -275,9 +276,9 @@ module Commands
                 output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water, cleaning the vomit off #{target.gender == :male ? 'him' : 'her'}!"
               else
                 if rand(3) == 0
+                  output_to_all "^R\u{2192}^n #{name} has been fined #{currency(50)} for misuse of fire safety equipment!"
                   self.money -= 50
                   save
-                  output_to_all "^R\u{2192}^n #{name} has been fined 50\u{20ab} for misuse of fire safety equipment!"
                 else
                   output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water from the hose!"
                 end

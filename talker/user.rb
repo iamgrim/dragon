@@ -324,7 +324,7 @@ class User
     end
     
     buffer += "           Gender : #{gender_symbol}\n"
-    buffer += "           Drogna : #{commify(money)}\u{20ab}\n"
+    buffer += "           Drogna : #{currency(money)}\n"
     buffer += "   Marital Status : #{maritalstatus.capitalize}^n\n" unless maritalstatus.blank?
     buffer += "         Location : #{location}^n\n" unless location.blank?
 #    buffer += "     Zone of Tyme : #{get_timezone_identifier.gsub(/_/, ' ')}^n\n" unless get_timezone_identifier == "Europe/London"
