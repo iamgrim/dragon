@@ -383,11 +383,12 @@ module Commands
   end
   
   define_command 'fishing rankings' do |num|
+    r = Fishing::rankings
     pos    = num.to_i
     start  = pos - 7
-    start  = 0 if start < 0
-    max    = all_users.length - 15
+    max    = r.length - 15
     start  = max if start > max
+    start  = 0 if start < 0
     result = Fishing::rankings.slice(start, 15)
     len    = result.map {|u|u.name.length}.max
     count  = start
