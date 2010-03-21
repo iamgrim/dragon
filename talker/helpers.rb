@@ -175,6 +175,7 @@ module Helpers
   def reboot
     if developer?
       debug_message "Rebooting thy realme..."
+      @input_string = nil
       Talker.instance.save
       Talker.instance.shutdown = true
     end
@@ -183,6 +184,7 @@ module Helpers
   def shutdown
     if developer?
       Talker.instance.output << "0 shutdown\n"
+      @input_string = nil
       Talker.instance.save
       EM.next_tick { sleep 3; EM.stop_event_loop }
     end
