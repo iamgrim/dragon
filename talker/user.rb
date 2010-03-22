@@ -216,11 +216,11 @@ class User
   end
 
   def get_disconnect_message
-    "^R<^r< ^n #{name} #{@disconnect_message || 'leaves thy realme'} ^r>^R>^n"
+    "^R<^r< ^n#{name} #{@disconnect_message || 'leaves thy realme'} ^r>^R>^n"
   end
 
   def get_reconnect_message
-    "^Y>^y< ^N#{name} #{@reconnect_message || 'rejoins they realme'} ^y>^Y<^n"
+    "^Y>^y< ^n#{name} #{@reconnect_message || 'rejoins they realme'} ^y>^Y<^n"
   end
 
   def user_prompt
