@@ -236,11 +236,11 @@ module Commands
     if social_name.blank?
       output "Format: social liquidate <social name>"
     elsif social = find_social(social_name)
-      if !social.created_by?(self)
-        output "You need a full controlling share to liquidate the asset."
-      else
+      if social.created_by?(self) || developer?
         output "You have liquidated the social '#{social.name}'"
         social.delete
+      else
+        output "You need a full controlling share to liquidate the asset."
       end
     end
   end
