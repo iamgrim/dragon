@@ -58,7 +58,7 @@ module Commands
       end
     end
   end
-  define_alias 'tell', '.', 'rsay'
+  define_alias 'tell', '.', 'rsay', '>'
   
   define_command 'pemote' do |message|
     (target_name, message) = get_arguments(message, 2)
