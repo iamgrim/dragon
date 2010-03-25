@@ -196,33 +196,49 @@ module Commands
   end
   
   define_command 'ignore' do |target_name|
-    target = find_user(target_name) unless target_name.blank?
-    if target_name.blank? || target.nil?
-      if ignoring.empty?
-        output "Format: ignore <user name>"
-      else
-        output "You are ignoring #{commas_and(ignoring.keys)}."
-      end
-    elsif target == self
-      output "You can't ignore yourself."
-    elsif is_ignoring?(target)
-      output "You are already ignoring #{target.name}. Use unignore to remove this."
+    if target_name =~ /^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$/
+      self.ignoring_ips[target_name] = true
+      output "You are now ignoring all users from #{target_name}"
     else
-      self.ignoring[target.lower_name] = true
-      output "You are now ignoring #{target.name}."
+      target = find_user(target_name) unless target_name.blank?
+      if target_name.blank? || target.nil?
+        if ignoring.empty? && ignoring_ips.empty?
+          output "Format: ignore <user name or ip address>"
+        else
+          output "You are ignoring #{commas_and(ignoring.keys + ignoring_ips.keys)}."
+        end
+      elsif target == self
+        output "You can't ignore yourself."
+      elsif is_ignoring?(target)
+        output "You are already ignoring #{target.name}. Use ^Lunignore^n to remove it."
+      else
+        self.ignoring[target.lower_name] = true
+        output "You are now ignoring #{target.name}."
+      end
     end
   end
   
   define_command 'unignore' do |target_name|
-    target = target_name.blank? ? self : find_user(target_name)
-    if target == self
-      output "You can't ignore yourself."
-    elsif !is_ignoring?(target)
-      output "You were not ignoring #{target.name}."
+    if target_name =~ /^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$/
+      if ignoring_ips.has_key?(target_name)
+        self.ignoring_ips.delete(target_name)
+        output "You are no longer ignoring #{target_name}"
+      else
+        output "You were not ignoring ip address #{target_name}"
+      end
     else
-      self.ignoring.delete(target.lower_name)
-      output "You are no longer ignoring #{target.name}."
-    end    
+      target = target_name.blank? ? self : find_user(target_name)
+      if target
+        if target == self
+          output "You can't ignore yourself."
+        elsif !is_ignoring?(target)
+          output "You were not ignoring #{target.name}."
+        else
+          self.ignoring.delete(target.lower_name)
+          output "You are no longer ignoring #{target.name}."
+        end
+      end
+    end
   end
   
   define_command 'charset' do |message|

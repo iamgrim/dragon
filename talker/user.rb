@@ -38,7 +38,7 @@ class User
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
   attr_accessor :idle_message, :muffled
-  attr_reader :history, :aliases, :ignoring
+  attr_reader :history, :aliases, :ignoring, :ignoring_ips
 
   RANK = ['Peasant', 'Beadle', 'Knight', 'Baron', 'Earl', 'Princess', 'King']
   RANK_COLOUR = ['', '^y', '^Y', '^G', '^C', '^P', '^R']
@@ -63,6 +63,7 @@ class User
     @history ||= History.new
     @aliases ||= {}
     @ignoring ||= {}
+    @ignoring_ips ||= {}
     @drug_strength ||= 0
     @alcohol_units ||= 0
   end
@@ -72,7 +73,7 @@ class User
   end
 
   def is_ignoring?(user)
-    ignoring.has_key?(user.lower_name)
+    ignoring.has_key?(user.lower_name) || ignoring_ips.has_key?(user.ip_address)
   end
 
   def password=(password)
@@ -237,7 +238,6 @@ class User
         @idle_message = nil
 
         (command_name, body) = split_input(input_string)
-
         command = find_with_partial_matching(aliases, command_name, :silent => true) unless user_alias_executing
         command = find_command(command_name.downcase) if command.nil?
         if command
