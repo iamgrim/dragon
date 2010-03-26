@@ -213,6 +213,7 @@ module Commands
         output "You are already ignoring #{target.name}. Use ^Lunignore^n to remove it."
       else
         self.ignoring[target.lower_name] = true
+        save
         output "You are now ignoring #{target.name}."
       end
     end
@@ -235,6 +236,7 @@ module Commands
           output "You were not ignoring #{target.name}."
         else
           self.ignoring.delete(target.lower_name)
+          save
           output "You are no longer ignoring #{target.name}."
         end
       end
@@ -280,6 +282,7 @@ module Commands
       output "Format: alias <name> <text>"
     else
       self.aliases[alias_name] = Alias.new(alias_name, alias_text)
+      save
       output "Alias defined."
     end
   end
@@ -290,6 +293,7 @@ module Commands
     else
       if aliases.has_key?(alias_name)
         self.aliases.delete(alias_name)
+        save
         output "Alias removed."
       else
         output "You don't have an alias called '#{alias_name}' to remove."
