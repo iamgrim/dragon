@@ -325,7 +325,7 @@ module Commands
   define_command 'fishing records' do |target_name|
     target = target_name.blank? ? self : find_user(target_name)
     if !target
-      output "Format: fishing baitbox <user name>"
+      output "Format: fishing records <user name>"
     elsif !target.fishing || target.fishing.records.empty?
       output "#{target.name} doesn't have any fishing records."
     else
