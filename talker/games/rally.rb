@@ -64,7 +64,7 @@ class Rally
   end
   
   def stage_finished?
-    @corner == 0 || @corner > 2#18
+    @corner == 0 || @corner > 18
   end
   
   OBJECTS = ['moose', 'dog', 'cat', 'pot hole', 'bear']
@@ -109,7 +109,7 @@ class Rally
     if type == :swerve && @swerve && time_diff < 3.0
       @total_time += (@turn_time + time_penalty(time_diff)).round(1)
       user.output "[#{minutes_seconds(@total_time.round(1))}] You missed the #{@object} ^n#{time_diff}s"
-    elsif direction == @direction && ((!@sharp && type == :normal) || (@sharp && type == :handbrake))
+    elsif (direction == @direction && ((!@sharp && type == :normal) || (@sharp && type == :handbrake))) && time_diff.abs < 5.0
       @total_time += (@turn_time + time_penalty(time_diff)).round(1)
       time_string = time_diff == 0.0 ? "" : "(#{time_diff.abs}s #{time_diff < 0.0 ? 'early' : 'late'})" 
       user.output "[#{minutes_seconds(@total_time.round(1))}] #{turn_result(time_diff)} ^n#{time_string}"
@@ -134,7 +134,7 @@ class Rally
         
         user.output_to_all "^G\u{2192}^n #{user.name} completed Rally Stage #{@stage} in #{minutes_seconds(@total_time)}, winning #{currency(winnings)}!#{best_string}"
         user.money += winnings
-        if @stage == 2
+        if @stage == 20
           winnings = (100000 * ((Rally::REFERENCE_TIME / @total_rally_time) ** 4)).round
           user.money += winnings
           best_string = ""
@@ -236,7 +236,7 @@ module Commands
     else
       rally.start_stage
       output "^nYou start the rally in your #{rally.vehicle}. Type ^Lhelp rally^n for assistance.\n^G== Rally Stage #{rally.stage} ==^n\n#{rally.instructions}"
-      debug_message Rally::stage_reference_time(rally.stage)
+#      debug_message Rally::stage_reference_time(rally.stage)
     end
   end
   
