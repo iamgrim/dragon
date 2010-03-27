@@ -114,7 +114,7 @@ class Rally
       time_string = time_diff == 0.0 ? "" : "(#{time_diff.abs}s #{time_diff < 0.0 ? 'early' : 'late'})" 
       user.output "[#{minutes_seconds(@total_time.round(1))}] #{turn_result(time_diff)} ^n#{time_string}"
     else
-      damage = stage_records.empty? ? 0 : (25 + rand(475)) * Rally::SPEED[@vehicle]
+      damage = stage_records.empty? ? 0 : ((20 + rand(130)) ** (1.0 + Rally::SPEED[@vehicle]/10.0)).floor
       item = user.items.find(@vehicle)
       item.damage += damage if item
       damage_string = ""
