@@ -106,10 +106,10 @@ class Rally
   def turn(user, type, direction=nil)
     duration = Time.now - @last_time
     time_diff = (duration - @turn_time).round(1)
-    if type == :swerve && @swerve && time_diff < 3.0
+    if type == :swerve && @swerve && time_diff < 6.0
       @total_time += (@turn_time + time_penalty(time_diff)).round(1)
       user.output "[#{minutes_seconds(@total_time.round(1))}] You missed the #{@object} ^n#{time_diff}s"
-    elsif (direction == @direction && ((!@sharp && type == :normal) || (@sharp && type == :handbrake))) && time_diff.abs < 5.0
+    elsif (direction == @direction && ((!@sharp && type == :normal) || (@sharp && type == :handbrake))) && time_diff.abs < 6.0
       @total_time += (@turn_time + time_penalty(time_diff)).round(1)
       time_string = time_diff == 0.0 ? "" : "(#{time_diff.abs}s #{time_diff < 0.0 ? 'early' : 'late'})" 
       user.output "[#{minutes_seconds(@total_time.round(1))}] #{turn_result(time_diff)} ^n#{time_string}"
