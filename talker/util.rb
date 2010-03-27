@@ -29,7 +29,7 @@ module TalkerUtilities
     end
     
     unless options[:allow_bad_words]
-      if %w{admin all announce bank bollocks cunt connect directed everyone everybody foreskin fuck game games item newbie newbies object public private settext shit social socials you wank }.include?(name.downcase)
+      if %w{admin all announce bank bollocks cunt connect directed everyone everybody foreskin fuck game games item navigator newbie newbies object public private settext shit social socials you wank }.include?(name.downcase)
         output "Sorry, that name can not be used."
         return false
       end
@@ -161,6 +161,13 @@ module TalkerUtilities
     else
          sprintf "%2dm%2.2ds", mins, secs
     end
+  end
+  
+  def minutes_seconds(secs)
+    secs = secs.round(1)
+    mins = secs.floor / 60
+    secs = (secs - (mins * 60.0)).round(1)
+    "#{mins > 0 ? mins.to_s + "m " : ''}#{secs}s"
   end
   
   # for boxed content  

@@ -1,5 +1,6 @@
 class Item
   attr_accessor :name, :description, :quantity, :price, :unique
+  attr_writer :damage
 
   def initialize(name, description, quantity, price, unique=false)
     @name = name
@@ -7,6 +8,10 @@ class Item
     @quantity = quantity
     @price = price
     @unique = unique
+  end
+
+  def damage
+    @damage || 0.0
   end
 
   def purchase_by(user)
@@ -20,18 +25,25 @@ class Item
 end
 
 class Items < Array
-  SHOP = Items.new([
-    Item.new("Dice", "A six sided die", 1, 150),
-    Item.new("LSD", "Lysergic acid diethylamide", 1, 50),
-    Item.new("PCP", "Phenylcyclohexylpiperidine", 1, 100),
-    Item.new("Soap", "A surfactant cleaning compound, used for personal cleaning", 10, 200),
-    Item.new("Water", "44cl of Dragon Mineral", 1, 50),
-    Item.new("Half", "Dragon bitter half pint", 1, 50),
-    Item.new("Pint", "Dragon bitter one pint", 1, 100),
-    Item.new("Staylar", "Belgian premium beer 4 cans", 4, 600),
-    Item.new("Vodka", "Dragon brand 70cl (10 servings)", 10, 1500)    
-#    Item.new("Carbon Fishing Rod", "Requires 16 class 3 catches or above", 1, 15000, true)
-  ])
+  ITEMS = {
+    'dice'    => Item.new("Dice", "A six sided die", 1, 150),
+    'lsd'     => Item.new("LSD", "Lysergic acid diethylamide", 1, 50),
+    'pcp'     => Item.new("PCP", "Phenylcyclohexylpiperidine", 1, 100),
+    'soap'    => Item.new("Soap", "A surfactant cleaning compound, used for personal cleaning", 10, 200),
+    'water'   => Item.new("Water", "44cl of Dragon Mineral filtered through a dragons beard", 1, 40),
+    'half'    => Item.new("Half", "Dragon Ale half pint", 1, 50),
+    'pint'    => Item.new("Pint", "Dragon Ale one pint", 1, 100),
+    'staylar' => Item.new("Staylar", "Belgian premium beer (4 cans)", 4, 600),
+    'vodka'   => Item.new("Vodka", "Dragon brand 70cl (10 servings)", 10, 1500),
+    'chopper' => Item.new("Chopper", "Raleigh Bicycle. Speed 1, Traction 2", 1, 1000),
+    'minibus' => Item.new("Minibus", "Salvation Army Minibus. Speed 2, Traction 1", 1, 5000),
+    'lada'    => Item.new("Lada", "Lada VTFS Rally car. Speed 2, Traction 3", 1, 20000),
+    'subaru'  => Item.new("Subaru", "Subaru Impreza Rally car. Speed 3, Traction 4", 1, 40000),
+    'skoda'   => Item.new("Skoda", "Skoda Fabia Rally car. Speed 4, Traction 3", 1, 60000),
+    'ford'    => Item.new("Ford", "Ford Focus RS Rally car. Speed 4, Traction 5", 1, 100000),
+    'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 120000)
+  }
+
   def add(item)
     i = find(item.name)
     if i
@@ -78,8 +90,8 @@ module Commands
   
   define_command 'buy' do |item_name|
     if item_name.blank?
-      output box("Dragon Worlde Shope", Items::SHOP.map {|item| "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
-    elsif item_to_buy = Items::SHOP.find(item_name)
+      output box("Dragon Worlde Shope", ['dice', 'lsd', 'pcp', 'soap', 'water', 'half', 'pint', 'staylar', 'vodka'].map {|item_name| item = Items::ITEMS[item_name]; "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
+    elsif item_to_buy = Items::ITEMS[item_name]
       if purchased_item = item_to_buy.purchase_by(self)
         self.items.add(purchased_item)
         output_to_all "^Y\u{2192}^n #{cname} buys #{purchased_item.name}"
@@ -88,7 +100,7 @@ module Commands
         output "You can't afford to buy #{item_to_buy.name}. It costs #{item_to_buy.price}\u{20ab} and you only have #{money}\u{20ab}."
       end
     else
-      output "Unknown item '#{item_name}'. Type ^Lbuy^n to view the items available."
+      output "Unknown item '#{item_name}'. Type ^Lshop^n to view the items available."
     end
   end
   define_alias 'buy', 'shop'
@@ -136,6 +148,10 @@ module Commands
       elsif item.name == "Dice"
         items.deplete(item.name)
         output_to_all "^Y\u{2192}^n #{cname} swallowed a die"
+        save
+      elsif item.name == "Soap"
+        items.deplete(item.name)
+        output_to_all "^Y\u{2192}^n #{cname} eats soap, laugh at the state of #{gender == :male ? 'him' : 'her'}!"
         save
       else
         output "You can't eat #{item.name}."
@@ -187,6 +203,30 @@ module Commands
         output "You can't drink #{item.name}."
       end
       debug_message "#{name} units #{alcohol_units}"
+    end
+  end
+  
+  define_command 'repair' do |item_name|
+    if item_name.blank?
+      output "Format: repair <item name>"
+    else
+      item = items.find(item_name)
+      if item.nil?
+        output "You don't have a #{item_name}. Type ^Linventory^n to see what you have."
+      else
+        if item.damage > 0.0
+          if item.damage <= money
+            self.money -= item.damage
+            item.damage = 0.0
+            save
+            output "You have repaired your #{item.name}."
+          else
+            output "You can't afford to repair your #{item.name}"
+          end
+        else
+          output "Your #{item.name} is not damaged."
+        end  
+      end
     end
   end
   
