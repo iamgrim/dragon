@@ -14,9 +14,10 @@ class Item
     @damage || 0.0
   end
 
-  def purchase_by(user)
-    if user.money >= price
-      user.money -= price
+  def purchase_by(user, discount = 0)
+    purchase_price = price - discount
+    if user.money >= purchase_price
+      user.money -= purchase_price
       clone
     else
       nil
@@ -97,13 +98,44 @@ module Commands
         output_to_all "^Y\u{2192}^n #{cname} buys #{purchased_item.name}"
         save
       else
-        output "You can't afford to buy #{item_to_buy.name}. It costs #{item_to_buy.price}\u{20ab} and you only have #{money}\u{20ab}."
+        output "You can't afford to buy #{item_to_buy.name}. It costs #{currency(item_to_buy.price)} and you only have #{currency(money)}."
       end
     else
       output "Unknown item '#{item_name}'. Type ^Lshop^n to view the items available."
     end
   end
   define_alias 'buy', 'shop'
+  
+  define_command 'partexchange' do |message|
+    (old_vehicle_name, new_vehicle_name) = get_arguments(message, 2)
+    if old_vehicle_name.blank? || new_vehicle_name.blank?
+      vehicles = items.select {|i|['chopper', 'minibus', 'lada', 'subaru', 'skoda', 'ford', 'citroen' ].include?(i.name.downcase)}
+      if vehicles.empty?
+        output "You do not have any vehicles to part exchange."
+      else
+        output "^LSalesman tells you 'Unfortunately that rust means I can only offer you:'^n\n" + vehicles.map {|i|"#{sprintf("%15.15s", i.name)} #{currency(i.price / 2)}"}.join("\n") + "\nTo perform a part exchange, type ^Lpartexchange <old vehicle> <new vehicle>^n"
+      end
+    else
+      old_vehicle = items.find(old_vehicle_name)
+      new_vehicle = Items::ITEMS[new_vehicle_name]
+      if old_vehicle.nil?
+        output "Unknown vehicle to part exchange '#{old_vehicle_name}'"
+      elsif new_vehicle.nil?
+        output "Unknown vehicle to buy '#{new_vehicle_name}'. Type ^Lforecourt^n to list all the vehicles."
+      elsif !['chopper', 'minibus', 'lada', 'subaru', 'skoda', 'ford', 'citroen' ].include?(old_vehicle.name.downcase)
+        output "Sorry, only vehicles can be part exchanged."
+      elsif new_vehicle.price <= (old_vehicle.price / 2)
+        output "Sorry, you can only part exchange for something of higher value."
+      elsif purchased_item = new_vehicle.purchase_by(self, old_vehicle.price / 2)
+        self.items.deplete(old_vehicle.name)
+        self.items.add(purchased_item)
+        output_to_all "^Y\u{2192}^n #{cname} part exchanges a #{old_vehicle.name} for a #{new_vehicle.name}"
+        save
+      else
+        output "You can't afford to buy #{new_vehicle.name}. It costs #{currency(new_vehicle.price - (old_vehicle.price / 2))} after the part exchange, and you only have #{currency(money)}."
+      end
+    end
+  end
   
   define_command 'eat' do |item_name|
     if item_name.blank?
