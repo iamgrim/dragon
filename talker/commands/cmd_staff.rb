@@ -39,7 +39,7 @@ module Commands
         output "Format: su <message>"
       else
         c = Commands.lookup('tell')
-        c.execute(self, "#{all_users.values.select{|u| u.rank > 0}.map{|u|u.name}.join(',')} ^Y<SU> #{message}^n") if c
+        c.execute(self, "#{connected_users.values.select{|u| u.rank > 0}.map{|u|u.name}.join(',')} ^Y<SU> #{message}^n") if c
       end
     else
       output "You are not prestigious enough to use that."
@@ -52,7 +52,7 @@ module Commands
         output "Format: au <message>"
       else
         c = Commands.lookup('tell')
-        c.execute(self, "#{all_users.values.select{|u| u.rank > 3}.map{|u|u.name}.join(',')} ^R<Admin> #{message}^n") if c
+        c.execute(self, "#{connected_users.values.select{|u| u.rank > 3}.map{|u|u.name}.join(',')} ^R<Admin> #{message}^n") if c
       end
     else
       output "You are not prestigious enough to use that."
