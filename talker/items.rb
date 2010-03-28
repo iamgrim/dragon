@@ -216,7 +216,7 @@ module Commands
       else
         if item.damage > 0.0
           if item.damage <= money
-            self.money -= item.damage
+            self.money -= item.damage.to_i
             item.damage = 0.0
             save
             output "You have repaired your #{item.name}."

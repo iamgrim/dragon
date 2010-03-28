@@ -50,6 +50,13 @@ module Commands
     end
   end
 
+  define_command 'fix', :invisible => true do
+    all_users.values.each do |u|
+      u.money = u.money.to_i
+      u.save
+    end
+  end
+
 #  define_command 'prune' do |user_name|
 #    if developer?
 #      u = find_user(user_name)
