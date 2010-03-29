@@ -374,7 +374,7 @@ instructions and respond appropriately. The car controls are:
 ^Lturn left^n       - For normal left corners
 ^Lhandbrake left^n  - For sharp left corners
 ^Lhandbrake right^n - For sharp right corners
-^Lturn left^n       - For normal right corners
+^Lturn right^n      - For normal right corners
 ^Lswerve^n          - To avoid obstacles in the road
 
 The object of the game is to complete all 20 stages in the best time 
