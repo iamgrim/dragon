@@ -7,7 +7,7 @@ module Commands
       staff_at_rank = commas_and(all_users.values.select{|u| u.rank == rank}.map {|u| u.name})
       buffer += sprintf("#{User::RANK_COLOUR[rank]}%8.8s ^n: %-64.64s\n", User::RANK[rank], staff_at_rank)
     end
-    output box("Staff", buffer)
+    output box("Knobs", buffer)
   end
 
   define_command 'promote' do
@@ -56,6 +56,44 @@ module Commands
       end
     else
       output "You are not prestigious enough to use that."
+    end
+  end
+  
+  define_command 'offduty' do |message|
+    if rank > 0
+      if !onduty
+        output "You are already off duty."
+      else
+        self.onduty = false
+        output_to_all "^R\u{2192}^n #{name} goes off duty."
+        save
+      end
+    else
+      output "You are not prestigious enough to use that."
+    end
+  end
+
+  define_command 'onduty' do |message|
+    if rank > 0
+      if onduty
+        output "You are already on duty."
+      else
+        self.onduty = true
+        output_to_all "^G\u{2192}^n #{name} returns to duty."
+        save
+      end
+    else
+      output "You are not prestigious enough to use that."
+    end
+  end
+
+  define_command 'lsu' do |message|
+    active_staff = active_users.select {|u| u.rank > 0 && u.onduty}
+    if active_staff.empty?
+      output "There are no active knobs, the world is currently in anarchy."
+    else
+      len = active_staff.map {|u|u.name.length}.max    
+      output box("Active Knobs (Members of the Nobility)", active_staff.map { |u| sprintf("%#{len}.#{len}s  #{User::RANK_COLOUR[u.rank]}%8.8s   ^n#{time_in_words(u.idle_time)} idle", u.name, User::RANK[u.rank]) }.join("\n"))
     end
   end
 

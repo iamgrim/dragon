@@ -22,7 +22,7 @@ class User
   attr_accessor :money
   attr_accessor :donations
   attr_reader   :rank
-  attr_accessor :debug
+  attr_accessor :debug, :onduty
 
   attr_accessor :location
   attr_accessor :homepage
@@ -66,6 +66,7 @@ class User
     @ignoring_ips ||= {}
     @drug_strength ||= 0
     @alcohol_units ||= 0
+    @onduty = @onduty.nil? ? true : @onduty
   end
 
   def lower_name
@@ -297,11 +298,12 @@ class User
   end
   
   def rank_name_with_colour
-    "#{RANK_COLOUR[rank]}#{RANK[rank]}^n"
+    r = onduty ? rank : 0
+    "#{RANK_COLOUR[r]}#{RANK[r]}^n"
   end
 
   def cname
-    "#{RANK_COLOUR[rank]}#{name}^n"
+    "#{RANK_COLOUR[onduty ? rank : 0]}#{name}^n"
   end
   
   def hisher

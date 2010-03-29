@@ -120,7 +120,7 @@ module Commands
     if !user_name.blank?
       u = find_connected_user(user_name)
       if u
-        buffer = "  #{u.name} is #{time_in_words(u.idle_time)} inactive." 
+        buffer = "  #{u.name} is #{time_in_words(u.idle_time)} idle." 
         buffer += "\n  > #{u.idle_message}^n" unless u.idle_message.blank?
         output buffer
       end
