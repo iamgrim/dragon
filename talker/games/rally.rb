@@ -161,8 +161,8 @@ class Rally
     end
   end
 
-  STAGE_REFERENCE_TIMES = [47.1, 51.0, 53.8, 44.4, 49.2, 49.8, 45.6, 48.4, 49.9, 56.3, 62.7, 55.8, 52.1, 48.1, 53.4, 46.8, 38.7, 58.1, 62.8]
-  REFERENCE_TIME = 974.0
+  STAGE_REFERENCE_TIMES = [47.1, 51.0, 53.8, 44.4, 49.2, 49.8, 45.6, 48.4, 49.9, 56.3, 62.7, 55.8, 52.1, 48.1, 53.4, 46.8, 38.7, 58.1, 62.8, 55.4]
+  REFERENCE_TIME = 1029.4
 
   def self.stage_reference_time(stage)
     Rally::STAGE_REFERENCE_TIMES[stage - 1]
@@ -215,7 +215,7 @@ module Commands
   end
   
   define_command 'rally' do
-#    debug_message "#{(1..19).map {|i|Rally.stage_reference_time(i)}}"
+#    debug_message "#{(1..20).map {|i|Rally.calculate_stage_reference_time(i)}}"
     if rally
       if !rally.stage_finished?
         output "You are currently on stage #{rally.stage} of the rally. Type ^Lhelp rally^n for assistance."
