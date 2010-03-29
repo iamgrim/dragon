@@ -256,7 +256,13 @@ module Commands
       count = 0
       record_lines = target.rally.stage_records.map {|rec| 
         count = count + 1
-        "^LStage #{count}.^n #{minutes_seconds(rec)}"
+        stage_rec = Rally.stage_record(count)
+        best_string = if rec == stage_rec
+          "^G(stage record)^n"
+        else
+          "(#{minutes_seconds(rec - stage_rec)} off the stage record)"
+        end
+        "^cStage #{count}.^n^L #{minutes_seconds(rec)}^n #{best_string}"
       }.join("\n")
       total_time_line = rally.best_total_time < 1000000 ? "\nBest overall rally time: #{minutes_seconds(rally.best_total_time)}" : ""
       
