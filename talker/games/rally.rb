@@ -114,9 +114,13 @@ class Rally
       time_string = time_diff == 0.0 ? "" : "(#{time_diff.abs}s #{time_diff < 0.0 ? 'early' : 'late'})" 
       user.output "[#{minutes_seconds(@total_time.round(1))}] #{turn_result(time_diff)} ^n#{time_string}"
     else
-      damage = stage_records.empty? ? 0 : ((20 + rand(130)) ** (1.0 + Rally::SPEED[@vehicle]/10.0)).floor
+#      damage = stage_records.empty? ? 0 : ((20 + rand(130)) ** (1.0 + Rally::SPEED[@vehicle]/10.0)).floor
+      damage = 0
       item = user.items.find(@vehicle)
-      item.damage += damage if item
+      if item && !stage_records.empty?
+        damage = (((75 + rand(50)) / 1000.0) * item.price).floor
+        item.damage += damage
+      end
       damage_string = ""
       damage_string = ", causing #{currency(damage)} of damage to #{user.hisher} #{@vehicle}" if damage > 0
       user.output_to_all "^R\u{2192}^n #{user.name} crashed out of stage #{@stage} of the rally#{@swerve ? ', hitting a ' + @object : ''}#{damage_string}!"
