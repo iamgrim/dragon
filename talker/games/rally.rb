@@ -13,6 +13,7 @@ class Rally
     'skoda'   => 4,
     'ford'    => 4,
     'citroen' => 5,
+    'ferrari' => 6,
     'reference' => 5
   }
 
@@ -24,6 +25,7 @@ class Rally
     'skoda'   => 3,
     'ford'    => 5,
     'citroen' => 4,
+    'ferrari' => -10,
     'reference' => 5
   }
   
@@ -211,7 +213,7 @@ end
 
 module Commands
   define_command 'forecourt' do
-    output box("Motor Despot Honeste Used Cars", ['chopper', 'minibus', 'lada', 'subaru', 'skoda', 'ford', 'citroen' ].map {|item_name| item = Items::ITEMS[item_name]; "^L#{sprintf("%8s", currency(item.price))}^n #{item.name} - #{item.description}"}.join("\n"))    
+    output box("Motor Despot Honeste Used Cars", ['chopper', 'minibus', 'lada', 'subaru', 'skoda', 'ford', 'citroen', 'ferrari' ].map {|item_name| item = Items::ITEMS[item_name]; "^c#{sprintf("%10s", currency(item.price))}^n^L #{sprintf("%-7s", item.name)}^n  #{item.description}"}.join("\n"))    
   end
   
   define_command 'rally' do
@@ -262,9 +264,9 @@ module Commands
         else
           "(#{minutes_seconds(rec - stage_rec)} off the stage record)"
         end
-        "^cStage #{count}.^n^L #{minutes_seconds(rec)}^n #{best_string}"
+        "^cStage #{sprintf("%02d", count)}.^n^L #{minutes_seconds(rec)}^n #{best_string}"
       }.join("\n")
-      total_time_line = rally.best_total_time < 1000000 ? "\nBest overall rally time: #{minutes_seconds(rally.best_total_time)}" : ""
+      total_time_line = target.rally.best_total_time < 1000000 ? "\nBest overall rally time: #{minutes_seconds(rally.best_total_time)}" : ""
       
       output box("#{target.name} Best Times", "#{record_lines}#{total_time_line}")
     end
@@ -277,7 +279,7 @@ module Commands
       item = items.find(item_name)
       if item.nil?
         output "You don't have a #{item_name}. Type ^Linventory^n to see what you have."
-      elsif ['Chopper', 'Minibus', 'Lada', 'Subaru', 'Skoda', 'Ford', 'Citroen'].include?(item.name)
+      elsif ['Chopper', 'Minibus', 'Lada', 'Subaru', 'Skoda', 'Ford', 'Citroen', 'Ferrari'].include?(item.name)
         self.rally ||= Rally.new
         rally.vehicle = item.name.downcase
         rally.seatbelt = false

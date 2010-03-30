@@ -40,9 +40,10 @@ class Items < Array
     'minibus' => Item.new("Minibus", "Salvation Army Minibus. Speed 2, Traction 1", 1, 5000),
     'lada'    => Item.new("Lada", "Lada VTFS Rally car. Speed 2, Traction 3", 1, 20000),
     'subaru'  => Item.new("Subaru", "Subaru Impreza Rally car. Speed 3, Traction 4", 1, 50000),
-    'skoda'   => Item.new("Skoda", "Skoda Fabia Rally car. Speed 4, Traction 3", 1, 120000),
-    'ford'    => Item.new("Ford", "Ford Focus RS Rally car. Speed 4, Traction 5", 1, 200000),
-    'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 250000)
+    'skoda'   => Item.new("Skoda", "Skoda Fabia Rally car. Speed 4, Traction 3", 1, 125000),
+    'ford'    => Item.new("Ford", "Ford Focus RS Rally car. Speed 4, Traction 5", 1, 225000),
+    'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 350000),
+    'ferrari' => Item.new("Ferrari", "Ferrari F10 Formula 1 Car. Speed 6, Traction -10", 1, 1000000)
   }
 
   def add(item)
