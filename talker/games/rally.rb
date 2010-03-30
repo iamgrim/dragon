@@ -266,7 +266,7 @@ module Commands
         end
         "^cStage #{sprintf("%02d", count)}.^n^L #{minutes_seconds(rec)}^n #{best_string}"
       }.join("\n")
-      total_time_line = target.rally.best_total_time < 1000000 ? "\nBest overall rally time: #{minutes_seconds(rally.best_total_time)}" : ""
+      total_time_line = target.rally.best_total_time < 1000000 ? "\nBest overall rally time: #{minutes_seconds(target.rally.best_total_time)}" : ""
       
       output box("#{target.name} Best Times", "#{record_lines}#{total_time_line}")
     end
