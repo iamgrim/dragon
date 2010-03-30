@@ -29,6 +29,7 @@ require 'talker/games/connectfour'
 require 'talker/games/othello'
 require 'talker/games/quiz'
 require 'talker/games/rally'
+require 'talker/games/conkers'
 
 class Talker
   NAME    = 'Dragon Worlde'
