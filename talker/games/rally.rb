@@ -10,10 +10,10 @@ class Rally
     'minibus' => 2,
     'lada'    => 3,
     'subaru'  => 4,
-    'skoda'   => 4,
-    'ford'    => 4,
-    'citroen' => 5,
-    'ferrari' => 6,
+    'skoda'   => 5,
+    'ford'    => 5,
+    'citroen' => 6,
+    'ferrari' => 7,
     'reference' => 5
   }
 
@@ -25,7 +25,7 @@ class Rally
     'skoda'   => 3,
     'ford'    => 5,
     'citroen' => 4,
-    'ferrari' => -10,
+    'ferrari' => -20,
     'reference' => 5
   }
   
