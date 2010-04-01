@@ -16,7 +16,8 @@ module Helpers
     
     connected_users.values.each do |u| 
       unless u.muffled || u.is_ignoring?(self)
-        u.output "#{u.get_timestamp}#{message}"
+        m = message.gsub(/#{u.name}/, "^R#{u.name}^n")
+        u.output "#{u.get_timestamp}#{m}"
       end
     end
     talker_history.add message
