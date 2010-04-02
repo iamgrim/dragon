@@ -38,6 +38,15 @@ module TelnetConnection
       # do nothing - handle escapes
       end
     end
+    out = ""
+    data.each_char do |c|
+      if c == "\b"
+        out = out.slice(0,out.length-1)
+      else
+        out += c
+      end
+    end
+    out.gsub("\\n", '')
   end
 
   def receive_data(data)
@@ -60,7 +69,7 @@ module TelnetConnection
       when "input"
         message ||= ""
         original_length = message.length
-        parse_telnet(signature, message)
+        message = parse_telnet(signature, message)
         @talker.input(signature, message.force_encoding('utf-8')) unless original_length > 0 && message.length == 0
       end
     end
