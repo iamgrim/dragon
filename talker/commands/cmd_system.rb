@@ -222,7 +222,7 @@ module Commands
   end
   
   define_command 'tracks' do |target_name|
-    target = target_name.blank? ? self : find_entity(target_name)
+    target = target_name.blank? ? self : find_user(target_name)
     if target
       if target.lastfm.blank?
         output "#{target.name} needs to specify the name of their last.fm account using the ^Llastfm^n command."
