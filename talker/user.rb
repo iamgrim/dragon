@@ -310,15 +310,19 @@ class User
     @gender == :male ? "his" : "her"
   end
   
+  def total_login_time
+    logged_in? ? total_time + login_time : total_time
+  end
+  
   def examine
     buffer = "       First seen : #{get_timezone.strftime("%l:%M %p, %A %d %B %Y", first_seen).strip}\n"
-    if logged_in?
+    if logged_in? && active?
       buffer += "       Login time : #{time_in_words(login_time)}\n"
       buffer += "        Idle time : #{time_in_words(idle_time)}\n"
-      buffer += " Total login time : #{time_in_words(total_time + login_time)}\n"
     else
-      buffer += " Total login time : #{time_in_words(total_time)}\n"
+      buffer += "        Last seen : #{get_timezone.strftime("%l:%M %p, %A %d %B %Y", last_activity).strip}\n"
     end
+    buffer += " Total login time : #{time_in_words(total_login_time)}\n"
     buffer += "      Connections : #{total_connections}\n"
     buffer += "             Rank : #{rank_name_with_colour}\n"
     buffer += "        Real name : #{realname}^n\n" unless realname.blank?
