@@ -10,6 +10,8 @@ require 'talker/user'
 require 'talker/textfile'
 require 'talker/history'
 
+require 'talker/lastfm_ext'
+
 require 'talker/multis'
 require 'talker/commands'
 require 'talker/socials'

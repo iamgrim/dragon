@@ -209,4 +209,48 @@ module Commands
     output box("Forbes Dragon World Rich List", result.map {|u| count += 1; "#{(pos == 0 && u == self) || pos == count ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-#{len}.#{len}s", u.name)} #{sprintf("%#{len2}s", currency(u.money))}"}.join("^n\n"))
   end
   
+  define_command 'chart' do
+    lastfm = Lastfm.new('cc7edc8072119a8875842b2646a64c0c', '0d262ccefa709548e3010a595ebb4bb1')
+    group = Lastfm::Group.new(lastfm)
+    count = 0
+    artists = group.get_weekly_artist_chart('Dragon World Talker')['weeklyartistchart']['artist'].slice(0, 10).map do |artist|
+      count = count + 1
+      sprintf(" %2.2d. ^L%-53.53s^n ^c%15.15s", count, "#{artist['name']}", "(#{artist['playcount']} #{pluralise('play', artist['playcount'].to_i)})")
+    end.join("\n")
+    
+    output box("Dragon Worlde Artists Of Thy Week", artists)
+  end
+  
+  define_command 'tracks' do |target_name|
+    target = target_name.blank? ? self : find_entity(target_name)
+    if target
+      if target.lastfm.blank?
+        output "#{target.name} needs to specify the name of their last.fm account using the ^Llastfm^n command."
+      else
+        lastfm = Lastfm.new('cc7edc8072119a8875842b2646a64c0c', '0d262ccefa709548e3010a595ebb4bb1')
+        lfmuser = Lastfm::User.new(lastfm)
+        tracks = lfmuser.get_recent_tracks(target.lastfm)['recenttracks']['track'].map do |track|
+          date_string = if track.has_key?('@attr') && track['@attr'].has_key?('nowplaying')
+            "Now"
+          else
+            "#{short_time(Time.now -  track['date']['uts'].to_i)}"
+          end
+          sprintf("%-68.68s ^c%6.6s", "#{track['artist']['#text']} - #{track['name']}", date_string)
+        end.join("\n")
+        output box("#{target.name} Recently Listened Tracks", tracks)
+      end
+    end
+  end
+  
+  define_command 'lastfm' do |message|
+    if message.blank?
+      self.lastfm = nil
+      output "Format: lastfm <your last.fm profile name>"
+    else
+      self.lastfm = message
+      output "Last.fm profile name set to #{message}."
+    end
+    save
+  end
+  
 end

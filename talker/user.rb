@@ -24,11 +24,7 @@ class User
   attr_reader   :rank
   attr_accessor :debug, :onduty
 
-  attr_accessor :location
-  attr_accessor :homepage
-  attr_accessor :occupation
-  attr_accessor :maritalstatus
-  attr_accessor :realname
+  attr_accessor :location, :homepage, :occupation, :maritalstatus, :realname, :lastfm
 
   attr_accessor :memos
 
