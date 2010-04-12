@@ -229,15 +229,20 @@ module Commands
       else
         lastfm = Lastfm.new('cc7edc8072119a8875842b2646a64c0c', '0d262ccefa709548e3010a595ebb4bb1')
         lfmuser = Lastfm::User.new(lastfm)
-        tracks = lfmuser.get_recent_tracks(target.lastfm)['recenttracks']['track'].map do |track|
-          date_string = if track.has_key?('@attr') && track['@attr'].has_key?('nowplaying')
-            "Now"
-          else
-            "#{short_time(Time.now -  track['date']['uts'].to_i)}"
-          end
-          sprintf("%-68.68s ^c%6.6s", "#{track['artist']['#text']} - #{track['name']}", date_string)
-        end.join("\n")
-        output box("#{target.name} Recently Listened Tracks", tracks)
+        recent_tracks = lfmuser.get_recent_tracks(target.lastfm)['recenttracks']['track']
+        if recent_tracks.blank?
+          output "#{target.name} doesn't have any recent tracks!"
+        else
+          tracks = recent_tracks.map do |track|
+            date_string = if track.has_key?('@attr') && track['@attr'].has_key?('nowplaying')
+              "Now"
+            else
+              "#{short_time(Time.now -  track['date']['uts'].to_i)}"
+            end
+            sprintf("%-68.68s ^c%6.6s", "#{track['artist']['#text']} - #{track['name']}", date_string)
+          end.join("\n")
+          output box("#{target.name} Recent Tracks. http://last.fm/user/#{target.lastfm}", tracks)
+        end
       end
     end
   end
