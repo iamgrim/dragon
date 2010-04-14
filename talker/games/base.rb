@@ -26,7 +26,7 @@ class CommunityService
       user.community_service = nil
       if user.money >= 100
         user.money -= 100
-        user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been fined #{currency(100)}"
+        user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been fined 100\u{20ab}"
         user.save
       else
         user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been sent to prison"
