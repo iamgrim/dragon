@@ -1,8 +1,14 @@
-New commands:
-^Lchart^n  - Weekly top artists for Dragon World users. Join the last.fm group 
-         to contribute: ^U^Bhttp://www.last.fm/group/Dragon+World+Talker^n
-^Llastfm^n - Connect your last.fm profile to the talker
-^Ltracks <user name>^n - Show recently played tracks by the specified user
+^CNew idiocy has come to the talker!
+^crandoms and dynatext in output messages:
+say {1|2|3}
+say hello, my name is <Self:name> and I have <Self:drogna>
 
-Don't forget the talker meet! 8th May 2010 in Coventry. For more
-information speak to SockEyE or Ace.
+^crandoms and dynatext in titles:
+title I am a <Self:rank> and you are only a humble <Target:rank>!
+title {hello|goodbye|fuck off} <Target:name>
+
+^crandoms in aliases:
+alias random {say|emote|sing|think} %0
+
+^WDon't forget the talker meet! 8th May 2010 in Coventry. For more
+^Winformation speak to SockEyE or Ace.

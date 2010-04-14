@@ -51,14 +51,14 @@ class Social
       if text =~ /<([M|m]essage|S)>/ && body.blank?
         user.output "Format: #{@name} <message>"
       else
-        user.channel_output "#{user.cname} #{process_dynatext(process_randoms(text), user, target, body)}^n".gsub("\r\n", "")
+        user.channel_output "#{user.cname} #{Social.process_dynatext(Social.process_randoms(text), user, target, body)}^n".gsub("\r\n", "")
       end
     else
       user.output "Sorry, the social is down for maintenance."
     end
   end
   
-  def process_randoms(text)
+  def self.process_randoms(text)
     stack          = []
     stored_string  = ""
     random_choices = []
@@ -91,18 +91,18 @@ class Social
     stored_string
   end
   
-  def process_dynatext(text, from, to, message)
+  def self.process_dynatext(text, from, to, message)
     text = text.gsub(/<(message|S)>/i, message)
 
     stored_string  = ""
     scanner = StringScanner.new(text)
-    while match = scanner.scan_until(/<(T|S|U)\S*:(\S+)>/)
+    while match = scanner.scan_until(/<(T|S|U)[a-zA-Z]*:([a-zA-Z]+)>/)
       stored_string << match.slice(0, match.length - scanner.matched_size)
       case scanner[1].upcase
       when "S", "U"
         stored_string << process_dynatext_part(from, scanner[2])
       when "T"
-        stored_string << process_dynatext_part(to, scanner[2])
+        stored_string << (to.nil? ? "" : process_dynatext_part(to, scanner[2]))
       end
     end
     stored_string << scanner.rest if scanner.rest?
@@ -117,11 +117,15 @@ class Social
     "malefemale" => {:male => "male", :female => "female"},
   }
   
-  def process_dynatext_part(user, type)
+  def self.process_dynatext_part(user, type)
     gender = user.gender || :female
   
     if type == "name"
       user.name
+    elsif type == "drogna"
+      "#{user.money}\u{20ab}"
+    elsif type == "rank"
+      user.rank_name_with_colour
     elsif GENDER_WORDS.include?(type)
       GENDER_WORDS[type][gender]
     else
