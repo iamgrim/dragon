@@ -53,7 +53,7 @@ class Alias
     else
       out = "#{out}#{body.blank? ? '' : ' ' + body}"
     end
-    user.handle_input(Social.process_dynatext(Social.process_randoms(out), self, nil, ""))
+    user.handle_input(Social.process_dynatext(Social.process_randoms(out), user, nil, ""))
   end
 end
 
