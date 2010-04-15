@@ -13,7 +13,6 @@ module Helpers
   def channel_output(message)
     message = vomit_string(message) if vomited_on
     message = alcohol_string(alcohol_units, message) if alcohol_units > 0
-    message = Social.process_dynatext(Social.process_randoms(message), self, nil, "")
     
     connected_users.values.each do |u| 
       unless u.muffled || u.is_ignoring?(self)

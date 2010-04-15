@@ -132,6 +132,10 @@ class Social
       ""
     end
   end
+ 
+  def self.process_string(text, from, to, message)
+    Social.process_dynatext(Social.process_randoms(text), from, to, message)
+  end
   
   def examine
     buffer =  "^LCreator^n\n#{@creator.blank? ? 'Unknown' : @creator}\n" 

@@ -46,14 +46,14 @@ class Alias
   end
   
   def execute(user, body)
-    out = @text
-    if out =~ /%[0-9]/
-      subs = [body] + body.split
-      out = out.gsub(/%([0-9])/) {|s|subs[$1.to_i] || ""}
-    else
-      out = "#{out}#{body.blank? ? '' : ' ' + body}"
-    end
-    user.handle_input(Social.process_dynatext(Social.process_randoms(out), user, nil, ""))
+    out = Social.process_string(@text, user, nil, body)
+#    if out =~ /%[0-9]/
+#      subs = [body] + body.split
+#      out = out.gsub(/%([0-9])/) {|s|subs[$1.to_i] || ""}
+#    else
+    out = "#{out}#{body.blank? ? '' : ' ' + body}"
+#    end
+    user.handle_input(out)
   end
 end
 

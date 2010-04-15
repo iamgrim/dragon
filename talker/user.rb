@@ -190,7 +190,7 @@ class User
   end
 
   def get_prompt
-    @prompt || "Dragon> "
+    Social.process_string(@prompt || "Dragon> ", self, nil, "")
   end
   
   def get_timestamp_format
@@ -210,15 +210,15 @@ class User
   end
   
   def get_connect_message
-    "^g>^G> ^n#{name} #{@connect_message || 'enteres thy realme'} ^G<^g<^n"
+    "^g>^G> ^n#{name} #{Social.process_string(@connect_message || 'enteres thy realme', self, nil, "")} ^G<^g<^n"
   end
 
   def get_disconnect_message
-    "^R<^r< ^n#{name} #{@disconnect_message || 'leaves thy realme'} ^r>^R>^n"
+    "^R<^r< ^n#{name} #{Social.process_string(@disconnect_message || 'leaves thy realme', self, nil, "")} ^r>^R>^n"
   end
 
   def get_reconnect_message
-    "^Y>^y< ^n#{name} #{@reconnect_message || 'rejoins they realme'} ^y>^Y<^n"
+    "^Y>^y< ^n#{name} #{Social.process_string(@reconnect_message || 'rejoins they realme', self, nil, "")} ^y>^Y<^n"
   end
 
   def user_prompt
