@@ -211,7 +211,7 @@ end
 
 module Commands
   define_command 'forecourt' do
-    output box("Motor Despot Honeste Used Cars", ['chopper', 'minibus', 'lada', 'subaru', 'skoda', 'ford', 'citroen', 'ferrari' ].map {|item_name| item = Items::ITEMS[item_name]; "^c#{sprintf("%10s", currency(item.price))}^n^L #{sprintf("%-7s", item.name)}^n  #{item.description}"}.join("\n"))    
+    output box("Motor Despot Honeste Used Cars", ['chopper', 'minibus', 'lada', 'subaru', 'skoda', 'ford', 'citroen' ].map {|item_name| item = Items::ITEMS[item_name]; "^c#{sprintf("%10s", currency(item.price))}^n^L #{sprintf("%-7s", item.name)}^n  #{item.description}"}.join("\n"))    
   end
   
   define_command 'rally' do
