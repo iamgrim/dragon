@@ -317,9 +317,9 @@ module Commands
     output "You have quit the rally."
   end
 
-  define_command 'rally reset' do
-    all_users.values.each {|u| u.rally = nil; u.save}
-  end
+#  define_command 'rally reset' do
+#    all_users.values.each {|u| u.rally = nil; u.save}
+#  end
   
   define_command 'turn' do |direction|
     if rally.nil? || rally.stage_finished?
