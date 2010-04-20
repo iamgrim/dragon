@@ -9,11 +9,10 @@ class Rally
     'chopper' => 1,
     'minibus' => 2,
     'lada'    => 3,
-    'subaru'  => 4,
-    'skoda'   => 5,
-    'ford'    => 5,
-    'citroen' => 6,
-    'ferrari' => 7,
+    'subaru'  => 3,
+    'skoda'   => 4,
+    'ford'    => 4,
+    'citroen' => 5,
     'reference' => 5
   }
 
@@ -25,7 +24,6 @@ class Rally
     'skoda'   => 3,
     'ford'    => 5,
     'citroen' => 4,
-    'ferrari' => -20,
     'reference' => 5
   }
   
@@ -120,7 +118,7 @@ class Rally
       damage = 0
       item = user.items.find(@vehicle)
       if item && !stage_records.empty?
-        damage = (((75 + rand(50)) / 1000.0) * item.price).floor
+        damage = (((75 + rand(50)) / 1000.0) * (item.price / 4)).floor
         item.damage += damage
       end
       damage_string = ""
@@ -138,12 +136,12 @@ class Rally
           @stage_records[@stage-1] = @total_time
         end
         @total_rally_time += @total_time
-        winnings = (10000 * ((Rally::stage_reference_time(@stage) / @total_time) ** 5)).round
+        winnings = (5000 * ((Rally::stage_reference_time(@stage) / @total_time) ** 5)).round
         
         user.output_to_all "^G\u{2192}^n #{user.name} completed Rally Stage #{@stage} in #{minutes_seconds(@total_time)}, winning #{currency(winnings)}!#{best_string}"
         user.money += winnings
         if @stage == 20
-          winnings = (100000 * ((Rally::REFERENCE_TIME / @total_rally_time) ** 4)).round
+          winnings = (50000 * ((Rally::REFERENCE_TIME / @total_rally_time) ** 4)).round
           user.money += winnings
           best_string = ""
           if @total_rally_time < @best_total_time
@@ -319,9 +317,9 @@ module Commands
     output "You have quit the rally."
   end
 
-#  define_command 'rally reset' do
-#    all_users.values.each {|u| u.rally = nil; u.save}
-#  end
+  define_command 'rally reset' do
+    all_users.values.each {|u| u.rally = nil; u.save}
+  end
   
   define_command 'turn' do |direction|
     if rally.nil? || rally.stage_finished?
