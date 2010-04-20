@@ -86,6 +86,24 @@ module Commands
       output "You are not prestigious enough to use that."
     end
   end
+  
+  define_command 'drag' do |target_name|
+    if rank > 1
+      if target_name.blank?
+        output "Format: drag <user>"
+      else
+        target = find_user(target_name)
+        if target
+          target.gender = target.gender == :male ? :female : :male
+          target.save
+          target.output "You have been dragged by #{name}! Your gender is now #{target.gender}"
+          output "You have dragged #{target.name}! Their gender is now #{target.gender}" 
+        end
+      end
+    else
+      output "You are not prestigious enough to use drag, it requires Knight or above."
+    end
+  end
 
   define_command 'lsu' do |message|
     active_staff = active_users.select {|u| u.rank > 0 && u.onduty}
