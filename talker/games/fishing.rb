@@ -282,6 +282,7 @@ module Commands
           output_to_all "^C><>^n #{name} caught a ^LShopping Trolley^n worth #{currency(winnings)}!"
         else
           winnings = (fishing.catch_size * 4).round
+          winnings = winnings * 10 if (fishing.fish.name == "Pike")
           best_string = ""
           best_string = " Laugh at the state of them!" if winnings == 0
           best_string = " ^L(personal best)^n" if personal_best = fishing.set_record?
@@ -295,7 +296,6 @@ module Commands
           end
         end
         self.money += winnings
-        self.money = 0 if lower_name == "az"
         fishing.reel_in
       elsif r < 3 # 2
         fishing.reel_in
