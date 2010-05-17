@@ -235,7 +235,7 @@ class Talker
             r = rand(amount)
             if r == 0
               u.output_to_all u.vomit_string("\u{2192} #{u.name} vomits all over #{u.gender == :male ? 'him' : 'her'}self!")
-              u.alcohol_units = (u.alcohol_units / 2).round
+              u.alcohol_units = (u.alcohol_units - 8).round
             elsif r == 1
               u.output_to_all "#{u.cname} flails their fists in the air like a ^r*^cm^Ru^cp^Rp^ce^Rt^r*!^n"
             elsif r == 2

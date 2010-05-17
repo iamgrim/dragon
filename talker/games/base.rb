@@ -107,7 +107,7 @@ module Commands
         output "^Y       ___\n     .    .. 			^n^LYou flip the coin and it lands\n^Y    .  ;   ..	      	^P        on its edge.\n ^Y   .   ;  ..\n^r ..__^Y.^r____^Y..^r__..^n\n"
         output_to_all "^G\u{2192}^n #{name} has been Joe Palookered! The coin landed on its edge!"
         output_to_all "^G\u{2192}^n #{name} won 1,000,000 drogna"
-        self.money = money + 1000000
+        self.money = money + 100000
         save
       end
     end
@@ -219,7 +219,7 @@ module Commands
                 output "You have completed #{community_service.completed_work} metres of the #{community_service.location}."
               end
             else
-              output "That is the wrong colour you fucking idiot, do you want to be sent to prison?"
+              output "That is the wrong colour you imbecile, do you want to be sent to prison?"
             end
           else
             output "You are supposed to be painting the #{community_service.location}, not the #{object_name}!"
@@ -274,6 +274,10 @@ module Commands
               if target.vomited_on
                 target.vomited_on = nil
                 output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water, cleaning the vomit off #{target.gender == :male ? 'him' : 'her'}!"
+
+                self.bile = 4
+                c = Commands.lookup('vomit')
+                c.execute(self, "") if c
               else
                 if rand(3) == 0
                   output_to_all "^R\u{2192}^n #{name} has been fined #{currency(50)} for misuse of fire safety equipment!"
