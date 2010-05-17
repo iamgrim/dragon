@@ -42,7 +42,8 @@ class Items < Array
     'subaru'  => Item.new("Subaru", "Subaru Impreza Rally car. Speed 3, Traction 4", 1, 50000),
     'skoda'   => Item.new("Skoda", "Skoda Fabia Rally car. Speed 4, Traction 3", 1, 125000),
     'ford'    => Item.new("Ford", "Ford Focus RS Rally car. Speed 4, Traction 5", 1, 225000),
-    'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 350000)
+    'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 350000),
+    'licence' => Item.new("Licence", "Official Groo Sounding Licence",1,0)
   }
 
   def add(item)
@@ -93,7 +94,9 @@ module Commands
     if item_name.blank?
       output box("Dragon Worlde Shope", ['dice', 'lsd', 'pcp', 'soap', 'water', 'half', 'pint', 'staylar', 'vodka'].map {|item_name| item = Items::ITEMS[item_name]; "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
     elsif item_to_buy = Items::ITEMS[item_name]
-      if purchased_item = item_to_buy.purchase_by(self)
+      if item_to_buy.price == 0
+        output "You can't buy that item."
+      elsif purchased_item = item_to_buy.purchase_by(self)
         self.items.add(purchased_item)
         output_to_all "^Y\u{2192}^n #{cname} buys #{purchased_item.name}"
         save

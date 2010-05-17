@@ -358,4 +358,34 @@ module Commands
       end
     end
   end
+
+  define_command 'groo' do
+    user_licence = items.find("licence")
+    if user_licence.nil?
+      output_to_all "^R\u{2192}^n #{name} has been sent to prison for attempting to sound the groo without a licence!"
+      save
+      disconnect
+    else
+      output_to_all "^G\u{2192}^n #{name} ^AG^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ao^AO^Ao^AO^Ao^AO^Ao^AO^Ao^AO^Ao^Ao^Ao^Ao^Ao^Ao^Ao^Ao^A!^A!^A!^n"
+    end
+  end
+
+  define_command 'issue' do |target_name|
+     if name.downcase == "sockeye"
+        if target_name.blank?
+         output "Format: issue <user>"
+        else
+         target = find_user(target_name)
+          if target
+           target.items.add(Items::ITEMS['licence'])
+           target.save
+           target.output "You have been issued a Groo Licence. You may now legally sound the groo!"
+           output "You have issued #{target.name} with a Groo Licence. They may now sound the groo!"
+          end
+        end
+     else 
+       output "No permission." 
+    end
+  end
+
 end
