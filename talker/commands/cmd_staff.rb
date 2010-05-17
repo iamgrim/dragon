@@ -96,8 +96,7 @@ module Commands
         if target
           target.gender = target.gender == :male ? :female : :male
           target.save
-          target.output "You have been dragged by #{name}! Your gender is now #{target.gender}"
-          output "You have dragged #{target.name}! Their gender is now #{target.gender}" 
+          output_to_all "^R\u{2192}^n #{name} has dragged #{target.name}! Their gender is now #{target.gender}" 
         end
       end
     else
