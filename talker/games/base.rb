@@ -275,9 +275,11 @@ module Commands
                 target.vomited_on = nil
                 output_to_all "^B\u{2192}^n #{name} sprays #{target.name} with water, cleaning the vomit off #{target.gender == :male ? 'him' : 'her'}!"
 
-                self.bile = 4
-                c = Commands.lookup('vomit')
-                c.execute(self, "") if c
+                self.bile += (rand(4) + 1)
+                if self.bile > 3
+                  c = Commands.lookup('vomit')
+                  c.execute(self, "") if c
+                end
               else
                 if rand(3) == 0
                   output_to_all "^R\u{2192}^n #{name} has been fined #{currency(50)} for misuse of fire safety equipment!"
