@@ -286,6 +286,7 @@ module TalkerUtilities
       message = message.gsub(/([^\^])us/i, '\1uz')
       message = message.gsub(/([^\^])tea/i, '\1tie')
       message = message.gsub(/([^\^])ee/i, '\1ay')
+      message = message.gsub(/([^\^])augh/i, '\1owff')
       message = message.gsub(/([^\^])au/i, '\1ow')
       message = message.gsub(/([^\^])en/i, '\1in')
       message = message.gsub(/([^\^])ble/i, '\1bull')
@@ -357,7 +358,6 @@ module TalkerUtilities
       message = message.gsub(/([^\^])les/i, '\1alls') 
       message = message.gsub(/([^\^])oke/i, '\1owk')
       message = message.gsub(/([^\^])ha/i, '\1how')
-      message = message.gsub(/([^\^])gh/i, '\1ff')
       message = message.gsub(/([^\^])ei/i, '\1ay')
     elsif self.wossed
       message = message.gsub(/([^\^])are/i, '\1eh')
@@ -367,6 +367,7 @@ module TalkerUtilities
       message = message.gsub(/([^\^])or/i, '\1oh')
       message = message.gsub(/([^\^])ur/i, '\1uh')
       message = message.gsub(/([^\^])r/i, '\1w')
+      message = message.gsub(/^r/i, 'w')
     end
     message = alcohol_string(alcohol_units, message) if alcohol_units > 0
     message
