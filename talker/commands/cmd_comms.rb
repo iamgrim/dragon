@@ -33,6 +33,7 @@ module Commands
     if message.blank?
       output "Format: tell <user(s)> <message>"
     else
+      message = change_accent(message)
       if multi_target?(target_name)
         m = find_multi(target_name)
         m.tell(self, message) if m
@@ -49,7 +50,6 @@ module Commands
             else
               ['tell', '']
             end
-            message = change_accent(message)
             target.output_with_history "^L> #{cname}^L #{format[0]}s #{format[1]}you \u{2018}#{message}^L\u{2019}^n"
             output_with_history "^L> You #{format[0]} #{format[1]}#{target.cname}^L \u{2018}#{message}^L\u{2019}^n"
             output_inactive_message(target)
@@ -66,6 +66,7 @@ module Commands
     if message.blank?
       output "Format: pemote <user(s)> <message>"
     else
+      message = change_accent(message)
       if multi_target?(target_name)
         m = find_multi(target_name)
         m.pemote(self, message) if m
@@ -76,7 +77,6 @@ module Commands
             output "#{target.name} is ignoring you."
           else
             space = message =~ /^[,']/ ? '' : ' '
-            message = change_accent(message)
             target.output_with_history "^L> #{cname}^L#{space}#{message}^n (to you)^n"
             output_with_history "^L> #{cname}^L#{space}#{message}^n (to #{target.cname}^n)^n"
             output_inactive_message(target)
