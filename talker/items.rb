@@ -43,7 +43,8 @@ class Items < Array
     'skoda'   => Item.new("Skoda", "Skoda Fabia Rally car. Speed 4, Traction 3", 1, 125000),
     'ford'    => Item.new("Ford", "Ford Focus RS Rally car. Speed 4, Traction 5", 1, 225000),
     'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 350000),
-    'licence' => Item.new("Licence", "Official Groo Sounding Licence",1,0)
+    'licence' => Item.new("Licence", "Official Groo Sounding Licence",1,0),
+    'scratchings' => Item.new("Scratchings", "Finest Black Country Pork Scratchings",10,50)
   }
 
   def add(item)
@@ -187,6 +188,12 @@ module Commands
       elsif item.name == "Soap"
         items.deplete(item.name)
         output_to_all "^Y\u{2192}^n #{cname} eats soap, laugh at the state of #{gender == :male ? 'him' : 'her'}!"
+        save
+      elsif item.name == "Scratchings"
+        items.deplete(item.name)
+        self.wossed = nil
+        self.brummed = Time.now + 600
+        output_to_all "^Y\u{2192}^n #{cname} eats a Pork Scratching"
         save
       else
         output "You can't eat #{item.name}."

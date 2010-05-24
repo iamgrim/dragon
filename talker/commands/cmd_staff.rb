@@ -104,6 +104,62 @@ module Commands
     end
   end
 
+  define_command 'brum' do |target_name|
+    if rank > 1
+      if target_name.blank?
+        output "Format: brum <user>"
+      else
+        target = find_user(target_name)
+        if target
+          if target.wossed
+           output "Jonathan Woss is not a brummy!"
+          else
+            if target.brummed.nil?
+              target.brummed = Time.now + 600
+              output_to_all "^G\u{2192}^n #{name} turns #{target.name} into a Brummy! Bostin mate!"
+              target.save
+            else
+              target.brummed = nil
+              target.output "You speak English again."
+              output "#{target.name} will speak English again."
+              target.save
+            end
+          end
+        end
+      end
+    else
+      output "You are not prestigious enough to use brum, it requires Knight or above."
+    end
+  end
+
+  define_command 'wossy' do |target_name|
+    if rank > 1
+      if target_name.blank?
+        output "Format: wossy <user>"
+      else
+        target = find_user(target_name)
+        if target
+          if target.brummed
+            output "You cannot turn a Brummy into Jonathan Ross!"
+          else
+            if target.wossed.nil?
+              target.wossed = Time.now + 600
+              output_to_all "^G\u{2192}^n #{name} turns #{target.name} into Jonathan Woss!"
+              target.save
+            else
+              target.output "You speak English again."
+              output "#{target.name} will speak English again."
+              target.wossed = nil
+              target.save
+            end
+          end
+        end
+      end
+    else
+      output "You are not prestigious enough to use wossy, it requires Knight or above."
+    end
+  end
+
   define_command 'lsu' do |message|
     active_staff = active_users.select {|u| u.rank > 0 && u.onduty}
     if active_staff.empty?

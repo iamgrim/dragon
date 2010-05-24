@@ -51,7 +51,7 @@ class Social
       if text =~ /<([M|m]essage|S)>/ && body.blank?
         user.output "Format: #{@name} <message>"
       else
-        user.channel_output "#{user.cname} #{Social.process_dynatext(Social.process_randoms(text), user, target, body)}^n".gsub("\r\n", "")
+        user.channel_output "#{user.cname} #{Social.process_dynatext(Social.process_randoms(text), user, target, user.change_accent(body))}^n".gsub("\r\n", "")
       end
     else
       user.output "Sorry, the social is down for maintenance."

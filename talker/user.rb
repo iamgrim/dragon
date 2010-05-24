@@ -30,6 +30,7 @@ class User
 
   attr_accessor :fishing, :community_service, :rally
   attr_accessor :tripping, :bile, :vomited_on, :drug_strength, :prayer_status, :alcohol_units, :last_drink
+  attr_accessor :brummed, :wossed
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 

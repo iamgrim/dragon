@@ -368,7 +368,7 @@ module Commands
       save
       disconnect
     else
-      output_to_all "^G\u{2192}^n #{name} ^AG^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ao^AO^Ao^AO^Ao^AO^Ao^AO^Ao^AO^Ao^Ao^Ao^Ao^Ao^Ao^Ao^Ao^A!^A!^A!^n"
+      output_to_all "^G\u{2192}^n #{name} #{change_accent('^AG^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ar^AR^Ao^AO^Ao^AO^Ao^AO^Ao^AO^Ao^AO^Ao^Ao^Ao^Ao^Ao^Ao^Ao^Ao^A!^A!^A!^n')} "
     end
   end
 

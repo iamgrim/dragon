@@ -4,7 +4,7 @@ module Commands
     if message.blank?
       output "Format: say <message>"
     else
-      channel_output "#{cname} says \u{2018}#{message}^n\u{2019}"
+      channel_output "#{cname} says \u{2018}#{change_accent(message)}^n\u{2019}"
     end
   end
   define_alias 'say', '`', '\'', '\"'
@@ -13,7 +13,7 @@ module Commands
     if message.blank?
       output "Format: emote <message>"
     else
-      channel_output "#{cname} #{message}^n"
+      channel_output "#{cname} #{change_accent(message)}^n"
     end
   end
   define_alias 'emote', ';', ':', 'emtoe', 'emoet', 'emotes', 'me'
@@ -22,7 +22,7 @@ module Commands
     if message.blank?
       output "Format: echo <message>"
     else
-      channel_output "[#{cname}] #{message}^n"
+      channel_output "[#{cname}] #{change_accent(message)}^n"
     end
   end
   define_alias 'echo', '+'
@@ -33,7 +33,6 @@ module Commands
     if message.blank?
       output "Format: tell <user(s)> <message>"
     else
-      message = alcohol_string(alcohol_units, message) if alcohol_units > 0
       if multi_target?(target_name)
         m = find_multi(target_name)
         m.tell(self, message) if m
@@ -50,6 +49,7 @@ module Commands
             else
               ['tell', '']
             end
+            message = change_accent(message)
             target.output_with_history "^L> #{cname}^L #{format[0]}s #{format[1]}you \u{2018}#{message}^L\u{2019}^n"
             output_with_history "^L> You #{format[0]} #{format[1]}#{target.cname}^L \u{2018}#{message}^L\u{2019}^n"
             output_inactive_message(target)
@@ -66,7 +66,6 @@ module Commands
     if message.blank?
       output "Format: pemote <user(s)> <message>"
     else
-      message = alcohol_string(alcohol_units, message) if alcohol_units > 0
       if multi_target?(target_name)
         m = find_multi(target_name)
         m.pemote(self, message) if m
@@ -77,6 +76,7 @@ module Commands
             output "#{target.name} is ignoring you."
           else
             space = message =~ /^[,']/ ? '' : ' '
+            message = change_accent(message)
             target.output_with_history "^L> #{cname}^L#{space}#{message}^n (to you)^n"
             output_with_history "^L> #{cname}^L#{space}#{message}^n (to #{target.cname}^n)^n"
             output_inactive_message(target)

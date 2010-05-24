@@ -277,6 +277,16 @@ class Talker
           u.drug_strength = 0
           u.output "^nYou feel better now."
         end
+        
+        if u.brummed && u.brummed < now
+          u.brummed = nil
+          u.output "^nYou speak English again."
+        end
+
+        if u.wossed && u.wossed < now
+          u.wossed = nil
+          u.output "^nYou speak English again."
+        end
       end
     end
 
