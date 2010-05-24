@@ -93,7 +93,7 @@ module Commands
   
   define_command 'buy' do |item_name|
     if item_name.blank?
-      output box("Dragon Worlde Shope", ['dice', 'lsd', 'pcp', 'soap', 'water', 'half', 'pint', 'staylar', 'vodka'].map {|item_name| item = Items::ITEMS[item_name]; "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
+      output box("Dragon Worlde Shope", ['dice', 'lsd', 'pcp', 'soap', 'water', 'half', 'pint', 'staylar', 'vodka', 'scratchings'].map {|item_name| item = Items::ITEMS[item_name]; "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
     elsif item_to_buy = Items::ITEMS[item_name]
       if item_to_buy.price == 0
         output "You can't buy that item."
