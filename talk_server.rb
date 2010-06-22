@@ -7,10 +7,10 @@ require 'tzinfo'
 require 'strscan'
 require 'extensions'
 
-require 'talker/talker'
+require 'talker/talker_base'
 require 'talker/telnet_connection'
 
 EM.run {
-  Talker.instance.run
+  TalkerBase.instance.run
   EM.start_unix_domain_server("socket", TelnetConnection)
 }

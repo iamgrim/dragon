@@ -182,7 +182,7 @@ class Rally
   end
 
   def self.user_stage_times(stage)
-    Talker.instance.all_users.values.select{|u| u.rally && !u.rally.stage_records[stage-1].nil?}.sort {|a,b| a.rally.stage_records[stage-1] <=> b.rally.stage_records[stage-1]}
+    TalkerBase.instance.all_users.values.select{|u| u.rally && !u.rally.stage_records[stage-1].nil?}.sort {|a,b| a.rally.stage_records[stage-1] <=> b.rally.stage_records[stage-1]}
   end
   
   def self.stage_record(stage)
@@ -195,7 +195,7 @@ class Rally
   end
 
   def self.user_total_times
-    Talker.instance.all_users.values.select{|u| u.rally && u.rally.best_total_time < 1000000.0}.sort {|a,b| a.rally.best_total_time <=> b.rally.best_total_time}
+    TalkerBase.instance.all_users.values.select{|u| u.rally && u.rally.best_total_time < 1000000.0}.sort {|a,b| a.rally.best_total_time <=> b.rally.best_total_time}
   end
   
   def self.rally_record

@@ -33,7 +33,7 @@ require 'talker/games/quiz'
 require 'talker/games/rally'
 require 'talker/games/conkers'
 
-class Talker
+class TalkerBase
   NAME    = 'Dragon Worlde'
   VERSION = `cat .git/refs/heads/master`.chomp
   TIMEZONE = 'Europe/London'
@@ -220,7 +220,7 @@ class Talker
     @next_tick += 10.0
     now = Time.now
     time_to_wait = @next_tick - now
-    EventMachine::add_timer time_to_wait, proc { Talker.instance.tick(@next_tick) }
+    EventMachine::add_timer time_to_wait, proc { TalkerBase.instance.tick(@next_tick) }
   end
   
   def tick(now)

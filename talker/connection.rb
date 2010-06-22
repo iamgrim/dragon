@@ -25,7 +25,7 @@ class Connection
     when "who", "look"
       look
     when "version"
-      output "#{Talker::NAME} - Version #{Talker::VERSION}"
+      output "#{TalkerBase::NAME} - Version #{TalkerBase::VERSION}"
     else
       if valid_name?(string)
         u = lookup_user string

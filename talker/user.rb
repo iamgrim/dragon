@@ -101,7 +101,7 @@ class User
   end
 
   def developer?
-    !Talker::LIVE || ["thebear", "sockeye", "felix"].include?(lower_name)
+    !TalkerBase::LIVE || ["thebear", "sockeye", "felix"].include?(lower_name)
   end
 
   def complete_login(connection)
@@ -207,7 +207,7 @@ class User
   end
   
   def get_timezone_identifier
-    @timezone_identifier || Talker::TIMEZONE
+    @timezone_identifier || TalkerBase::TIMEZONE
   end
   
   def get_connect_message

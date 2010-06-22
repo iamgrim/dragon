@@ -96,15 +96,15 @@ module Helpers
   end
 
   def lookup_user(name)
-    Talker.instance.all_users[name.downcase]
+    TalkerBase.instance.all_users[name.downcase]
   end
   
   def all_users
-    Talker.instance.all_users
+    TalkerBase.instance.all_users
   end
 
   def connected_users
-    Talker.instance.connected_users
+    TalkerBase.instance.connected_users
   end
 
   def active_users
@@ -135,7 +135,7 @@ module Helpers
       end
     end
     buffer = "\r" + colourise(encode_string(message, charset), self.colour).gsub("\n", "\\n") + "\033[0K\\n"
-    buffer += (colourise(encode_string(get_prompt, charset), self.colour) + "\377\371") if Talker.instance.current_id != id
+    buffer += (colourise(encode_string(get_prompt, charset), self.colour) + "\377\371") if TalkerBase.instance.current_id != id
     raw_send buffer
   end
   
@@ -148,11 +148,11 @@ module Helpers
   end
   
   def disconnect
-    Talker.instance.output << "#{id} disconnect"
+    TalkerBase.instance.output << "#{id} disconnect"
   end
     
   def connections # the connected sockets
-    Talker.instance.connections
+    TalkerBase.instance.connections
   end
   
   def output_inactive_message(user)
@@ -164,7 +164,7 @@ module Helpers
   end
   
   def debug_message(message)
-    Talker.instance.debug_message(message)
+    TalkerBase.instance.debug_message(message)
   end
   
   def log(log_file, text)
@@ -175,16 +175,16 @@ module Helpers
     if developer?
       debug_message "Rebooting thy realme..."
       @input_string = nil
-      Talker.instance.save
-      Talker.instance.shutdown = true
+      TalkerBase.instance.save
+      TalkerBase.instance.shutdown = true
     end
   end
 
   def shutdown
     if developer?
-      Talker.instance.output << "0 shutdown\n"
+      TalkerBase.instance.output << "0 shutdown\n"
       @input_string = nil
-      Talker.instance.save
+      TalkerBase.instance.save
       EM.next_tick { sleep 3; EM.stop_event_loop }
     end
   end
@@ -199,13 +199,13 @@ module Helpers
   end
   
   def talker_history
-    Talker.instance.history
+    TalkerBase.instance.history
   end
   
   # send fully formatted message to a connection
   # use 'output' instead of this
   def raw_send(message)
-    Talker.instance.output << "#{id} send #{message}"
+    TalkerBase.instance.output << "#{id} send #{message}"
   end
 
 end

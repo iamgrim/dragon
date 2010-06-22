@@ -162,7 +162,7 @@ class Fishing
   end
   
   def self.rankings
-    Talker.instance.all_users.values.select{|u|u.fishing}.sort{|u,u2|u2.fishing.combined_catch_total <=> u.fishing.combined_catch_total}
+    TalkerBase.instance.all_users.values.select{|u|u.fishing}.sort{|u,u2|u2.fishing.combined_catch_total <=> u.fishing.combined_catch_total}
   end
   
   def self.ranking(user)
@@ -232,7 +232,7 @@ module Commands
         elsif result < 19 # 18
           if rand(250) == 125 # 1 in 5000 chance (1/20 * 1/250)
             output "You failed to cast because the line got caught on a pylon and ^Rstarted a fire!^n"
-            Talker.instance.start_fire
+            TalkerBase.instance.start_fire
           else
             output "You failed to cast because the line got caught on a pylon. Please try again."
           end

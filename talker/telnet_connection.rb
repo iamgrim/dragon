@@ -4,7 +4,7 @@ require 'time'
 module TelnetConnection
   def post_init
     $stderr.puts "#{Time.now} [Established connection with communication server]"
-    @talker  = Talker.instance
+    @talker  = TalkerBase.instance
     
     # data is sent from the talker to the output channel, 
     # this is forwarded to the telnet server
@@ -59,7 +59,7 @@ module TelnetConnection
         @talker.disconnect_all
       when "uptime"
         $stderr.puts "#{Time.now} UPTIME"
-        Talker.instance.connection_server_uptime = Time.parse(message)
+        TalkerBase.instance.connection_server_uptime = Time.parse(message)
       when "connection"
         $stderr.puts "#{Time.now} CONNECTION #{message}"
         @talker.connection(signature, message)

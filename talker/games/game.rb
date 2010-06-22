@@ -11,7 +11,7 @@ class Player
   end
   
   def output(message)
-    u = Talker.instance.connected_users[@name.downcase]
+    u = TalkerBase.instance.connected_users[@name.downcase]
     u.output(message) if u
   end
 end

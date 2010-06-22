@@ -344,8 +344,8 @@ module Commands
   
   define_command 'timezone' do |message|
     if message == "server"
-      self.timezone_identifier = Talker::TIMEZONE
-      output "Your timezone is now set to that of the server (#{Talker::TIMEZONE})"
+      self.timezone_identifier = TalkerBase::TIMEZONE
+      output "Your timezone is now set to that of the server (#{TalkerBase::TIMEZONE})"
       save
     elsif !message.blank?
       message = message.split('/').map {|part| part.split('_').map {|s| s.capitalize}.join('_')}.join('/')

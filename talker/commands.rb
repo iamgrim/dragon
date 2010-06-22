@@ -9,7 +9,7 @@ class Command
   end
   
   def execute(user, body, options={})
-    if Talker.instance.on_fire.has_key?(@name)
+    if TalkerBase.instance.on_fire.has_key?(@name)
       user.output "^RSorry, that command is currently on fire. Man the fire hose!^n"
     else
       sub_command = nil

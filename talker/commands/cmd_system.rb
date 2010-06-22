@@ -3,7 +3,7 @@ module Commands
   require 'socket'
   
   define_command 'commands' do
-    output box("Choose thoust command from thy following options", Commands.names.map{|c|Talker.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
+    output box("Choose thoust command from thy following options", Commands.names.map{|c|TalkerBase.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
   end
 
   define_command 'changes' do 
@@ -36,7 +36,7 @@ module Commands
   end
   
   define_command 'version' do
-    output "#{Talker::NAME} - Committe #{Talker::VERSION}\nThou is inn #{Talker::LIVE ? 'live' : 'development'} mode."
+    output "#{TalkerBase::NAME} - Committe #{TalkerBase::VERSION}\nThou is inn #{TalkerBase::LIVE ? 'live' : 'development'} mode."
   end
   
   define_command 'idea' do |string|
@@ -68,7 +68,7 @@ module Commands
 
   define_command 'time' do
     buffer = "Realm time is #{Time.now.strftime("%l:%M %p, %A %d %B %Y").strip}\n"
-    buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %l:%M %p, %A %d %B %Y").strip + "\n" if get_timezone_identifier != Talker::TIMEZONE
+    buffer += get_timezone.strftime("Time in #{get_timezone_identifier} is %l:%M %p, %A %d %B %Y").strip + "\n" if get_timezone_identifier != TalkerBase::TIMEZONE
     buffer += "Tallnet is #{time_in_words(Time.now - Time.mktime(1969, 9, 25, 0, 0, 0, 0))} old\n"
     output box("Time", buffer)
   end
@@ -151,8 +151,8 @@ module Commands
   define_alias 'help', '?'
   
   define_command 'uptime' do
-    buffer = "Connection server uptime: #{time_in_words(Time.now - Talker.instance.connection_server_uptime)}\n"
-    buffer += "Talk server uptime: #{time_in_words(Time.now - Talker.instance.talk_server_uptime)}"
+    buffer = "Connection server uptime: #{time_in_words(Time.now - TalkerBase.instance.connection_server_uptime)}\n"
+    buffer += "Talk server uptime: #{time_in_words(Time.now - TalkerBase.instance.talk_server_uptime)}"
     output buffer
   end 
 

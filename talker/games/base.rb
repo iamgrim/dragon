@@ -234,8 +234,8 @@ module Commands
   end
   
 #  define_command 'arson' do
-#    if Talker.instance.on_fire.empty?
-#      Talker.instance.start_fire 
+#    if TalkerBase.instance.on_fire.empty?
+#      TalkerBase.instance.start_fire 
 #      output "You bad person, look what you did"
 #    else
 #      output "The talker is already on fire"
@@ -249,10 +249,10 @@ module Commands
       if !resident?
         output "Only qualified personnel can use the fire safety equipment."
       else
-        if Talker.instance.on_fire.has_key?(target_name)
+        if TalkerBase.instance.on_fire.has_key?(target_name)
           case rand(5)
           when 0
-            Talker.instance.on_fire.delete(target_name)
+            TalkerBase.instance.on_fire.delete(target_name)
             output_to_all "^C\u{2192}^n #{name} has put out #{target_name}, receiving a #{currency(25)} reward"
             self.money += 25
             save
