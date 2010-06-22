@@ -154,7 +154,7 @@ class Quiz < Game
   end
 end # quiz
 
-module Commands
+module Talker
   define_command 'quiz' do |message|
     game = Quiz.find()
     if !game.nil?

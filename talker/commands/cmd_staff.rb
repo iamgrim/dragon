@@ -1,5 +1,5 @@
 # encoding: utf-8
-module Commands
+module Talker
   define_command 'staff' do
     buffer = ""
     (0..5).each do |i|
@@ -38,7 +38,7 @@ module Commands
       if message.blank?
         output "Format: su <message>"
       else
-        c = Commands.lookup('tell')
+        c = Talker.command_list['tell']
         c.execute(self, "#{connected_users.values.select{|u| u.rank > 0}.map{|u|u.name}.join(',')} ^Y<SU> #{message}^n") if c
       end
     else
@@ -51,7 +51,7 @@ module Commands
       if message.blank?
         output "Format: au <message>"
       else
-        c = Commands.lookup('tell')
+        c = Talker.command_list['tell']
         c.execute(self, "#{connected_users.values.select{|u| u.rank > 3}.map{|u|u.name}.join(',')} ^R<Admin> #{message}^n") if c
       end
     else

@@ -38,7 +38,7 @@ class Conkers < Game
   
 end
 
-module Commands
+module Talker
 
   define_command 'conkers' do |message|
     game = Conkers.find(self)

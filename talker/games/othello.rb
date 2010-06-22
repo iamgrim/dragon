@@ -164,7 +164,7 @@ class Othello < Game
   end
 end
 
-module Commands
+module Talker
   define_command 'oth' do |message|
     game = Othello.find(self)
     if game.nil?

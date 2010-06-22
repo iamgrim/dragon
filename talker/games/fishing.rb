@@ -190,7 +190,7 @@ class Fishing
   end
 end
 
-module Commands
+module Talker
 
   define_command 'fishing bait' do |bait_name|
     self.fishing ||= Fishing.new

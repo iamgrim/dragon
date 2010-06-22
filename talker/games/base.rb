@@ -38,7 +38,7 @@ class CommunityService
 end
 
 # encoding: utf-8
-module Commands
+module Talker
   define_command 'games' do
     buffer = ""
     if Game.games.length > 0
@@ -277,7 +277,7 @@ module Commands
 
                 self.bile += (rand(4) + 1)
                 if self.bile > 3
-                  c = Commands.lookup('vomit')
+                  c = Talker.command_list['vomit']
                   c.execute(self, "") if c
                 end
               else

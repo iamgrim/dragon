@@ -73,7 +73,7 @@ module Helpers
   end
   
   def find_command(command_name)
-    command = find_with_partial_matching(Commands.command_list, command_name)
+    command = find_with_partial_matching(Talker.command_list, command_name)
     if command.nil?
       log 'unknown', "#{self.name} #{command_name}"
     end

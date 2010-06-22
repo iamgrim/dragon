@@ -78,7 +78,7 @@ class Items < Array
   end
 end
 
-module Commands
+module Talker
 
   define_command 'inventory' do |target_name|
     target = target_name.blank? ? self : find_user(target_name)
@@ -161,7 +161,7 @@ module Commands
             else        output "You feel like you are going to be sick."
             end
             if self.bile > 5
-              c = Commands.lookup('vomit')
+              c = Talker.command_list['vomit']
               c.execute(self, "") if c
             end
           end

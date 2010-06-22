@@ -168,8 +168,8 @@ class Social
 
     lower_name = name.downcase
     social = @socials[lower_name] = Social.new(lower_name, s['creator'] || "", s['nt-u'] || "", s['ut-u'] || "")
-    c = Commands.lookup(lower_name)
-    Commands.add_command(lower_name, social) unless c && c.class == Command
+    c = Talker.command_list[lower_name]
+    Talker.add_command(lower_name, social) unless c && c.class == Command
     social
   end
   
@@ -178,7 +178,7 @@ class Social
     data_file_name = "import/socials/#{lower_name}"
     File.delete(data_file_name) if FileTest.exist?(data_file_name)
     Social.socials.delete(lower_name)
-    Commands.remove_command(lower_name)
+    Talker.remove_command(lower_name)
   end
   
   def self.socials
@@ -194,7 +194,7 @@ class Social
   end
 end
 
-module Commands
+module Talker
   define_command 'social pull' do |social_name|
     if social_name.blank?
       output "Format: social pull <social name>"

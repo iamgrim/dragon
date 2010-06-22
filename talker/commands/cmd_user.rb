@@ -1,5 +1,5 @@
 # encoding: utf-8
-module Commands
+module Talker
   define_command 'idlemsg' do |message|
     if message.blank?
       output "Format: idlemsg <message>"

@@ -2,6 +2,8 @@
 require 'singleton'
 require 'open-uri'
 
+require 'talker/talker'
+
 require 'talker/util'
 require 'talker/helpers'
 
@@ -304,7 +306,7 @@ class TalkerBase
   end
   
   def grow_fire
-    new_fire = Commands.names[rand(Commands.names.length)]
+    new_fire = Talker.command_names[rand(Talker.command_names.length)]
     @attributes[:on_fire][new_fire] = true unless new_fire == "hose"
   end
 end

@@ -176,7 +176,7 @@ class Battlesheep < Game
   end
 end
 
-module Commands
+module Talker
   define_command 'bsh' do |message|
     game = Battlesheep.find(self)
     if game.nil?

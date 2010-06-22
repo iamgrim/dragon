@@ -203,7 +203,7 @@ class ConnectFour < Game
   end
 end
 
-module Commands
+module Talker
   define_command 'c4' do |message|
     game = ConnectFour.find(self)
     if game.nil?

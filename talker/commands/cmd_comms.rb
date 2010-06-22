@@ -1,5 +1,5 @@
 # encoding: utf-8
-module Commands
+module Talker
   define_command 'say' do |message|
     if message.blank?
       output "Format: say <message>"
