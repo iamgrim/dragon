@@ -170,7 +170,7 @@ module Talker
     if recipient_name.blank? || amount < 1
       output "Format: steal <user> <amount>"
     else
-      recipient = find_connected_user(recipient_name)
+      recipient = find_user(recipient_name)
       if recipient
         if amount > recipient.money
           output "They don't have that much to steal."
