@@ -106,8 +106,8 @@ module Talker
       else
         output "^Y       ___\n     .    .. 			^n^LYou flip the coin and it lands\n^Y    .  ;   ..	      	^P        on its edge.\n ^Y   .   ;  ..\n^r ..__^Y.^r____^Y..^r__..^n\n"
         output_to_all "^G\u{2192}^n #{name} has been Joe Palookered! The coin landed on its edge!"
-        output_to_all "^G\u{2192}^n #{name} won 1,000,000 drogna"
-        self.money = money + 100000
+        output_to_all "^G\u{2192}^n #{name} won 25,000 drogna"
+        self.money = money + 25000
         save
       end
     end
