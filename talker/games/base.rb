@@ -321,7 +321,8 @@ module Talker
   end
   
   define_command 'urinate' do |amount|
-    if amount.to_i < 1
+    amount = amount.to_i
+    if amount < 1
       output "Format: urinate <amount>"
     elsif amount > self.money
       output "You do not have that much to piss up the wall."
