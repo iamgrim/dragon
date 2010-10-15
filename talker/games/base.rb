@@ -328,7 +328,7 @@ module Talker
       output "You do not have that much to piss up the wall."
     else
       self.money -= amount
-      output_to_all "^Y\u{2192} #{name} pisses #{currency(amount)} up the wall!"
+      output_to_all "^Y\u{2192} #{name} pisses #{currency(amount)} up the wall!^n"
     end
   end
   define_alias 'urinate', 'piss'
