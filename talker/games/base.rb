@@ -320,6 +320,18 @@ module Talker
     end
   end
   
+  define_command 'urinate' do |amount|
+    if amount.to_i < 1
+      output "Format: urinate <amount>"
+    elsif amount > self.money
+      output "You do not have that much to piss up the wall."
+    else
+      self.money -= amount
+      output_to_all "^Y\u{2192} #{name} pisses #{currency(amount)} up the wall!"
+    end
+  end
+  define_alias 'urinate', 'piss'
+  
   define_command 'wash' do
     soap = items.find('Soap')
     water = items.find('Water')
