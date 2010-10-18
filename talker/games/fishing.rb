@@ -277,12 +277,12 @@ module Talker
       r = rand(3 + (fishing.catch_size / 32))
 #      debug_message "#{name} Reeling fish in class #{fishing.fish.fish_class(fishing.catch_size)} / #{r}"
       if r < 2 # 0 1
-        if rand(10000) == 5000
-          winnings = 10000
+        if rand(8000) == 4000
+          winnings = 100000
           output_to_all "^C><>^n #{name} caught a ^LShopping Trolley^n worth #{currency(winnings)}!"
         else
-          winnings = (fishing.catch_size * 4).round
-          winnings = winnings * 10 if (fishing.fish.name == "Pike")
+          winnings = (fishing.catch_size * 16).round
+#          winnings = winnings * 10 if (fishing.fish.name == "Pike")
           best_string = ""
           best_string = " Laugh at the state of them!" if winnings == 0
           best_string = " ^L(personal best)^n" if personal_best = fishing.set_record?
