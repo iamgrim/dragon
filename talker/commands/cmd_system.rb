@@ -212,9 +212,9 @@ module Talker
   
   define_command 'spuds' do
     spuds = ['King Edward', 'Duke of York', 'Jersey Royal', 'Maris Piper', 'Russet Burbank', 'Yukon Gold', 'Desiree', 'Charlotte', 'Rooster', 'Golden Wonder']
-    result = all_users.values.sort{|u,u2|u2.total_login_time <=> u.total_login_time}.slice(0, 10)
+    result = all_users.values.sort{|u,u2|u2.total_login_time <=> u.total_login_time}.slice(0, 15)
     count = 0
-    output box("Top Spuds On The Realm", result.map {|u| count += 1; "#{u == self ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-15.15s", spuds[count - 1])} #{u.name}"}.join("^n\n"))
+    output box("Top Spuds On The Realm", result.map {|u| count += 1; "#{u == self ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-15.15s", spuds[count - 1] || 'Smash')} #{sprintf("%-15.15s", u.name)} #{short_time(u.total_login_time).gsub('d', ' potatoes, ').gsub('h', ' peelings')}"}.join("^n\n"))
   end
   define_alias 'spuds', 'spods'
   
