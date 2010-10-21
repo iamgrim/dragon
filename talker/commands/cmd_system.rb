@@ -208,6 +208,15 @@ module Talker
     count  = start
     output box("Forbes Dragon World Rich List", result.map {|u| count += 1; "#{(pos == 0 && u == self) || pos == count ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-#{len}.#{len}s", u.name)} #{sprintf("%#{len2}s", currency(u.money))}"}.join("^n\n"))
   end
+  define_alias 'richlist', 'forbes'
+  
+  define_command 'spuds' do
+    spuds = ['King Edward', 'Duke of York', 'Jersey Royal', 'Maris Piper', 'Russet Burbank', 'Yukon Gold', 'Desiree', 'Charlotte', 'Rooster', 'Golden Wonder']
+    result = all_users.values.sort{|u,u2|u2.total_login_time <=> u.total_login_time}.slice(0, 10)
+    count = 0
+    output box("Top Spuds On The Realm", result.map {|u| count += 1; "#{u == self ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-15.15s", spuds[count - 1])} #{u.name}"}.join("^n\n"))
+  end
+  define_alias 'spuds', 'spods'
   
   define_command 'chart' do
     lastfm = Lastfm.new('cc7edc8072119a8875842b2646a64c0c', '0d262ccefa709548e3010a595ebb4bb1')
