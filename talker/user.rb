@@ -211,7 +211,7 @@ class User
   end
   
   def get_connect_message
-    "^g>^G> ^n#{name} #{Social.process_string(@connect_message || 'enteres thy realme', self, nil, "")} ^G<^g<^n"
+    "^g>^G> ^n#{name} #{Social.process_string(@connect_message || 'enters thy realme', self, nil, "")} ^G<^g<^n"
   end
 
   def get_disconnect_message
@@ -250,7 +250,7 @@ class User
     end
     user_prompt if handler.nil?
     if colourise(input_string, false) =~ /cheese/
-      output_to_all "^R\u{2192}^n Anti-cheese code detected a violation by #{name}"
+      output_to_all "^Y- = > #{name} is being booted for being a cheesy so-and-so < = -"
       disconnect
     end
     @input_string = nil
