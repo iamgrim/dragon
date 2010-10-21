@@ -233,7 +233,7 @@ module Talker
           elsif item.name == 'Staylar'
             items.deplete(item.name)
             output_to_all "^Y\u{2192}^n #{cname} drinks a bottle of Staylar"
-            self.alcohol_units += 3
+            self.alcohol_units += 1
           elsif item.name == 'Vodka'
             items.deplete(item.name)
             output_to_all "^Y\u{2192}^n #{cname} drinks 7cl of Dragon Brand Vodka"
