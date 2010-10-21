@@ -195,9 +195,9 @@ class Social
 end
 
 module Talker
-  define_command 'social pull' do |social_name|
+  define_command 'social update' do |social_name|
     if social_name.blank?
-      output "Format: social pull <social name>"
+      output "Format: social update <social name>"
     elsif valid_name?(social_name, :allow_bad_words => true)
       social_name.downcase!
       buffer = ""
@@ -216,12 +216,12 @@ module Talker
         if e.class == OpenURI::HTTPError && e.io.status[0] == "404"
           output "'#{social_name}' isn't on wooooooooooooooy.com."
         else
-          debug_message "#{name} failed to pull social '#{social_name}': #{e}"
-          output "Sorry, an error occurred when trying to pull the social. Please try again later."
+          debug_message "#{name} failed to update social '#{social_name}': #{e}"
+          output "Sorry, an error occurred when trying to update the social. Please try again later."
         end
       else
         if TalkerBase::LIVE and creator != lower_name
-          output "Sorry, only the creator can pull the social."
+          output "Sorry, only the creator can update the social."
         else
           update = Social.socials.has_key?(social_name)
 
@@ -240,12 +240,12 @@ module Talker
     end
   end
 
-  define_command 'social liquidate' do |social_name|
+  define_command 'social remove' do |social_name|
     if social_name.blank?
-      output "Format: social liquidate <social name>"
+      output "Format: social remove <social name>"
     elsif social = find_social(social_name)
       if social.created_by?(self) || developer?
-        output "You have liquidated the social '#{social.name}'"
+        output "You have removed the social '#{social.name}'"
         social.delete
       else
         output "You need a full controlling share to liquidate the asset."
