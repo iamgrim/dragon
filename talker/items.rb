@@ -34,7 +34,7 @@ class Items < Array
     'water'   => Item.new("Water", "44cl of Dragon Mineral filtered through a dragons beard", 1, 40),
     'half'    => Item.new("Half", "Dragon Ale half pint", 1, 50),
     'pint'    => Item.new("Pint", "Dragon Ale one pint", 1, 100),
-    'staylar' => Item.new("Staylar", "Belgian premium beer (4 cans)", 4, 600),
+    'staylar' => Item.new("Staylar", "Belgian premium beer (90 bottles) ^RSpecial Offer!^n", 90, 3600),
     'vodka'   => Item.new("Vodka", "Dragon brand 70cl (10 servings)", 10, 1500),
     'chopper' => Item.new("Chopper", "Raleigh Bicycle. Speed 1, Traction 2", 1, 1000),
     'minibus' => Item.new("Minibus", "Salvation Army Minibus. Speed 2, Traction 1", 1, 5000),
@@ -232,7 +232,7 @@ module Talker
             self.alcohol_units += 2
           elsif item.name == 'Staylar'
             items.deplete(item.name)
-            output_to_all "^Y\u{2192}^n #{cname} drinks a can of Staylar"
+            output_to_all "^Y\u{2192}^n #{cname} drinks a bottle of Staylar"
             self.alcohol_units += 3
           elsif item.name == 'Vodka'
             items.deplete(item.name)
