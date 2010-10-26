@@ -44,7 +44,8 @@ class Items < Array
     'ford'    => Item.new("Ford", "Ford Focus RS Rally car. Speed 4, Traction 5", 1, 225000),
     'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 350000),
     'licence' => Item.new("Licence", "Official Groo Sounding Licence",1,0),
-    'scratchings' => Item.new("Scratchings", "Finest Black Country Pork Scratchings",10,50)
+    'scratchings' => Item.new("Scratchings", "Finest Black Country Pork Scratchings",10,50),
+    'tissues'  => Item.new("Tissues", "A Box of Dragon Size Tissues (10 per box)", 10, 89)
   }
 
   def add(item)
@@ -93,7 +94,7 @@ module Talker
   
   define_command 'buy' do |item_name|
     if item_name.blank?
-      output box("Dragon Worlde Shope", ['dice', 'lsd', 'pcp', 'soap', 'water', 'half', 'pint', 'staylar', 'vodka', 'scratchings'].map {|item_name| item = Items::ITEMS[item_name]; "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
+      output box("Dragon Worlde Shope", ['dice', 'lsd', 'pcp', 'soap', 'water', 'half', 'pint', 'staylar', 'vodka', 'scratchings', 'tissues'].map {|item_name| item = Items::ITEMS[item_name]; "^L#{sprintf("%8d", item.price)}\u{20ab}^n #{item.name} - #{item.description}"}.join("\n"))
     elsif item_to_buy = Items::ITEMS[item_name]
       if item_to_buy.price == 0
         output "You can't buy that item."
@@ -272,4 +273,19 @@ module Talker
     end
   end
   
+  define_command 'wipe' do
+    if !sneezed_on
+      output "You are already clean."
+    else
+      item = items.find('tissues')
+      if item.nil?
+        output "You don't have any tissues to wipe yourself with!"
+      else
+        items.deplete('tissues')
+        self.sneezed_on = false
+        output_to_all "^G\u{2192}^n #{cname} wipes the snot off themselves using one tissue"
+        save
+      end
+    end
+  end
 end
