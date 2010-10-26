@@ -11,6 +11,7 @@ module Helpers
   end
   
   def channel_output(message)
+    message = sneeze_string(message) if sneezed_on
     message = vomit_string(message) if vomited_on
     
     connected_users.values.each do |u| 

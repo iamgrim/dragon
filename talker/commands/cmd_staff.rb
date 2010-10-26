@@ -160,6 +160,23 @@ module Talker
     end
   end
 
+  define_command 'sneeze' do |target_name|
+    if rank > 2
+      if target_name.blank?
+        output "Format: sneeze <user>"
+      else
+        target = find_user(target_name)
+        if target
+          target.sneezed_on = true
+          output_to_all sneeze_string "^G\u{2192}^n #{name} sneezes all over #{target.name}!! ACHOOOOOO!!!"
+          target.save
+        end
+      end
+    else
+      output "You are not prestigious enough to use sneeze, it requires Baron or above."
+    end
+  end
+
   define_command 'lsu' do |message|
     active_staff = active_users.select {|u| u.rank > 0 && u.onduty}
     if active_staff.empty?

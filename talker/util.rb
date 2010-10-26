@@ -244,6 +244,10 @@ module TalkerUtilities
   def vomit_string(string)
     "#{interleave(colourise(string, false), ['^G', '^Y'])}^n"
   end
+
+  def sneeze_string(string)
+    "#{interleave(colourise(string, false), ['^G', '^g'])}^n"
+  end
   
   def alcohol_string(units, string)
     if units > 4
