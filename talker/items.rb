@@ -45,7 +45,9 @@ class Items < Array
     'citroen' => Item.new("Citroen", "Citroen C4 Rally car. Speed 5, Traction 4", 1, 350000),
     'licence' => Item.new("Licence", "Official Groo Sounding Licence",1,0),
     'scratchings' => Item.new("Scratchings", "Finest Black Country Pork Scratchings",10,50),
-    'tissues'  => Item.new("Tissues", "A Box of Dragon Size Tissues (10 per box)", 10, 89)
+    'tissues'  => Item.new("Tissues", "A Box of Dragon Size Tissues (10 per box)", 10, 89),
+    'conker'   => Item.new("Conker", "", 1, 0),
+    'stick'    => Item.new("Stick", "", 1, 0)
   }
 
   def add(item)
@@ -194,8 +196,11 @@ module Talker
         items.deplete(item.name)
         self.wossed = nil
         self.brummed = Time.now + 600
-        output_to_all "^Y\u{2192}^n #{cname} eats a Pork Scratching"
+        output_to_all "^Y\u{2192}^n #{cname} consumes a Pork Scratching!"
         save
+      elsif item.name == "Conker"
+        items.deplete(item.name)
+        output_to_all "^Y\u{2192}^n #{cname} chomps down a conker, delicious!"
       else
         output "You can't eat #{item.name}."
       end
@@ -283,9 +288,35 @@ module Talker
       else
         items.deplete('tissues')
         self.sneezed_on = false
-        output_to_all "^G\u{2192}^n #{cname} wipes the snot off themselves using one tissue"
+        output_to_all "^G\u{2192}^n #{cname} wipes their face with a tissue!"
         save
       end
+    end
+  end
+  
+  define_command 'gather' do |item_name|
+    if item_name.blank?
+      output "What do you want to gather?"
+    elsif item_name =~ /conker/ && TalkerBase.instance.conkers_on_ground > 0
+      item = items.find('conker')
+      if item && item.quantity > 4
+        output "There is no room for any more conkers in your sack."
+      else
+        self.items.add(Items::ITEMS['conker'])
+        TalkerBase.instance.set_attribute(:conkers_on_ground, TalkerBase.instance.conkers_on_ground - 1)
+        output "You pick up a conker."
+      end
+    elsif item_name =~ /stick/ && TalkerBase.instance.sticks_on_ground > 0
+      item = items.find('stick')
+      if item && item.quantity > 0
+        output "You already have a stick in your hand, there is no room in your palm for another one."
+      else
+        self.items.add(Items::ITEMS['stick'])
+        TalkerBase.instance.set_attribute(:sticks_on_ground, TalkerBase.instance.sticks_on_ground - 1)
+        output "You pick up a stick."
+      end
+    else
+      output "There are no #{pluralise(item_name, 2)} on the ground."
     end
   end
 end

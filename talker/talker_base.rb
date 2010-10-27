@@ -198,6 +198,12 @@ class TalkerBase
     end
     @attributes[:history] ||= History.new
     @attributes[:on_fire] ||= Hash.new
+    @attributes[:conkers_on_ground] ||= 8
+    @attributes[:sticks_on_ground] ||= 2
+  end
+
+  def set_attribute(name, value)
+    @attributes[name] = value
   end
 
   def debug_message(message)
@@ -267,6 +273,9 @@ class TalkerBase
         end
       end
       save
+
+      @attributes[:conkers_on_ground] += (rand(3) + 1) if @attributes[:conkers_on_ground] < 8
+      @attributes[:sticks_on_ground] += (rand(2)) if @attributes[:sticks_on_ground] < 2
     end
     
     @connected_users.each do |name, u|

@@ -191,10 +191,15 @@ module Helpers
   end
   
   def look
-    num = connected_users.keys.length
-    buffer = "There #{is_are(num)} #{num} #{pluralise('pheasant', num)} on thy realme: #{commas_and(connected_users.values.map{|u|u.name})}."
-    if logged_in?
-      buffer += memos.length > 0 ? "\nYou have #{memos.length.to_s} unread #{pluralise('memo', memos.length)}." : ''
+    num = active_users.length
+    buffer = "#{commas_and(active_users.map{|u|u.name})} #{is_are(num)} standing under a horse chestnut tree.\n"
+    num = TalkerBase.instance.conkers_on_ground
+    if num > 0
+      buffer += "There #{is_are(num)} ^L#{num} #{pluralise('conker', num)}^n on the ground.\n"
+    end
+    num = TalkerBase.instance.sticks_on_ground
+    if num > 0
+      buffer += "There #{is_are(num)} ^L#{num} #{pluralise('stick', num)}^n on the ground.\n"
     end
     output buffer
   end
