@@ -278,18 +278,42 @@ module Talker
     end
   end
   
-  define_command 'wipe' do
-    if !sneezed_on
-      output "You are already clean."
-    else
-      item = items.find('tissues')
-      if item.nil?
-        output "You don't have any tissues to wipe yourself with!"
+  define_command 'wipe' do |target_name|
+    if target_name.blank?
+      if !sneezed_on
+        output "You don't need wiping clean."
       else
-        items.deplete('tissues')
-        self.sneezed_on = false
-        output_to_all "^G\u{2192}^n #{cname} wipes their face with a tissue!"
-        save
+        item = items.find('tissues')
+        if item.nil?
+          output "You don't have any tissues to wipe yourself with!"
+        else
+          items.deplete('tissues')
+          self.sneezed_on = false
+          output_to_all "^G\u{2192}^n #{cname} wipes #{hisher} face with a tissue!"
+          save
+        end
+      end
+    else
+      target = find_user(target_name)
+      if target
+        if !target.sneezed_on
+          output "#{target.name} doesn't need wiping."
+        else
+          item = items.find('tissues')
+          if item.nil?
+            output "You don't have any tissues to wipe #{target.name} with!"
+          else
+            item2 = items.find('stick')
+            if item2.nil?
+              output "You can't reach #{target.name} from where you are standing."
+            else
+              items.deplete('tissues')
+              items.deplete('stick')
+              target.sneezed_on = false
+              output_to_all "^G\u{2192}^n #{cname} cleans up #{target.name} with a tissue on a stick!"
+            end
+          end
+        end
       end
     end
   end
