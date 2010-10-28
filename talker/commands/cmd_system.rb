@@ -187,12 +187,12 @@ module Talker
   define_alias 'password', 'passwd'
 
   define_command 'history' do
-    output title_line("Respect thy Worlde Histore") + "\n" + talker_history.to_s(get_timestamp_format, get_timezone) + "\n" + blank_line
+    output title_line("Respect thy Worlde Histore") + "\n" + talker_history.to_s(get_timestamp_format) + "\n" + blank_line
   end
   define_alias 'history', 'recall', 'review'
 
   define_command 'myhistory' do
-    output title_line("Your Private History") + "\n" + history.to_s(get_timestamp_format, get_timezone) + "\n" + blank_line
+    output title_line("Your Private History") + "\n" + history.to_s(get_timestamp_format) + "\n" + blank_line
   end
   define_alias 'myhistory', 'rhistory'
   
