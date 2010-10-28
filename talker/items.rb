@@ -55,7 +55,7 @@ class Items < Array
     if i
       i.quantity += item.quantity
     else
-      self << item
+      self << item.dup
     end
   end
   
