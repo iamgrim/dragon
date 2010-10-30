@@ -182,8 +182,25 @@ module Talker
     if active_staff.empty?
       output "There are no active nobs, the world is currently in anarchy."
     else
+      buffer = "^G                              ,     \\    /      ,      
+    Nobel Staff Memberse     / \\    )\\__/(     / \\     Of Dragon Whirlde
+                            /   \\  (_\\  /_)   /   \\\n^P\u{250C}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}^G/^P\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}^G\\^P\u{2500}\u{2500}^G\\^R@  @^G/^P\u{2500}\u{2500}\u{2500}^G/^P\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}^G\\^P\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2510}
+^P\u{2502}                                   ^G|\\../|                                    ^P\u{2502}
+^P\u{2502}                                    ^G\\VV/                                     ^P\u{2502}\n"
+
       len = active_staff.map {|u|u.name.length}.max    
-      output box("Active Nobs (Members of the Nobility)", active_staff.map { |u| sprintf("%#{len}.#{len}s  #{User::RANK_COLOUR[u.rank]}%8.8s   ^n#{time_in_words(u.idle_time)} idle", u.name, User::RANK[u.rank]) }.join("\n"))
+      buffer += active_staff.map { |u| 
+        s = sprintf("%#{len}.#{len}s  #{User::RANK_COLOUR[u.rank]}%8.8s   ^n#{time_in_words(u.idle_time)} idle", u.name, User::RANK[u.rank]) 
+        width = 75 + s.length - colourise(s, false).length
+        sprintf("^P\u{2502}^n %-#{width}.#{width}s ^P\u{2502}^n\n", s)
+        }.join("\n")
+
+      buffer += "^P\u{2514}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2518}
+                       ^G|    /\\ /      \\\\       \\ /\\    |
+                       |  /   V        ))       V   \\  |
+                       |/     `       //        '     \\|
+                       `              V                '^n"
+      output buffer
     end
   end
 
