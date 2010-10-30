@@ -177,6 +177,21 @@ module Talker
     end
   end
 
+  define_command 'glue' do |target_name|
+    if rank > 2
+      if target_name.blank?
+        output "Format: glue <user>"
+      else
+        target = find_user(target_name)
+        if target
+          output_to_all "^G\u{2192}^n #{name} has glued #{target.name} to the floor!!"
+        end
+      end
+    else
+      output "You are not prestigious enough to use glue, it requires Baron or above."
+    end
+  end
+
   define_command 'lsu' do |message|
     active_staff = active_users.select {|u| u.rank > 0 && u.onduty}
     if active_staff.empty?
