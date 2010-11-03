@@ -94,7 +94,7 @@ module Talker
 
   define_command 'who' do
     len = active_users.map {|u|u.name.length}.max    
-    output box("Dr Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{Social.process_string(u.title || "", u, self, "")}^n") }.join("\n"))
+    output box("Dr Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{Social.process_string(u.title || "is ruining the social fabric of the talker", u, self, "")}^n") }.join("\n"))
   end
   define_alias 'who', 'w'
 
