@@ -36,7 +36,7 @@ require 'talker/games/rally'
 require 'talker/games/conkers'
 
 class TalkerBase
-  NAME    = 'Dragon Worlde'
+  NAME    = 'Dockyard'
   VERSION = `cat .git/refs/heads/master`.chomp
   TIMEZONE = 'Europe/London'
   

@@ -7,7 +7,8 @@ module Talker
   end
 
   define_command 'changes' do 
-    output box("Lateste writings from thy scribes", get_text("changes"))
+#    output box("Lateste writings from thy scribes", get_text("changes"))
+    output get_text("changes")
   end
   
   define_command 'testcard' do

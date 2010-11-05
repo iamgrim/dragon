@@ -37,7 +37,7 @@ class User
   attr_accessor :idle_message, :muffled
   attr_reader :history, :aliases, :ignoring, :ignoring_ips
 
-  RANK = ['Peasant', 'Beadle', 'Knight', 'Baron', 'Earl', 'Princess', 'King']
+  RANK = ['Resident', 'Pseudo Super User', 'Super User', 'Advanced Super User', 'Lower Admin', 'Admin', 'HCAdmin']
   RANK_COLOUR = ['', '^y', '^Y', '^G', '^C', '^P', '^R']
 
   def initialize(name)
@@ -114,7 +114,8 @@ class User
     
     
     if resident?
-      output box("Recent Changes", get_text("changes"))
+#      output box("Recent Changes", get_text("changes"))
+      output get_text("changes")
     else
       output get_text("welcome_newuser")
     end

@@ -44,7 +44,8 @@ module Talker
 
   define_command 'show_changes', :invisible => true do
     if developer?
-      output_to_all box("Thy scribes hath made thy following changeth", get_text("changes").wrap(75)), :show_timestamps => false
+#      output_to_all box("Thy scribes hath made thy following changeth", get_text("changes").wrap(75)), :show_timestamps => false
+      output_to_all get_text("changes")
     else
       output "No permission."
     end
