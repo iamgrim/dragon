@@ -37,7 +37,7 @@ class User
   attr_accessor :idle_message, :muffled
   attr_reader :history, :aliases, :ignoring, :ignoring_ips
 
-  RANK = ['Resident', 'Pseudo Super User', 'Super User', 'Advanced Super User', 'Lower Admin', 'Admin', 'HCAdmin']
+  RANK = ['Dock Worker', 'Shipman', 'Boat Swine', 'Crane Operator', 'Cargo Inspector', 'Captain', 'HCAdmiral']
   RANK_COLOUR = ['', '^y', '^Y', '^G', '^C', '^P', '^R']
 
   def initialize(name)

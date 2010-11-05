@@ -7,7 +7,7 @@ module Talker
       staff_at_rank = commas_and(all_users.values.select{|u| u.rank == rank}.map {|u| u.name})
       buffer += sprintf("#{User::RANK_COLOUR[rank]}%19.19s ^n: %-64.64s\n", User::RANK[rank], staff_at_rank)
     end
-    output box("Staff", buffer)
+    output box("Port Authority Staffing Structure", buffer)
   end
 
   define_command 'promote' do
