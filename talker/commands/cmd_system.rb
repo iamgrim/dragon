@@ -37,7 +37,7 @@ module Talker
   end
   
   define_command 'version' do
-    output "#{TalkerBase::NAME} - Committe #{TalkerBase::VERSION}\nThou is inn #{TalkerBase::LIVE ? 'live' : 'development'} mode."
+    output "#{TalkerBase::NAME} Version #{TalkerBase::VERSION}\n\nThis talker is based on Playground Minus by Gold, a stable bug fixed and\nimproved version of SandPit 94 by Sheep, Polarbear and CSGas which is itself\nbased on something by Athananistan and Grimace which itself was based on\nEW-One by George, Zippy and Bundle.\n"
   end
   
   define_command 'idea' do |string|
