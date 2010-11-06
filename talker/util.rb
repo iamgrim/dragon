@@ -199,8 +199,10 @@ module TalkerUtilities
 #  end
   
   # for content that exceeds the 80 character width box
-  def title_line(text)
-    "^B\u{2500}\u{2500}\u{2524} ^W#{text} ^B\u{251C}" + ("\u{2500}" * (73 - text.length)) + "^n"
+  def title_line(title)
+    part1 = (75 - title.length) / 2
+    part2 = (75 - title.length) - part1
+    "^B\u{2500}" + ("\u{2500}" * part1) + " ^W#{title} ^B" + ("\u{2500}" * part2) + "\u{2500}^n"
   end
   
   def blank_line

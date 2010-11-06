@@ -128,11 +128,21 @@ module Talker
       end
     else
       buffer = ""
+      awake = 0
       active_users.each do |u|
+        awake += 1 if u.idle_time < 1800
         bars = sprintf("%-45s", ("\u{25a0}" * (((5400 - u.idle_time) / 120)+1)) + " #{u.idle_message}")
         buffer += sprintf("%15.15s %-77.77s\n", u.name, "^C|^R#{bars.slice(0,15)}^C|^Y#{bars.slice(15,15)}^C|^G#{bars.slice(30,15)}^C| ^c#{short_time(u.idle_time)}^n")
       end
-      output box("Active Dockworkers", buffer)
+      total = active_users.length
+      title_string = if total == 1
+        "There is only you on the program at the moment"
+      elsif awake == 1
+        "There are #{total} people here, only one of whom appears to be awake"
+      else
+        "There are #{total} people here, #{awake} of whom appear to be awake"
+      end
+      output box(title_string, buffer)
     end
   end
   define_alias 'idle', 'active'

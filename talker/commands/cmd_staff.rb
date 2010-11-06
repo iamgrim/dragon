@@ -12,7 +12,7 @@ module Talker
 
   define_command 'promote' do
     if rank > 5
-      output "You are already a ^RKing^n!"
+      output "You are already a ^RHCAdmin^n!"
     elsif !can_afford_promotion?
       output "You need #{next_rank_cost} drogna for the next rank.^n"
     else
@@ -25,7 +25,7 @@ module Talker
 
   define_command 'demote' do
     if rank <= 0
-      output "You can't go lower than Pheasant!"
+      output "You can't go lower than Dockworker!"
     else
       demote!
       output "You are demoted."
@@ -128,7 +128,7 @@ module Talker
         end
       end
     else
-      output "You are not prestigious enough to use brum, it requires Knight or above."
+      output "You are not prestigious enough to use brum, it requires SU or above."
     end
   end
 
@@ -156,7 +156,7 @@ module Talker
         end
       end
     else
-      output "You are not prestigious enough to use wossy, it requires Knight or above."
+      output "You are not prestigious enough to use wossy, it requires SU or above."
     end
   end
 
@@ -173,7 +173,7 @@ module Talker
         end
       end
     else
-      output "You are not prestigious enough to use sneeze, it requires Baron or above."
+      output "You are not prestigious enough to use sneeze, it requires ASU or above."
     end
   end
 
@@ -188,33 +188,25 @@ module Talker
         end
       end
     else
-      output "You are not prestigious enough to use glue, it requires Baron or above."
+      output "You are not prestigious enough to use glue, it requires ASU or above."
     end
   end
 
   define_command 'lsu' do |message|
     active_staff = active_users.select {|u| u.rank > 0 && u.onduty}
     if active_staff.empty?
-      output "There are no active nobs, the world is currently in anarchy."
+      output "There are no staff, the talker is currently in anarchy."
     else
-      buffer = "^G                              ,     \\    /      ,      
-    Nobel Staff Memberse     / \\    )\\__/(     / \\     Of Dragon Whirlde
-                            /   \\  (_\\  /_)   /   \\\n^P\u{250C}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}^G/^P\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}^G\\^P\u{2500}\u{2500}^G\\^R@  @^G/^P\u{2500}\u{2500}\u{2500}^G/^P\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}^G\\^P\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2510}
-^P\u{2502}                                   ^G|\\../|                                    ^P\u{2502}
-^P\u{2502}                                    ^G\\VV/                                     ^P\u{2502}\n"
-
+      num = active_staff.length
+      buffer = (title_line "There #{is_are(num)} #{num} #{pluralise('Super User', num)} connected") + "\n"
       len = active_staff.map {|u|u.name.length}.max    
       buffer += active_staff.map { |u| 
-        s = sprintf("%#{len}.#{len}s  #{User::RANK_COLOUR[u.rank]}%8.8s   ^n#{time_in_words(u.idle_time)} idle", u.name, User::RANK[u.rank]) 
+        s = sprintf("%#{len}.#{len}s  #{User::RANK_COLOUR[u.rank]}%17.17s   ^n#{time_in_words(u.idle_time)} idle", u.name, User::RANK[u.rank]) 
         width = 75 + s.length - colourise(s, false).length
-        sprintf("^P\u{2502}^n %-#{width}.#{width}s ^P\u{2502}^n", s)
+        sprintf(" %-#{width}.#{width}s", s)
         }.join("\n") + "\n"
 
-      buffer += "^P\u{2514}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2518}
-                       ^G|    /\\ /      \\\\       \\ /\\    |
-                       |  /   V        ))       V   \\  |
-                       |/     `       //        '     \\|
-                       `              V                '^n"
+      buffer += blank_line
       output buffer
     end
   end
