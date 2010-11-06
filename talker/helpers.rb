@@ -192,7 +192,7 @@ module Helpers
   
   def look
     num = active_users.length
-    buffer = "#{commas_and(active_users.map{|u|u.name})} #{is_are(num)} standing under a horse chestnut tree.\n"
+    buffer = "#{commas_and(active_users.map{|u|u.name})} #{is_are(num)} standing under a crane.\n"
     num = TalkerBase.instance.conkers_on_ground
     if num > 0
       buffer += "There #{is_are(num)} ^L#{num} #{pluralise('conker', num)}^n on the ground.\n"

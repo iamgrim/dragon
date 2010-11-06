@@ -3,7 +3,7 @@ module Talker
   require 'socket'
   
   define_command 'commands' do
-    output box("Choose thoust command from thy following options", Talker.command_names.map{|c|TalkerBase.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
+    output box("The following commands are available to you", Talker.command_names.map{|c|TalkerBase.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
   end
 
   define_command 'changes' do 
