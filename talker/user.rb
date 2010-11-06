@@ -192,7 +192,7 @@ class User
   end
 
   def get_prompt
-    Social.process_string(@prompt || "Dragon> ", self, nil, "")
+    Social.process_string(@prompt || "Dockyard> ", self, nil, "")
   end
   
   def get_timestamp_format
@@ -212,15 +212,19 @@ class User
   end
   
   def get_connect_message
-    "^g>^G> ^n#{name} #{Social.process_string(@connect_message || 'enters thy realme', self, nil, "")} ^G<^g<^n"
+    "^g>^G> ^n#{name} #{Social.process_string(@connect_message || 'appears flying through the air and lands in a heap on the ground', self, nil, "")} ^G<^g<^n"
   end
 
   def get_disconnect_message
-    "^R<^r< ^n#{name} #{Social.process_string(@disconnect_message || 'leaves thy realme', self, nil, "")} ^r>^R>^n"
+    "^R<^r< ^n#{name} #{Social.process_string(@disconnect_message || 'jumps up into the air and disappears with a loud *POP*', self, nil, "")} ^r>^R>^n"
   end
 
   def get_reconnect_message
-    "^Y>^y< ^n#{name} #{Social.process_string(@reconnect_message || 'rejoins they realme', self, nil, "")} ^y>^Y<^n"
+    "^Y>^y< ^n#{name} #{Social.process_string(@reconnect_message || "shimmers for a moment as #{heshe} re-connects", self, nil, "")} ^y>^Y<^n"
+  end
+
+  def get_title
+    title || "the newbie, so treat me nicely."
   end
 
   def user_prompt
@@ -307,13 +311,22 @@ class User
   def hisher
     @gender == :male ? "his" : "her"
   end
+
+  def himher
+    @gender == :male ? "him" : "her"
+  end
+  
+  def heshe
+    @gender == :male ? "he" : "she"
+  end
   
   def total_login_time
     logged_in? ? total_time + login_time : total_time
   end
   
   def examine
-    buffer = "       First seen : #{get_timezone.strftime("%l:%M %p, %A %d %B %Y", first_seen).strip}\n"
+#    buffer = "       First seen : #{get_timezone.strftime("%l:%M %p, %A %d %B %Y", first_seen).strip}\n"
+    buffer = blank_line + "#{name} #{Social.process_string(get_title, self, self, "")}\n" + blank_line
     if logged_in? && active?
       buffer += "       Login time : #{time_in_words(login_time)}\n"
       buffer += "        Idle time : #{time_in_words(idle_time)}\n"
@@ -341,7 +354,7 @@ class User
     if fishing
       buffer += "          Fishing : #{Fishing::pounds_oz(fishing.combined_catch_total)} combined records total [#{Fishing::ranking(self).ordinal}]^n\n"
     end
-    buffer
+    buffer + blank_line
   end
   
   def items

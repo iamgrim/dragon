@@ -76,7 +76,8 @@ module Talker
 
   define_command 'examine' do |target_name|
     target = target_name.blank? ? self : find_entity(target_name)
-    output box("#{target.class.name} #{target.name}", encode_string(target.examine, charset).wrap(75)) if target
+#    output box("#{target.class.name} #{target.name}", encode_string(target.examine, charset).wrap(75)) if target
+    output encode_string(target.examine, charset) if target
   end
   define_alias 'examine', 'finger', 'profile', 'x'
 
@@ -95,17 +96,17 @@ module Talker
 
   define_command 'who' do
     len = active_users.map {|u|u.name.length}.max    
-    output box("Dr Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{Social.process_string(u.title || "is ruining the social fabric of the talker", u, self, "")}^n") }.join("\n"))
+    output box("Dr Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{Social.process_string(u.get_title, u, self, "")}^n") }.join("\n"))
   end
   define_alias 'who', 'w'
 
   define_command 'whod' do
-    output box("Ist thy specialyst version of who for scribe", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[unicod] ' : ''}#{u.debug ? '[debuge] ' : ''}#{u.show_timestamps ? '[stamp collector] ' : ''}#{u.fishing && u.fishing.subscribed ? '[bisect] ' : ''}") }.join("\n"))
+    output box("Specialist Version Of Who For Welders", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[Unicod] ' : ''}#{u.debug ? '[Welding] ' : ''}#{u.show_timestamps ? '[Stamp Collector] ' : ''}#{u.fishing && u.fishing.subscribed ? '[Angle] ' : ''}") }.join("\n"))
   end
   define_alias 'who', 'w'
 
   define_command 'connections' do
-    output box("Peasants on thy realm including those attending slumber parties", connected_users.values.map { |u| 
+    output box("Connections", connected_users.values.map { |u| 
       c = u.active? ? "^G+" : "^W@"
       sprintf("#{c}^n %-15.15s %-9.9s ^c%47.47s", u.name, short_time(u.idle_time), "Connected from #{u.ip_address} for #{short_time(u.login_time)}")  
       }.join("\n"))
@@ -207,7 +208,7 @@ module Talker
     len    = result.map {|u|u.name.length}.max
     len2   = result.map {|u|currency(u.money).length}.max    
     count  = start
-    output box("Forbes Dragon World Rich List", result.map {|u| count += 1; "#{(pos == 0 && u == self) || pos == count ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-#{len}.#{len}s", u.name)} #{sprintf("%#{len2}s", currency(u.money))}"}.join("^n\n"))
+    output box("Forbes Rich List", result.map {|u| count += 1; "#{(pos == 0 && u == self) || pos == count ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-#{len}.#{len}s", u.name)} #{sprintf("%#{len2}s", currency(u.money))}"}.join("^n\n"))
   end
   define_alias 'richlist', 'forbes'
   
@@ -215,7 +216,7 @@ module Talker
     spuds = ['King Edward', 'Duke of York', 'Jersey Royal', 'Maris Piper', 'Russet Burbank', 'Yukon Gold', 'Desiree', 'Charlotte', 'Rooster', 'Golden Wonder']
     result = all_users.values.sort{|u,u2|u2.total_login_time <=> u.total_login_time}.slice(0, 15)
     count = 0
-    output box("Top Potato Growers On The Realm", result.map {|u| count += 1; "#{u == self ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-15.15s", spuds[count - 1] || 'Smash')} #{sprintf("%-15.15s", u.name)} #{sprintf("%26.26s", short_time(u.total_login_time).gsub('d', ' potatoes, ').gsub('h', ' peelings'))}"}.join("^n\n"))
+    output box("Top Potato Growers", result.map {|u| count += 1; "#{u == self ? '^L' : ''}#{sprintf("%2.d", count)}. #{sprintf("%-15.15s", spuds[count - 1] || 'Smash')} #{sprintf("%-15.15s", u.name)} #{sprintf("%26.26s", short_time(u.total_login_time).gsub('d', ' potatoes, ').gsub('h', ' peelings'))}"}.join("^n\n"))
   end
   define_alias 'spuds', 'spods'
   

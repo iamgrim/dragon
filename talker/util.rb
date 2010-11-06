@@ -172,7 +172,11 @@ module TalkerUtilities
   
   # for boxed content  
   def box(title, text)
-    buffer = "^B\u{250C}\u{2500}\u{2524}^Y#{title}^B\u{251C}" + ("\u{2500}" * (74 - title.length)) + "\u{2510}^n\n"
+#    buffer = "^B\u{250C}\u{2500}\u{2524}^W#{title}^B\u{251C}" + ("\u{2500}" * (74 - title.length)) + "\u{2510}^n\n"
+  part1 = (75 - title.length) / 2
+  part2 = (75 - title.length) - part1
+
+    buffer = "^B\u{250C}" + ("\u{2500}" * part1) + " ^W#{title} ^B" + ("\u{2500}" * part2) + "\u{2510}^n\n"
     if text.length > 0
     buffer += text.split("\n").map { |s|
       width = 75 + s.length - colourise(s, false).length
@@ -196,7 +200,7 @@ module TalkerUtilities
   
   # for content that exceeds the 80 character width box
   def title_line(text)
-    "^B\u{2500}\u{2500}\u{2524} ^Y#{text} ^B\u{251C}" + ("\u{2500}" * (73 - text.length)) + "^n"
+    "^B\u{2500}\u{2500}\u{2524} ^W#{text} ^B\u{251C}" + ("\u{2500}" * (73 - text.length)) + "^n"
   end
   
   def blank_line
