@@ -212,11 +212,11 @@ class User
   end
   
   def get_connect_message
-    "^g>^G> ^n#{name} #{Social.process_string(@connect_message || 'appears flying through the air and lands in a heap on the ground', self, nil, "")} ^G<^g<^n"
+    "^g>^G> ^n#{name} #{Social.process_string(@connect_message || 'clocks in with a loud *POP*', self, nil, "")} ^G<^g<^n"
   end
 
   def get_disconnect_message
-    "^R<^r< ^n#{name} #{Social.process_string(@disconnect_message || 'jumps up into the air and disappears with a loud *POP*', self, nil, "")} ^r>^R>^n"
+    "^R<^r< ^n#{name} #{Social.process_string(@disconnect_message || 'clocks out with a loud *POP*', self, nil, "")} ^r>^R>^n"
   end
 
   def get_reconnect_message

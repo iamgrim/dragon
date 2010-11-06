@@ -96,7 +96,7 @@ module Talker
 
   define_command 'who' do
     len = active_users.map {|u|u.name.length}.max    
-    output box("Dr Who", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{Social.process_string(u.get_title, u, self, "")}^n") }.join("\n"))
+    output box("List Of Workers On Site", active_users.map { |u| sprintf("%#{len}.#{len}s %-#{75-len}.#{75-len}s", u.name, "#{Social.process_string(u.get_title, u, self, "")}^n") }.join("\n"))
   end
   define_alias 'who', 'w'
 
@@ -132,7 +132,7 @@ module Talker
         bars = sprintf("%-45s", ("\u{25a0}" * (((5400 - u.idle_time) / 120)+1)) + " #{u.idle_message}")
         buffer += sprintf("%15.15s %-77.77s\n", u.name, "^C|^R#{bars.slice(0,15)}^C|^Y#{bars.slice(15,15)}^C|^G#{bars.slice(30,15)}^C| ^c#{short_time(u.idle_time)}^n")
       end
-      output box("Active peasants on thy realme", buffer)
+      output box("Active Dockworkers", buffer)
     end
   end
   define_alias 'idle', 'active'
@@ -189,7 +189,7 @@ module Talker
   define_alias 'password', 'passwd'
 
   define_command 'history' do
-    output title_line("Respect thy Worlde Histore") + "\n" + talker_history.to_s(get_timestamp_format) + "\n" + blank_line
+    output title_line("Docks Work Log") + "\n" + talker_history.to_s(get_timestamp_format) + "\n" + blank_line
   end
   define_alias 'history', 'recall', 'review'
 
@@ -229,7 +229,7 @@ module Talker
       sprintf(" %2.2d. ^L%-53.53s^n ^c%15.15s", count, "#{artist['name']}", "(#{artist['playcount']} #{pluralise('play', artist['playcount'].to_i)})")
     end.join("\n")
     
-    output box("Dragon Worlde Artists Of Thy Week", artists)
+    output box("Artist Of The Week", artists)
   end
   
   define_command 'tracks' do |target_name|
