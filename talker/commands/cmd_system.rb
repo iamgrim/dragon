@@ -37,7 +37,7 @@ module Talker
   end
   
   define_command 'version' do
-    output "#{TalkerBase::NAME} Version #{TalkerBase::VERSION}\n\nThis talker is based on Playground Minus by Gold, a stable bug fixed and\nimproved version of SandPit 94 by Sheep, CSGas and Polar Bear which is itself\nbased on something by RonaldMcDonald and Grimace which itself was based on\nU2 by George, Zippy and Bundle.\n"
+    output "#{TalkerBase::NAME} Version #{TalkerBase::VERSION}\n\nThis talker is based on Playground Minus by Gold, a stable bug fixed and\nimproved version of SandPit 94 by Sheep, CSGas and Polar Bear which is itself\nbased on something by RonaldMcDonald and Grimace which itself was based on\nU2 by George, Zippy and Bundle. It now also features by kind permission the\ngoat_int_safe and goat_string_safe by Oblong.  As of version 2.0, it features\nAnti-cheese code by sooBtle, indentation server by Pal and CaptainBlack, and\nIntercomb code by jKfgdkhsAqos. Solaris compatability gained by reading\nsomething-SOL2.tgz source, written by dICkhEaD.\n"
   end
   
   define_command 'idea' do |string|
