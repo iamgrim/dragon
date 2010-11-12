@@ -284,6 +284,38 @@ module TalkerUtilities
     string
   end
 
+  def weather_string(string, weather)
+    out = ""
+    in_colour = false
+    current_colour = 'n'
+    string.each_char do |c|
+      if c == "^"
+        out += c
+        in_colour = true
+      elsif in_colour
+        out += c
+        current_colour = c
+        in_colour = false
+      else
+        if !(c =~ /[a-zA-Z0-9\n]/) && rand(7) == 2
+          out += "#{weather}^#{current_colour}"
+        else
+          out += c
+        end
+      end
+    end
+    out
+  end
+
+  def apply_weather(string)
+    case TalkerBase.instance.weather
+    when 'raining' then weather_string(string, "^C`")
+    when 'snowing' then weather_string(string, "^W*")
+    else
+      string
+    end
+  end
+
   def change_accent(message)
     if self.brummed
       message = message.gsub(/([^\^])ou/i, '\1ow')

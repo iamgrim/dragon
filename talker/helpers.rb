@@ -135,6 +135,7 @@ module Helpers
       else        random_interleave(colourise(message, false), ["^a", "^d", "^d", "^d", "^d"])
       end
     end
+    message = apply_weather(message)
     buffer = "\r" + colourise(encode_string(message, charset), self.colour).gsub("\n", "\\n") + "\033[0K\\n"
     buffer += (colourise(encode_string(get_prompt, charset), self.colour) + "\377\371") if TalkerBase.instance.current_id != id
     raw_send buffer

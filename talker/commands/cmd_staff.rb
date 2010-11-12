@@ -211,4 +211,17 @@ module Talker
     end
   end
 
+  define_command 'weather' do |message|
+    if lower_name != 'thebear'
+      output "sorry"
+    else
+      if message == "raining" || message == "snowing" || message == "fine"
+        output_to_all "^W-> The weather is now: #{message}"
+        TalkerBase.instance.weather = message
+      else
+        output "bad argument"
+      end
+    end
+  end
+
 end

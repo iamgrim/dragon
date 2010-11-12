@@ -44,8 +44,8 @@ class TalkerBase
   
   include Singleton
   
-  attr_accessor :connected_users, :all_users, :output, :connections,
-                :talk_server_uptime, :connection_server_uptime, :shutdown
+  attr_accessor :connected_users, :all_users, :output, :connections, :channels,
+                :talk_server_uptime, :connection_server_uptime, :shutdown, :weather
   attr_reader :current_id
   
   def initialize
@@ -57,6 +57,8 @@ class TalkerBase
     @talk_server_uptime = Time.now
     @shutdown = false
     @attributes = {}
+    @channels = {}
+    @weather = nil
   end
   
   def run
