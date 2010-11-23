@@ -28,33 +28,37 @@ class Social
   end
   
   def execute(user, body)
-    body ||= ""
-    text = nil
+    if user.prison && !Command::PRISON_COMMANDS.include?(@name)
+      user.output "You can't do that while you are in prison."
+    else
+      body ||= ""
+      text = nil
     
-    if supports_targeted?
-      (target_name, message) = body.split(' ', 2)
-      target = user.find_connected_user(target_name, :silent => true)
-      if target
-        text = @target
-        body = message || ""
-      elsif supports_untargeted?
+      if supports_targeted?
+        (target_name, message) = body.split(' ', 2)
+        target = user.find_connected_user(target_name, :silent => true)
+        if target
+          text = @target
+          body = message || ""
+        elsif supports_untargeted?
+          text = @notarget
+        else
+          user.output "Format: #{@name} <user>"
+        end
+      else
         text = @notarget
-      else
-        user.output "Format: #{@name} <user>"
+        target = nil
       end
-    else
-      text = @notarget
-      target = nil
-    end
     
-    if !text.blank?
-      if text =~ /<([M|m]essage|S)>/ && body.blank?
-        user.output "Format: #{@name} <message>"
+      if !text.blank?
+        if text =~ /<([M|m]essage|S)>/ && body.blank?
+          user.output "Format: #{@name} <message>"
+        else
+          user.channel_output "#{user.cname} #{Social.process_dynatext(Social.process_randoms(text), user, target, user.change_accent(body))}^n".gsub("\r\n", "")
+        end
       else
-        user.channel_output "#{user.cname} #{Social.process_dynatext(Social.process_randoms(text), user, target, user.change_accent(body))}^n".gsub("\r\n", "")
+        user.output "Sorry, the social is down for maintenance."
       end
-    else
-      user.output "Sorry, the social is down for maintenance."
     end
   end
   
