@@ -31,6 +31,7 @@ class User
   attr_accessor :fishing, :community_service, :rally
   attr_accessor :tripping, :bile, :vomited_on, :drug_strength, :prayer_status, :alcohol_units, :last_drink
   attr_accessor :brummed, :wossed, :sneezed_on
+  attr_accessor :prison, :on_phone
 
   attr_accessor :id, :handler, :ip_address, :charset, :show_timestamps, :timestamp_format
 
@@ -379,6 +380,21 @@ class User
     end
     user.set_initial_values
     user
+  end
+
+  def send_to_prison(reason)
+    output_to_all "^R\u{2192} #{name} has been sent to prison for #{reason}!^n"
+    self.prison = Time.now
+    output "\n\nYou are in prison, plan on spending quite some time here...\n\n"
+  end
+  
+  def release_from_prison
+    output_to_all "^W\u{2192}^n #{name} has been released from prison early for good behaviour."
+    self.prison = nil
+    self.on_phone = nil
+    save
+    output "\nYou have been released from prison early for good behaviour.\n"
+    look
   end
 
   def self.add(name, connection_id)

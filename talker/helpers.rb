@@ -3,11 +3,11 @@ module Helpers
   include TalkerUtilities
     
   def output_to_all(message, options={:show_timestamps => true})
-    connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" unless u.muffled || u.is_ignoring?(self) }
+    connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" unless u.muffled || u.is_ignoring?(self) || u.prison }
   end
 
   def output_to_some(message, options={:show_timestamps => true}, &block)
-    connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" if !(u.muffled || u.is_ignoring?(self)) && yield(u) }
+    connected_users.values.each { |u| u.output "#{options[:show_timestamps] ? u.get_timestamp : ''}#{message}" if !(u.muffled || u.is_ignoring?(self) || u.prison) && yield(u) }
   end
   
   def channel_output(message)
@@ -15,7 +15,7 @@ module Helpers
     message = vomit_string(message) if vomited_on
     
     connected_users.values.each do |u| 
-      unless u.muffled || u.is_ignoring?(self)
+      unless u.muffled || u.is_ignoring?(self) || u.prison
         u.output "#{u.get_timestamp}#{message}"
       end
     end
@@ -109,7 +109,7 @@ module Helpers
   end
 
   def active_users
-    connected_users.values.select {|u| u.active?}
+    connected_users.values.select {|u| u.active? && !u.prison}
   end
 
   def socials
@@ -192,15 +192,22 @@ module Helpers
   end
   
   def look
-    num = active_users.length
-    buffer = "#{commas_and(active_users.map{|u|u.name})} #{is_are(num)} standing under a crane.\n"
-    num = TalkerBase.instance.conkers_on_ground
-    if num > 0
-      buffer += "There #{is_are(num)} ^L#{num} #{pluralise('conker', num)}^n on the ground.\n"
-    end
-    num = TalkerBase.instance.sticks_on_ground
-    if num > 0
-      buffer += "There #{is_are(num)} ^L#{num} #{pluralise('stick', num)}^n on the ground.\n"
+    if prison
+      prison_users = connected_users.values.select {|u|u.active? && u.prison}
+      num = prison_users.length
+      buffer = "#{commas_and(prison_users.map{|u|u.name})} #{is_are(num)} in the prison cell.\n"
+      buffer += "There is ^L1 soap^n on the ground.\n"
+    else
+      num = active_users.length
+      buffer = "#{commas_and(active_users.map{|u|u.name})} #{is_are(num)} standing under a crane.\n"
+      num = TalkerBase.instance.conkers_on_ground
+      if num > 0
+        buffer += "There #{is_are(num)} ^L#{num} #{pluralise('conker', num)}^n on the ground.\n"
+      end
+      num = TalkerBase.instance.sticks_on_ground
+      if num > 0
+        buffer += "There #{is_are(num)} ^L#{num} #{pluralise('stick', num)}^n on the ground.\n"
+      end
     end
     output buffer
   end

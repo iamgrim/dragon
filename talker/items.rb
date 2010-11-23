@@ -343,4 +343,5 @@ module Talker
       output "There are no #{pluralise(item_name, 2)} on the ground."
     end
   end
+  
 end

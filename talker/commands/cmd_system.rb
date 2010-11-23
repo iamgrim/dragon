@@ -3,7 +3,13 @@ module Talker
   require 'socket'
   
   define_command 'commands' do
-    output box("The following commands are available to you", Talker.command_names.map{|c|TalkerBase.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
+    command_names = if prison
+      Command::PRISON_COMMANDS
+    else
+      Talker.command_names
+    end
+    
+    output box("The following commands are available to you", command_names.map{|c|TalkerBase.instance.on_fire.has_key?(c) ? "^R#{c}^n" : c}.join(", ").wrap(76))
   end
 
   define_command 'changes' do 
@@ -101,7 +107,7 @@ module Talker
   define_alias 'who', 'w'
 
   define_command 'whod' do
-    output box("Specialist Version Of Who For Welders", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[Unicod] ' : ''}#{u.debug ? '[Welding] ' : ''}#{u.show_timestamps ? '[Stamp Collector] ' : ''}#{u.fishing && u.fishing.subscribed ? '[Angle] ' : ''}") }.join("\n"))
+    output box("Specialist Version Of Who For Welders", active_users.map { |u| sprintf("%15.15s ^c%-61.61s", u.name, "#{(u.charset == :unicode) ? '[Unicod] ' : ''}#{u.debug ? '[Welding] ' : ''}#{u.show_timestamps ? '[Stamp Collector] ' : ''}#{u.fishing && u.fishing.subscribed ? '[Angle] ' : ''}#{u.prison ? '[prison] ' : ''}") }.join("\n"))
   end
   define_alias 'who', 'w'
 
@@ -279,4 +285,32 @@ module Talker
     save
   end
   
+  define_command 'telephone' do |target_name|
+    if !prison
+      output "There is no telephone around here."
+    else
+      if target_name.blank?
+        if !on_phone
+          output "Format: telephone <user name>"
+        else
+          target = find_connected_user(self.on_phone, :silent => true)
+          target.output "#{name} has hung up." if target
+          self.on_phone = nil
+          output "You have hung up the telephone."
+        end
+      else
+        target = find_connected_user(target_name)
+        if target
+          if money < 10
+            output "Sorry, the minimum payment for a call is 10 drogna and you don't have enough."
+          else
+            self.money -= 10
+            self.on_phone = target.lower_name
+            target.output "#{name} has telephoned you from the prison."
+            output "You are on the telephone to #{target.name}. Calls cost 10 drogna per second."
+          end
+        end
+      end
+    end
+  end
 end

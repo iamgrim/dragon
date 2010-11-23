@@ -300,6 +300,22 @@ class TalkerBase
           u.wossed = nil
           u.output "^nYou speak English again."
         end
+        
+        if u.prison && (now - u.prison > 120)
+          u.release_from_prison
+        end
+
+        if u.on_phone
+          if u.money > 100
+            u.money -= 100
+          else
+            u.money = 0
+            target = u.find_connected_user(u.on_phone, :silent => true)
+            target.output "The phone line to #{u.name} has gone dead." if target
+            u.on_phone = nil
+            u.output "Your call has ended because you have run out of money."
+          end
+        end
       end
     end
 

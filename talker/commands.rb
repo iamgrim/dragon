@@ -2,6 +2,8 @@
 class Command
   attr_accessor :command_block, :sub_commands
   
+  PRISON_COMMANDS = ['commands', 'dice', 'look', 'telephone', 'quit', 'tell']
+  
   def initialize(name, block)
     @name = name
     @command_block = block
@@ -11,6 +13,8 @@ class Command
   def execute(user, body, options={})
     if TalkerBase.instance.on_fire.has_key?(@name)
       user.output "^RSorry, that command is currently on fire. Man the fire hose!^n"
+    elsif user.prison && !Command::PRISON_COMMANDS.include?(@name)
+      user.output "You can't do that while you are in prison."
     else
       sub_command = nil
       unless options[:sub_command] == false

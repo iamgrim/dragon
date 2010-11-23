@@ -42,6 +42,10 @@ module Talker
         if target
           if target.is_ignoring?(self)
             output "#{target.name} is ignoring you."
+          elsif prison && !(on_phone == target.lower_name)
+            output "You can not talk to #{target.name} unless you telephone them."
+          elsif target.prison && !(target.on_phone == lower_name)
+            output "#{target.name} is in prison. You can only talk to them if they telephone you."
           else
             format = if message =~ /\?$/
               ['ask', 'of ']

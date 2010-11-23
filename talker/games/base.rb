@@ -29,9 +29,10 @@ class CommunityService
         user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been fined 100\u{20ab}"
         user.save
       else
-        user.output_to_all "^g\u{2192}^n #{user.name} failed to complete their community service and has been sent to prison"
-        user.save
-        user.disconnect
+        unless user.prison
+          user.send_to_prison "failure to complete community service"
+          user.save
+        end
       end
     end
   end
@@ -175,8 +176,7 @@ module Talker
         if amount > recipient.money
           output "They don't have that much to steal."
         elsif recipient == self
-          output_to_all "^g\u{2192}^n #{cname} attempts to commit insurance fraud, and is imprisoned!"
-          disconnect
+          send_to_prison "insurance fraud"
         else
 	        r = rand(2 + (amount / 10).round)
           if r < 1
@@ -192,8 +192,7 @@ module Talker
               self.community_service = CommunityService.new(1)
               output "You have one minute to paint a #{community_service.required_work} metre #{community_service.location} #{community_service.colour}. Begin now."
             else
-              output_to_all "^g\u{2192}^n #{cname} attempts to steal from #{recipient.cname} while on community service, and is therefore sent to prison"
-              disconnect
+              send_to_prison "stealing while on probation"
             end
           end
         end
