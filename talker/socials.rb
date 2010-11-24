@@ -9,6 +9,7 @@ class Social
     @creator  = creator
     @notarget = notarget
     @target   = target
+    @recent_users = []
   end
   
   def created_by?(user)
@@ -31,6 +32,7 @@ class Social
     if user.prison && !Command::PRISON_COMMANDS.include?(@name)
       user.output "You can't do that while you are in prison."
     else
+      @recent_users = (@recent_users << user.lower_name).uniq if !created_by?(user) && user.resident?
       body ||= ""
       text = nil
     
@@ -184,6 +186,15 @@ class Social
     Social.socials.delete(lower_name)
     Talker.remove_command(lower_name)
   end
+
+  def issue_payment
+    if @recent_users.length > 0
+      TalkerBase.instance.dev_message "#{@name}:#{@creator}:#{50 * @recent_users.length}d:#{@recent_users.inspect}"
+      u = TalkerBase.instance.all_users[@creator.downcase]
+      u.money += 50 * @recent_users.length if u
+      @recent_users = []
+    end
+  end
   
   def self.socials
     @socials
@@ -195,6 +206,10 @@ class Social
   
   def self.socials_by(u)
     @socials.values.select{|s|s.creator == u.lower_name}
+  end
+  
+  def self.issue_payments
+    @socials.values.each{|s|s.issue_payment}
   end
 end
 

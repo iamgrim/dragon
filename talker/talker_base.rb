@@ -209,8 +209,12 @@ class TalkerBase
   end
 
   def debug_message(message)
-    @connected_users.values.select {|u|u.debug}.each { |u| u.output "^g[debuge] #{message}^n" }
+    @connected_users.values.select {|u|u.debug}.each { |u| u.output "^g[debug] #{message}^n" }
   end  
+  
+  def dev_message(message)
+    @connected_users.values.select {|u|u.lower_name == 'thebear'}.each { |u| u.output "^G[dev] #{message}^n" }
+  end
   
   def method_missing(method_sym, *arguments, &block)
     if @attributes.has_key?(method_sym)
@@ -265,6 +269,10 @@ class TalkerBase
         end
 
       end
+    end
+
+    if (now.to_i % 300) == 0 # every 5 minutes
+      Social.issue_payments
     end
     
     if (now.to_i % 900) == 0 # every 15 minutes

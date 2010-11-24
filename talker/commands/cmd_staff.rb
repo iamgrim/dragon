@@ -223,5 +223,4 @@ module Talker
       end
     end
   end
-
 end
