@@ -278,7 +278,7 @@ class TalkerBase
     if (now.to_i % 900) == 0 # every 15 minutes
       @connected_users.each do |name, u|
         if u.active?
-          amount = 3 * (u.rank + 1)
+          amount = 30 * (u.rank + 1)
           u.money += amount
         end
       end
